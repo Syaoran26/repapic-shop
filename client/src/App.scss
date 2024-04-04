@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --default-color: #212b36;
+  --primary-color: #00a76f;
+  --secondary-color: #8e33ff;
+  --fade-color: #637381;
+  --fader-color: #919eab;
+  --error-color: #ff5630;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Public Sans', sans-serif;
+  font-optical-sizing: auto;
+  color: var(--default-color);
+}
+
+.background-3::before {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  content: '';
+  opacity: 0.24;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url('../public/images/backgrounds/overlay_4.jpg');
+}
+
+.swiper-pagination-bullet {
+  transition: 0.35s;
+
+  &.swiper-pagination-bullet-active {
+    width: 20px;
+  }
+}
+
+.nav-link {
+  position: relative;
+  padding-block: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  &:hover,
+  &.active {
+    color: var(--primary-color);
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      top: 50%;
+      left: -12px;
+      transform: translateY(-50%);
+      opacity: 0.64;
+      border-radius: 50%;
+      background-color: currentcolor;
+    }
+  }
+}
