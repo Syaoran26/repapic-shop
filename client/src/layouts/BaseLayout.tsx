@@ -1,8 +1,13 @@
+import { FC, ReactNode } from 'react';
 import { Link } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import config from '../config';
 
-const BaseLayout = () => {
+interface BaseLayoutProps {
+  children?: ReactNode;
+}
+
+const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col h-screen">
       <header>
@@ -15,9 +20,7 @@ const BaseLayout = () => {
           </div>
         </div>
       </header>
-      <div className="flex items-center justify-center flex-grow px-4 background-3">
-        <Outlet />
-      </div>
+      <div className="flex items-center justify-center flex-grow px-4 background-3">{children || <Outlet />}</div>
     </div>
   );
 };
