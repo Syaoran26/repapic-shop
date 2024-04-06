@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 import { connect } from './config/db/index.js';
 import routes from './routes/index.js';
 import { error } from './app/middlewares/error.js';
@@ -12,6 +13,7 @@ connect();
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser(process.env.COOKIES_KEY));

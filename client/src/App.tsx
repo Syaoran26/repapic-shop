@@ -10,7 +10,7 @@ import { Helmet } from 'react-helmet';
 function App() {
   return (
     <div className="App">
-      <Helmet defaultTitle="Repapic" titleTemplate="%s - Repapic">
+      <Helmet defaultTitle="Repapic" titleTemplate="%s | Repapic">
         <meta name="description" content="Repapic - Make color with paper" />
         <meta name="theme-color" content="#00A76F" />
       </Helmet>
