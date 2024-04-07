@@ -1,12 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import User from '~/types/UserType';
 import authServices, { Credentials } from './authServices';
+import constants from '~/utils/constants';
 
 interface AuthState {
   user: User | null;
   isError: boolean;
   isLoading: boolean;
-  message: string;
+  message: any;
 }
 
 const initialState: AuthState = {
@@ -29,23 +30,22 @@ export const authSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
-      state.user = null;
-      state.isLoading = true;
-      state.isError = false;
-      state.message = '';
-    });
-    builder.addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
-      state.isError = false;
-      state.isLoading = false;
-      state.user = action.payload;
-    });
-    builder.addCase(login.rejected, (state, action: PayloadAction<any>) => {
-      state.isError = true;
-      state.isLoading = false;
-      state.user = null;
-      state.message = action.payload.message;
-    });
+    builder
+      .addCase(login.pending, (state) => {
+        state.user = null;
+        state.isLoading = true;
+      })
+      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(login.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.user = null;
+        state.message = action.payload.response?.data.message || constants.sthWentWrong;
+      });
   },
 });
 

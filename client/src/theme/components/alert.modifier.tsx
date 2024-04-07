@@ -11,7 +11,6 @@ export const MuiAlert: Components<Theme>['MuiAlert'] = {
       warning: <WarningIcon />,
       error: <ErrorIcon />,
     },
-    onClose: () => {},
   },
   styleOverrides: {
     root: {
