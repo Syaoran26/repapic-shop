@@ -8,6 +8,8 @@ import {
   CharacterMaintenanceIcon,
 } from '~/components/Icons';
 import BaseLayout from '~/layouts/BaseLayout';
+import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 
 interface ErrorPage {
   [key: string]: {
@@ -47,23 +49,49 @@ const errorPage: ErrorPage = {
   },
 };
 
+const bounceVariant = {
+  initial: {
+    opacity: 0,
+    scale: '50%',
+  },
+  animate: {
+    opacity: 1,
+    scale: '100%',
+    transition: {
+      type: 'spring',
+      stiffness: 500,
+      damping: 20,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 const ErrorBoundary = () => {
   const error = useRouteError();
   const navigate = useNavigate();
 
   if (isRouteErrorResponse(error)) {
-    const status = errorPage[error.status] ? error.status : 'maintenance';
+    const status = 'maintenance'; //errorPage[error.status] ? error.status : 'maintenance';
 
     return (
       <BaseLayout>
-        <div className="w-[400px] text-center">
-          <h3 className="text-[2rem] font-bold leading-[1.5] mb-4">{errorPage[status].text}</h3>
-          <p className="text-fade leading-[1.5]">{errorPage[status].description}</p>
-          <div className="mx-10 my-20">{errorPage[status].icon}</div>
+        <Helmet>
+          <title>{errorPage[status].text}</title>
+        </Helmet>
+        <motion.div className="w-[400px] text-center" variants={bounceVariant} initial="initial" animate="animate">
+          <motion.h3 className="text-[2rem] font-bold leading-[1.5] mb-4" variants={bounceVariant}>
+            {errorPage[status].text}
+          </motion.h3>
+          <motion.p className="text-fade leading-[1.5]" variants={bounceVariant}>
+            {errorPage[status].description}
+          </motion.p>
+          <motion.div className="mx-10 my-20" variants={bounceVariant}>
+            {errorPage[status].icon}
+          </motion.div>
           <Button size="large" color="default" onClick={() => navigate(-1)}>
             Quay lại
           </Button>
-        </div>
+        </motion.div>
       </BaseLayout>
     );
   }
