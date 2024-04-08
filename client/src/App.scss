@@ -70,3 +70,13 @@ body {
     }
   }
 }
+
+.lazy-load-image-background {
+  background-image: url('../public/images/backgrounds/placeholder.svg');
+  background-size: cover;
+
+  &.lazy-load-image-loaded.blur {
+    filter: blur(0);
+    transition: filter 0.3s;
+  }
+}
