@@ -1,5 +1,6 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { ProductCard } from '~/components';
+import { ProductCardSkeleton } from '~/components/ProductCard';
 
 const product = {
   name: '(Couple) Tranh tự thiết kế',
@@ -9,14 +10,25 @@ const product = {
 };
 
 const ProductGrid = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  });
+
   return (
     <>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array(16)
           .fill(product)
-          .map((product, index) => (
-            <ProductCard key={index} data={product} />
-          ))}
+          .map((product, index) =>
+            loading ? <ProductCardSkeleton key={index} /> : <ProductCard key={index} data={product} />,
+          )}
       </div>
     </>
   );

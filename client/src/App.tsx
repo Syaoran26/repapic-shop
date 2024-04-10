@@ -3,6 +3,7 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'simplebar-react/dist/simplebar.min.css';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/router';
 import { Helmet } from 'react-helmet';

@@ -1,10 +1,11 @@
-import { Checkbox, IconButton, Link, Paper, SxProps, Tooltip } from '@mui/material';
+import { FC, memo, useEffect, useState } from 'react';
+import { Checkbox, IconButton, Link, Paper, Skeleton, SxProps, Tooltip } from '@mui/material';
 import { CartPlusIcon, HeartIcon } from './Icons';
 import { motion } from 'framer-motion';
-import { FC, memo, useEffect, useState } from 'react';
 import { FaEye } from 'react-icons/fa6';
 import Product from '~/types/ProductType';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { formatPrice } from '~/utils/format';
 
 const actionVariants = {
   initial: {
@@ -95,8 +96,24 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         </Link>
         <div className="flex justify-end gap-1 font-semibold">
           <del className="text-fader"></del>
-          <span>{data.price === 100000 ? '100.000đ' : '120.000đ'}</span>
+          <span>{formatPrice(data.price)}</span>
         </div>
+      </div>
+    </Paper>
+  );
+};
+
+export const ProductCardSkeleton = () => {
+  return (
+    <Paper>
+      <div className="p-2">
+        <div className="relative pb-[100%] overflow-hidden rounded-xl">
+          <Skeleton variant="rounded" className="absolute top-0 left-0" width="100%" height="100%" />
+        </div>
+      </div>
+      <div className="flex flex-col gap-5 px-6 pt-4 pb-6">
+        <Skeleton variant="text" width="45%" />
+        <Skeleton variant="text" width="25%" className="self-end" />
       </div>
     </Paper>
   );
