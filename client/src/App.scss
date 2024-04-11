@@ -22,6 +22,17 @@ body {
   color: var(--default-color);
 }
 
+input[type='number'] {
+  text-align: right;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
 .background-3::before {
   width: 100%;
   height: 100%;

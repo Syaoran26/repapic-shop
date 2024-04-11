@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import {
   Button,
   Container,
@@ -17,19 +17,30 @@ import { MdFilterList } from 'react-icons/md';
 import ProductGrid from './ProductGrid';
 import { Helmet } from 'react-helmet';
 import Filter from './Filter';
+import { useAppDispatch, useAppSelector } from '~/app/hooks';
+import { setSearch, setSort } from '~/features/products/optionsSlice';
+import useDebounce from '~/hooks/useDebounces';
 
 const sortMenu = [
-  { value: '', label: 'Không' },
-  { value: 'newest', label: 'Mới nhất' },
-  { value: 'price-high', label: 'Giá: Cao - thấp' },
-  { value: 'price-low', label: 'Giá: Thấp - cao' },
+  { value: undefined, label: 'Không' },
+  { value: { by: 'createdAt', in: 'desc' }, label: 'Mới nhất' },
+  { value: { by: 'price', in: 'desc' }, label: 'Giá: Cao - thấp' },
+  { value: { by: 'price', in: 'asc' }, label: 'Giá: Thấp - cao' },
 ];
 
 const Shop = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const openSort = Boolean(anchorEl);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const debounceSearch = useDebounce(searchTerm, 200);
+
+  const options = useAppSelector((state) => state.options);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setSearch(debounceSearch));
+  }, [debounceSearch, dispatch]);
 
   const handleOpenSort = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -37,8 +48,8 @@ const Shop = () => {
   const handleCloseSort = () => {
     setAnchorEl(null);
   };
-  const handleSortChange = (index: number) => () => {
-    setSortBy(index);
+  const handleSortChange = (value: any) => () => {
+    dispatch(setSort(value));
     handleCloseSort();
   };
   const toggleFilter = (toggle: boolean) => () => {
@@ -55,6 +66,8 @@ const Shop = () => {
         <FormControl>
           <OutlinedInput
             placeholder="Tìm kiếm..."
+            value={searchTerm}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
             startAdornment={
               <InputAdornment position="start">
                 <IoSearchOutline className="size-5" />
@@ -75,7 +88,7 @@ const Shop = () => {
             <Filter onClose={toggleFilter(false)} />
           </Drawer>
           <Button variant="text" endIcon={openSort ? <GoTriangleUp /> : <GoTriangleDown />} onClick={handleOpenSort}>
-            Sắp xếp: {sortMenu[sortBy].label}
+            Sắp xếp: {sortMenu.find((item) => item.value === options?.sort)?.label}
           </Button>
           <Menu
             open={openSort}
@@ -86,7 +99,7 @@ const Shop = () => {
           >
             <Stack paddingInline={1}>
               {sortMenu.map((item, index) => (
-                <MenuItem key={item.value} onClick={handleSortChange(index)} selected={index === sortBy}>
+                <MenuItem key={index} onClick={handleSortChange(item.value)} selected={item.value === options.sort}>
                   {item.label}
                 </MenuItem>
               ))}
