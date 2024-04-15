@@ -1,5 +1,6 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import {
+  Badge,
   Button,
   Container,
   Drawer,
@@ -18,27 +19,25 @@ import ProductGrid from './ProductGrid';
 import { Helmet } from 'react-helmet';
 import Filter from './Filter';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
-import { setSearch, setSort } from '~/features/products/optionsSlice';
-import useDebounce from '~/hooks/useDebounces';
-
-const sortMenu = [
-  { value: undefined, label: 'Không' },
-  { value: { by: 'createdAt', in: 'desc' }, label: 'Mới nhất' },
-  { value: { by: 'price', in: 'desc' }, label: 'Giá: Cao - thấp' },
-  { value: { by: 'price', in: 'asc' }, label: 'Giá: Thấp - cao' },
-];
+import { reset, selectIsFiltering, setSearch, setSort } from '~/features/products/optionsSlice';
+import { useDebounce, useMount, useUpdateEffect } from '~/hooks';
+import { sortMenu } from './constants';
 
 const Shop = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const openSort = Boolean(anchorEl);
-  const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const debounceSearch = useDebounce(searchTerm, 200);
-
   const options = useAppSelector((state) => state.options);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const openSort = Boolean(anchorEl);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>(options.search);
+  const debounceSearch = useDebounce(searchTerm, 300);
+
+  useMount(() => {
+    dispatch(reset());
+  });
+
+  useUpdateEffect(() => {
     dispatch(setSearch(debounceSearch));
   }, [debounceSearch, dispatch]);
 
@@ -76,7 +75,15 @@ const Shop = () => {
           />
         </FormControl>
         <div className="flex items-center self-center gap-2">
-          <Button variant="text" endIcon={<MdFilterList />} onClick={toggleFilter(true)}>
+          <Button
+            variant="text"
+            endIcon={
+              <Badge variant="dot" color="error" invisible={!selectIsFiltering(options)}>
+                <MdFilterList />
+              </Badge>
+            }
+            onClick={toggleFilter(true)}
+          >
             Bộ lọc
           </Button>
           <Drawer

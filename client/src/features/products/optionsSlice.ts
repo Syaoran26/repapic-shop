@@ -7,7 +7,7 @@ interface OptionsState {
   filter: {
     min: number;
     max: number;
-    category?: string;
+    categories: Array<string>;
   };
   sort?: {
     by: string;
@@ -21,8 +21,20 @@ const initialState: OptionsState = {
   limit: 12,
   filter: {
     min: 0,
-    max: 280_000,
+    max: 240_000,
+    categories: [],
   },
+};
+
+export const selectIsFiltering = (options: OptionsState): boolean => {
+  const filter = options.filter;
+  const initialFilter = initialState.filter;
+  return (
+    filter.min !== initialFilter.min ||
+    filter.max !== initialFilter.max ||
+    filter.categories.length !== initialFilter.categories.length ||
+    !filter.categories.every((category) => initialFilter.categories.includes(category))
+  );
 };
 
 export const optionsSlice = createSlice({
@@ -41,10 +53,23 @@ export const optionsSlice = createSlice({
     setSort: (state, action) => {
       state.sort = action.payload;
     },
+    setFilter: (state, action) => {
+      state.filter = {
+        ...state.filter,
+        ...action.payload,
+      };
+    },
+    resetFilter: (state) => {
+      if (selectIsFiltering(state)) {
+        state.filter = initialState.filter;
+      }
+    },
+    reset: () => {
+      return initialState;
+    },
   },
-  extraReducers: (builder) => {},
 });
 
-export const { setSearch, setSort } = optionsSlice.actions;
+export const { setSearch, setSort, setFilter, setPage, setLimit, resetFilter, reset } = optionsSlice.actions;
 
 export default optionsSlice.reducer;
