@@ -19,18 +19,19 @@ import ProductGrid from './ProductGrid';
 import { Helmet } from 'react-helmet';
 import Filter from './Filter';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
-import { reset, selectIsFiltering, setSearch, setSort } from '~/features/products/optionsSlice';
+import { reset, selectIsFiltering, setPage, setSearch, setSort } from '~/features/products/optionsSlice';
 import { useDebounce, useMount, useUpdateEffect } from '~/hooks';
 import { sortMenu } from './constants';
 
 const Shop = () => {
   const options = useAppSelector((state) => state.options);
+  const { search, sort, page } = options;
   const dispatch = useAppDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const openSort = Boolean(anchorEl);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>(options.search);
+  const [searchTerm, setSearchTerm] = useState<string>(search);
   const debounceSearch = useDebounce(searchTerm, 300);
 
   useMount(() => {
@@ -53,6 +54,9 @@ const Shop = () => {
   };
   const toggleFilter = (toggle: boolean) => () => {
     setOpenFilter(toggle);
+  };
+  const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
+    dispatch(setPage(page));
   };
 
   return (
@@ -95,7 +99,7 @@ const Shop = () => {
             <Filter onClose={toggleFilter(false)} />
           </Drawer>
           <Button variant="text" endIcon={openSort ? <GoTriangleUp /> : <GoTriangleDown />} onClick={handleOpenSort}>
-            Sắp xếp: {sortMenu.find((item) => item.value === options?.sort)?.label}
+            Sắp xếp: {sortMenu.find((item) => item.value === sort)?.label}
           </Button>
           <Menu
             open={openSort}
@@ -106,7 +110,7 @@ const Shop = () => {
           >
             <Stack paddingInline={1}>
               {sortMenu.map((item, index) => (
-                <MenuItem key={index} onClick={handleSortChange(item.value)} selected={item.value === options.sort}>
+                <MenuItem key={index} onClick={handleSortChange(item.value)} selected={item.value === sort}>
                   {item.label}
                 </MenuItem>
               ))}
@@ -115,7 +119,7 @@ const Shop = () => {
         </div>
       </div>
       <ProductGrid />
-      <Pagination className="mt-16 text-center" color="default" count={10} />
+      <Pagination className="mt-16 text-center" color="default" count={10} page={page} onChange={handlePageChange} />
     </Container>
   );
 };

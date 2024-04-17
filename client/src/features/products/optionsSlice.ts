@@ -17,7 +17,7 @@ interface OptionsState {
 
 const initialState: OptionsState = {
   search: '',
-  page: 0,
+  page: 1,
   limit: 12,
   filter: {
     min: 0,

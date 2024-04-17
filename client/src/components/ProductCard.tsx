@@ -6,6 +6,7 @@ import { FaEye } from 'react-icons/fa6';
 import Product from '~/types/ProductType';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { formatPrice } from '~/utils/format';
+import { toast } from 'react-toastify';
 
 const actionVariants = {
   initial: {
@@ -45,6 +46,10 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleAddToCart = () => {
+    toast.success('Đã thêm sản phẩm vào giỏ hàng');
+  };
+
   return (
     <Paper onMouseLeave={() => setHover(false)} onMouseOver={() => setHover(true)}>
       <div className="p-2">
@@ -75,7 +80,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
             </motion.span>
             <motion.span variants={actionVariants}>
               <Tooltip title="Thêm giỏ hàng" placement="right" arrow>
-                <IconButton size="small" sx={buttonStyles}>
+                <IconButton size="small" sx={buttonStyles} onClick={handleAddToCart}>
                   <CartPlusIcon />
                 </IconButton>
               </Tooltip>
