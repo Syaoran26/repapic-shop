@@ -1,39 +1,29 @@
-import React from 'react';
+import { Container } from '@mui/material';
 
 const AboutUs = () => {
   return (
-    <div className="flex-grow-0 pt-64 lg:flex-grow-1 md:block">
-      <div className="relative overflow-hidden bg-center bg-cover top md:block md:pt-80 md:pb-80">
-        <div className="box-border w-full px-24 mx-auto sm:text-lg">
-          <div className="text-center md:block">
-            <div className="inline-flex font-sans text-3xl font-extrabold leading-5 text-green-600 font-public-sans sm:text-lg">
-              <span className="opacity-100 transform-none">W</span>
-              <span className="opacity-100 transform-none">h</span>
-              <span className="opacity-100 transform-none">o</span>
+    <div className="mt-16 md:mt-20">
+      <div className="background-hero relative lg:h-[560px]">
+        <Container>
+          <div className="py-20 text-center lg:absolute bottom-20 lg:text-left lg:py-0">
+            <div className="text-[40px] md:text-[52px] lg:text-[64px] font-extrabold text-primary leading-tight">
+              Who
             </div>
-            <br />
-            <div className="flex inline-flex flex-row gap-4 text-white">
-              <div className="inline-flex font-sans text-3xl font-extrabold leading-5 font-public-sans">
-                <span className="opacity-100 transform-none">w</span>
-                <span className="opacity-100 transform-none">e</span>
-                <span className="opacity-100 transform-none">a</span>
-                <span className="opacity-100 transform-none">r</span>
-                <span className="opacity-100 transform-none">e</span>
-                <span className="opacity-100 transform-none">?</span>
-              </div>
+            <div className="text-white text-[40px] md:text-[52px] lg:text-[64px] font-extrabold leading-tight">
+              we are?
             </div>
-            <div className="opacity-100 transform-none">
-              <h4 className="mt-24 mb-0 text-base font-semibold leading-6 text-white font-public-sans sm:text-lg">
-                "Let's work together and" <br />
-                "Make awesome site easily"
-              </h4>
-            </div>
+            <p className="mt-6 text-xl font-semibold leading-normal text-white lg:text-2xl">
+              Let's work together and <br /> make awesome site easily
+            </p>
           </div>
+        </Container>
+      </div>
+      <Container className="px-6 py-32">
+        <div className="grid grid-cols-12">
+          <div className="col-span-7">1</div>
+          <div className="col-span-5">2</div>
         </div>
-      </div>
-      <div>
-        
-      </div>
+      </Container>
     </div>
   );
 };

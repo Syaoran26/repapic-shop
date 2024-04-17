@@ -70,3 +70,9 @@ body {
     }
   }
 }
+
+.background-hero {
+  background-image: url('../public/images/backgrounds/overlay_1.svg'), url('../public/images/backgrounds/hero.jpg');
+  background-size: cover;
+  background-position: center center;
+}
