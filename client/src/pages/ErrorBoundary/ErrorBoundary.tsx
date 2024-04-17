@@ -71,7 +71,7 @@ const ErrorBoundary = () => {
   const navigate = useNavigate();
 
   if (isRouteErrorResponse(error)) {
-    const status = 'maintenance'; //errorPage[error.status] ? error.status : 'maintenance';
+    const status = errorPage[error.status] ? error.status : 'maintenance';
 
     return (
       <BaseLayout>

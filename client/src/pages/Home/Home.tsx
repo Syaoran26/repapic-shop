@@ -5,13 +5,13 @@ import Heading from './Heading';
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Carousel />
       <Container className="py-20">
         <Heading title="Top trending" />
         <ProductCarousel />
       </Container>
-    </div>
+    </>
   );
 };
 
