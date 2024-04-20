@@ -1,6 +1,7 @@
 import { Components } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { MuiAlert } from './alert.modifier';
+import { MuiBreadcrumbs } from './breadcrumbs.modifier';
 import { MuiButton } from './button.modifier';
 import { MuiCheckbox } from './checkbox.modifier';
 import { MuiDialog } from './dialog.modifier';
@@ -18,6 +19,7 @@ import { MuiSkeleton } from './skeleton.modifier';
 
 export const components: Components<Theme> = {
   MuiAlert,
+  MuiBreadcrumbs,
   MuiButton,
   MuiCheckbox,
   MuiDialog,
