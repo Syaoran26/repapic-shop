@@ -4,7 +4,6 @@ import { createError } from '../../utils/error.js';
 import { generateAccessToken, generateRefreshToken } from '../../utils/token.js';
 import jwt from 'jsonwebtoken';
 import sendEmail from '../../utils/email.js';
-import crypto from 'crypto';
 
 export const register = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
