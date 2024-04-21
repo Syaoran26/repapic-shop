@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { createError } from '../../utils/error.js';
 import { generateAccessToken, generateRefreshToken } from '../../utils/token.js';
 import jwt from 'jsonwebtoken';
+import sendEmail from '../../utils/email.js';
 
 export const register = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
@@ -85,4 +86,28 @@ export const logout = asyncHandler(async (req, res) => {
       secure: true,
     })
     .sendStatus(204);
+});
+
+export const forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) throw createError(404, 'Không tồn tài người dùng!');
+
+  ///TODO: TAM MINH
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Your password reset token (valid for 10min)',
+      message: 'OTP',
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email!',
+    });
+  } catch (err) {
+    return next(new createError(500, 'Có lỗi khi gửi email. Thử lại Sau!!'));
+  }
+});
+
+export const resetPassword = asyncHandler(async (req, res, next) => {
+  //TODO: Tam Minh
 });
