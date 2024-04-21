@@ -22,3 +22,12 @@ export const getCart = asyncHandler(async (req, res) => {
     throw error;
   }
 });
+
+export const changePassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: req.body });
+  if (!user) {
+    return next(createError(400, 'Người dùng không tồn tại!'));
+  }
+
+  res.status(200).json({ message: 'Thay đổi mật khẩu thành công!' });
+});

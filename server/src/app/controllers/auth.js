@@ -92,80 +92,23 @@ export const logout = asyncHandler(async (req, res) => {
 export const forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) throw createError(404, 'Không tồn tài người dùng!');
-  const resetToken = user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false });
 
-  const resetURL = `${req.protocol}://${req.get('host')}/api/auth/resetPassword/${resetToken}`;
-  const message = `Forgot your password? submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\n If you didn't forget your password, please ignore this email!`;
+  ///TODO: TAM MINH
   try {
     await sendEmail({
       email: user.email,
       subject: 'Your password reset token (valid for 10min)',
-      message,
+      message: 'OTP',
     });
     res.status(200).json({
       status: 'success',
       message: 'Token sent to email!',
     });
   } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
     return next(new createError(500, 'Có lỗi khi gửi email. Thử lại Sau!!'));
   }
 });
 
 export const resetPassword = asyncHandler(async (req, res, next) => {
-  const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
-
-  const user = await User.findOne({
-    passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
-    // greater than
-  });
-
-  if (!user) {
-    return next(new createError(400, 'Token không khả dụng hoặc hết hạn!'));
-  }
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
-  user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined;
-  if (password !== passwordConfirm) {
-    return next(new createError(400, 'Mật khẩu xác nhận không trùng khớp!'));
-  }
-  await user.save({ validateBeforeSave: false });
-
-  const accessToken = generateAccessToken({ id: user._id, isAdmin: user.isAdmin });
-  const newRefreshToken = generateRefreshToken({ id: user._id, isAdmin: user.isAdmin });
-  await User.findByIdAndUpdate(user._id, { refreshToken: newRefreshToken }, { new: true });
-  const { password, isAdmin, refreshToken, cart, wishlist, deliveryAddress, ...others } = user._doc;
-  res
-    .status(200)
-    .cookie('refreshToken', newRefreshToken, { httpOnly: true, signed: true })
-    .json({ ...others, token: accessToken });
-});
-
-export const changePassword = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return next(new createError(400, 'Người dùng không tồn tại!'));
-  }
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
-
-  if (user.password !== user.passwordConfirm) {
-    return next(new createError(400, 'Mật khẩu xác nhận không trùng khớp!'));
-  }
-
-  await user.save({ validateBeforeSave: false });
-
-  const accessToken = generateAccessToken({ id: user._id, isAdmin: user.isAdmin });
-  const newRefreshToken = generateRefreshToken({ id: user._id, isAdmin: user.isAdmin });
-  await User.findByIdAndUpdate(user._id, { refreshToken: newRefreshToken }, { new: true });
-  const { password, isAdmin, refreshToken, cart, wishlist, deliveryAddress, ...others } = user._doc;
-  res
-    .status(200)
-    .cookie('refreshToken', newRefreshToken, { httpOnly: true, signed: true })
-    .json({ ...others, token: accessToken });
+  //TODO: Tam Minh
 });
