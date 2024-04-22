@@ -1,4 +1,5 @@
 import { Breadcrumbs, Container, Link } from '@mui/material';
+import ProductSlide from './ProductSlide';
 
 const ProductDetail = () => {
   return (
@@ -12,9 +13,11 @@ const ProductDetail = () => {
             <span>Tên sản phẩm</span>
           </Breadcrumbs>
         </div>
-        <div className="grid grid-cols-12">
-          <div className="col-span-7 p-3 lg:p-5 xl:p-8">1</div>
-          <div className="col-span-5 p-3 lg:p-5 xl:p-8">2</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12">
+          <div className="col-span-1 p-3 lg:col-span-7 lg:p-5 xl:p-8">
+            <ProductSlide />
+          </div>
+          <div className="col-span-1 p-3 lg:col-span-5 lg:p-5 xl:p-8">2</div>
         </div>
       </Container>
     </div>
