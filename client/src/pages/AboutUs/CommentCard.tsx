@@ -1,12 +1,12 @@
+import { FC } from 'react';
 import { Avatar, Rating } from '@mui/material';
-import React from 'react';
 import { RiDoubleQuotesL } from 'react-icons/ri';
 import Comment from '~/types/CommentType';
 
 interface CommentProps {
   data: Comment;
 }
-const CommentCard: React.FC<CommentProps> = ({ data }) => {
+const CommentCard: FC<CommentProps> = ({ data }) => {
   return (
     <div className="p-6 bg-[#ffffff14] text-white rounded-2xl">
       <RiDoubleQuotesL className='mb-6 text-4xl text-slate-400'/>

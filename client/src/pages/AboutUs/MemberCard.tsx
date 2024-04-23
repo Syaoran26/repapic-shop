@@ -1,12 +1,17 @@
+import { FC } from 'react';
 import { IconButton, Paper, Tooltip } from '@mui/material';
-import React from 'react';
 import { BiLogoFacebook, BiLogoInstagramAlt, BiLogoLinkedin, BiLogoTiktok } from 'react-icons/bi';
-import Member from '~/types/MemberType';
 
-interface MemberProps {
-  data: Member;
+
+interface Member {
+  role: string;
+  author: string;
+  image:string;
 }
-const MemberCard: React.FC<MemberProps> = ({ data }) => {
+interface MemberProps{
+  data: Member
+}
+const MemberCard: FC<MemberProps> = ({ data }) => {
   return (
     <div className="px-3 py-20 text-center">
       <Paper>
