@@ -1,6 +1,6 @@
-export const createError = (status, message) => {
-  const err = new Error();
-  err.status = status;
-  err.message = message;
-  return err;
-};
+export class ErrorWithStatus extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}

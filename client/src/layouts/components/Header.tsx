@@ -48,10 +48,10 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex items-center h-full gap-8 max-lg:hidden">
-          <Link to="#" className="nav-link">
+          <Link to={config.routes.home} className="nav-link">
             Trang chủ
           </Link>
-          <Link to="#" className="nav-link">
+          <Link to={config.routes.shop} className="nav-link">
             Sản phẩm
           </Link>
           <Link to="#" className="nav-link">
