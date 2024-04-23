@@ -85,7 +85,7 @@ export const logout = asyncHandler(async (req, res) => {
     .sendStatus(204);
 });
 
-export const forgotPassword = asyncHandler(async (req, res, next) => {
+export const forgotPassword = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const user = await User.findOne({ email: email });
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
@@ -110,7 +110,7 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-export const resetPassword = asyncHandler(async (req, res, next) => {
+export const resetPassword = asyncHandler(async (req, res) => {
   const { email, otp, newPassword } = req.body;
   try {
     const user = await User.findOne({ email: email });
