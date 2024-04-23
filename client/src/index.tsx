@@ -7,11 +7,9 @@ import store from './app/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <MuiProvider>
-        <App />
-      </MuiProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <MuiProvider>
+      <App />
+    </MuiProvider>
+  </Provider>,
 );

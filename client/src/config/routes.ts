@@ -6,6 +6,7 @@ const routes = {
   forgotPassword: '/quen-mat-khau',
   newPassword: '/mat-khau-moi',
   faqs: '/faqs',
+  shop: '/san-pham',
   aboutUs: 've-chung-toi',
 };
 
