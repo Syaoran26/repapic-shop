@@ -16,6 +16,17 @@ const User = new Schema(
       required: true,
       unique: true,
     },
+    otpVerify: {
+      OTP: {
+        type: String,
+      },
+      createAt: {
+        type: Date,
+      },
+      expiresAt: {
+        type: Date,
+      },
+    },
     dOB: Date,
     gender: {
       type: String,

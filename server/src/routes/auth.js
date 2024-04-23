@@ -17,6 +17,6 @@ router.post('/google', googleAuth);
 router.put('/refresh-token', refreshToken);
 router.get('/logout', logout);
 router.post('/forgot-password', forgotPassword);
-router.patch('/reset-password/:token', resetPassword);
+router.post('/reset-password', resetPassword);
 
 export default router;
