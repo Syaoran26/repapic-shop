@@ -109,8 +109,10 @@ input[type='number'] {
   background-size: cover;
   background-position: center center;
 }
-.background-about{
-  background: linear-gradient(rgba(22, 28, 36, 0.9), rgba(22, 28, 36, 0.9)) center center / cover no-repeat, url('../public/images/about/testimonials.jpg');
+
+.background-about {
+  background: linear-gradient(rgba(22, 28, 36, 0.9), rgba(22, 28, 36, 0.9)) center center / cover no-repeat,
+    url('../public/images/about/testimonials.jpg');
   background-position: center center;
   overflow: hidden;
 }

@@ -107,7 +107,7 @@ const AboutUs = () => {
           </div>
           <div className="max-lg:text-center xl:col-span-5">
             <div className="mb-6 text-[44px] font-extrabold leading-tight">Repapic là gì?</div>
-            <p className="text-base font-normal leading-normal text-gray-600">
+            <p className="leading-normal text-gray-600">
               Chủ đề của chúng tôi là chủ đề tiên tiến và thân thiện với người dùng nhất mà bạn có thể tìm thấy trên thị
               trường, chúng tôi có tài liệu và video để giúp thiết lập trang web của bạn thực sự dễ dàng, các bản demo
               được cài đặt sẵn mà bạn có thể nhập chỉ bằng một cú nhấp chuột và mọi thứ từ tùy chọn chủ đề đến nội dung
@@ -146,8 +146,8 @@ const AboutUs = () => {
               </Fab>
             </div>
           </div>
-          <div className="max-sm:text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold text-center lg:mx-[176px]">
-            Our vision offering the best product nulla vehicula tortor scelerisque ultrices malesuada.
+          <div className="mx-auto text-center max-sm:text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold lg:w-[800px]">
+            Tầm nhìn của chúng tôi cung cấp sản phẩm tốt nhất dự kiến không có phương tiện nào bị hư hỏng.
           </div>
         </Container>
       </div>
@@ -157,39 +157,39 @@ const AboutUs = () => {
           <p className="my-6 font-extrabold xl:text-5xl lg:text-[44px] md:text-[40px] max-sm:text-[32px]">
             Great team is the key
           </p>
-          <p className="md:mx-10 lg:mx-[168px] xl:mx-64 text-base font-normal text-fade">
+          <p className="md:mx-10 lg:mx-[168px] xl:mx-64 text-fade">
             Repapic sẽ hỗ trợ bạn nếu bạn gặp bất kỳ vấn đề nào, nhóm hỗ trợ của chúng tôi sẽ trả lời trong vòng một
             ngày và chúng tôi cũng có tài liệu chi tiết.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {memberList.map((member, index) => (
-            <MemberCard key={index} data={member}/>
+            <MemberCard key={index} data={member} />
           ))}
         </div>
         <div className="text-center">
           <Button size="large" variant="outlined" endIcon={<FaAngleRight />}>
-            All Members
+            Tất cả thành viên
           </Button>
         </div>
       </Container>
-      <div className="h-[840px] py-0 background-about">
+      <div className="lg:h-[840px] py-0 background-about">
         <Container>
-          <div className="relative">
-            <div className="grid items-center lg:grid-cols-7 xl:grid-cols-2">
-              <div className="md:text-center p-3 xl:w-[360px] max-xl:col-span-3 lg:w-80 ">
+          <div className="relative max-lg:py-20">
+            <div className="items-center lg:grid lg:grid-cols-7 xl:grid-cols-2">
+              <div className="max-lg:text-center p-3 xl:w-[360px] max-xl:col-span-3 lg:w-80 ">
                 <p className="text-xs font-bold text-white uppercase opacity-[0.48]">Testimonials</p>
-                <p className="my-6 xl:text-5xl font-extrabold leading-snug text-white lg:text-[44px] md:text-[40px]">
+                <p className="my-6 xl:text-5xl font-extrabold leading-snug text-white lg:text-[44px] md:text-[40px] max-md:text-[32px]">
                   Who love <br />
                   my work
                 </p>
-                <p className="text-base font-normal text-white ">
+                <p className="text-white ">
                   Mục tiêu của chúng tôi là tạo ra sản phẩm và dịch vụ mà bạn hài lòng và sử dụng hàng ngày. Đây là lý
                   do tại sao chúng tôi không ngừng nỗ lực cải tiến dịch vụ của mình để cải thiện dịch vụ mỗi ngày và
                   thực sự lắng nghe những gì người dùng nói.
                 </p>
               </div>
-              <div className="h-[840px] py-20 overflow-auto max-xl:col-span-4">
+              <div className="h-[840px] py-20 overflow-auto lg:col-span-4 xl:col-span-1">
                 <Masonry columns={2} spacing={2}>
                   {commentList.map((comment, index) => (
                     <CommentCard key={index} data={comment} />
@@ -197,9 +197,9 @@ const AboutUs = () => {
                 </Masonry>
               </div>
             </div>
-            <div className="absolute text-sm font-bold bottom-16 left-4">
+            <div className="absolute text-sm font-bold lg:bottom-16 lg:left-4">
               <Button color="success" variant="text" endIcon={<FaAngleRight />}>
-                Read more testimonials
+                Đọc thêm lời chứng thực
               </Button>
             </div>
           </div>
