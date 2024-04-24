@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import { ErrorWithStatus } from '../../utils/error.js';
+
 const sendEmail = async function (options) {
   // 1> Create a transporter
   const transporter = nodemailer.createTransport({
@@ -25,7 +27,11 @@ const sendEmail = async function (options) {
   };
 
   // 3> Actually send the email
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    throw new ErrorWithStatus(500, 'Có lỗi khi gửi email. Thử lại Sau!!');
+  }
 };
 
 export default sendEmail;

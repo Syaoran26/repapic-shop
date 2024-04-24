@@ -16,7 +16,7 @@ const User = new Schema(
       required: true,
       unique: true,
     },
-    isVerify: {
+    isVerified: {
       type: Boolean,
       default: false,
     },
