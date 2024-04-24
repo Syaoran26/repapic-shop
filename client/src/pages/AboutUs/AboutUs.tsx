@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button, Container, Fab, LinearProgress } from '@mui/material';
 import { FaAngleRight } from 'react-icons/fa6';
 import { CiPlay1 } from 'react-icons/ci';
@@ -6,6 +7,7 @@ import CommentCard from './CommentCard';
 import { Masonry } from '@mui/lab';
 import Member from '~/types/MemberType';
 import MemberCard from './MemberCard';
+import { useMount } from '~/hooks';
 
 const commentList: Comment[] = [
   {
@@ -76,6 +78,17 @@ const memberList: Member[] = [
 ];
 
 const AboutUs = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1024);
+
+  useMount(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  })
+  
   return (
     <div className="mt-16 md:mt-20">
       <div className="background-hero relative lg:h-[560px]">
@@ -177,27 +190,34 @@ const AboutUs = () => {
         <Container>
           <div className="relative max-lg:py-20">
             <div className="items-center lg:grid lg:grid-cols-7 xl:grid-cols-2">
-              <div className="max-lg:text-center p-3 xl:w-[360px] max-xl:col-span-3 lg:w-80 ">
-                <p className="text-xs font-bold text-white uppercase opacity-[0.48]">Testimonials</p>
-                <p className="my-6 xl:text-5xl font-extrabold leading-snug text-white lg:text-[44px] md:text-[40px] max-md:text-[32px]">
-                  Who love <br />
-                  my work
-                </p>
-                <p className="text-white ">
-                  Mục tiêu của chúng tôi là tạo ra sản phẩm và dịch vụ mà bạn hài lòng và sử dụng hàng ngày. Đây là lý
-                  do tại sao chúng tôi không ngừng nỗ lực cải tiến dịch vụ của mình để cải thiện dịch vụ mỗi ngày và
-                  thực sự lắng nghe những gì người dùng nói.
-                </p>
+              <div className="max-lg:grid max-lg:grid-cols-12 max-xl:col-span-3">
+                <div className="max-lg:col-span-10 max-lg:text-center p-3 xl:w-[360px] lg:w-80 max-lg:col-start-2">
+                  <p className="text-xs font-bold text-white uppercase opacity-[0.48]">Testimonials</p>
+                  <p className="my-6 xl:text-5xl font-extrabold leading-snug text-white lg:text-[44px] md:text-[40px] max-md:text-[32px]">
+                    Who love <br />
+                    my work
+                  </p>
+                  <p className="text-white ">
+                    Mục tiêu của chúng tôi là tạo ra sản phẩm và dịch vụ mà bạn hài lòng và sử dụng hàng ngày. Đây là lý
+                    do tại sao chúng tôi không ngừng nỗ lực cải tiến dịch vụ của mình để cải thiện dịch vụ mỗi ngày và
+                    thực sự lắng nghe những gì người dùng nói.
+                  </p>
+                  <div className="mt-6 lg:hidden">
+                    <Button color="success" variant="text" endIcon={<FaAngleRight />}>
+                      Đọc thêm lời chứng thực
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <div className="h-[840px] py-20 overflow-auto lg:col-span-4 xl:col-span-1">
-                <Masonry columns={2} spacing={2}>
+              <div className="lg:h-[840px] lg:py-20 lg:overflow-auto lg:col-span-4 xl:col-span-1 max-lg:pt-2">
+                <Masonry columns={isMobile?1:2} spacing={2}>
                   {commentList.map((comment, index) => (
                     <CommentCard key={index} data={comment} />
                   ))}
                 </Masonry>
               </div>
             </div>
-            <div className="absolute text-sm font-bold lg:bottom-16 lg:left-4">
+            <div className="absolute text-sm font-bold max-lg:hidden lg:bottom-16 lg:left-4">
               <Button color="success" variant="text" endIcon={<FaAngleRight />}>
                 Đọc thêm lời chứng thực
               </Button>

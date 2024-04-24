@@ -34,7 +34,7 @@ const MemberCard: FC<MemberProps> = ({ data }) => {
               <BiLogoTiktok />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Follow trên Linked" arrow>
+          <Tooltip title="Follow trên LinkedIn" arrow>
             <IconButton sx={{ color: '#007ebb' }}>
               <BiLogoLinkedin />
             </IconButton>
