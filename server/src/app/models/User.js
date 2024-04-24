@@ -16,14 +16,18 @@ const User = new Schema(
       required: true,
       unique: true,
     },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
     otpVerify: {
-      OTP: {
+      otp: {
         type: String,
       },
-      createAt: {
+      createdAt: {
         type: Date,
       },
-      expiresAt: {
+      expiredAt: {
         type: Date,
       },
     },
@@ -98,11 +102,18 @@ const User = new Schema(
   { timestamps: true },
 );
 
-User.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-
+User.pre('save', async function () {
   const salt = bcrypt.genSaltSync(10);
   this.password = await bcrypt.hash(this.password, salt);
+});
+
+User.pre('findOneAndUpdate', async function (next) {
+  const password = this.getUpdate().$set.password;
+  if (!password) {
+    return next();
+  }
+  const salt = bcrypt.genSaltSync(10);
+  this.getUpdate().$set.password = await bcrypt.hash(password, salt);
 });
 
 User.methods.isPasswordMatched = async function (enteredPassword) {

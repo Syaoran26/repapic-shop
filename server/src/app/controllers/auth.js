@@ -4,16 +4,47 @@ import { ErrorWithStatus } from '../../utils/error.js';
 import { generateAccessToken, generateRefreshToken } from '../../utils/token.js';
 import jwt from 'jsonwebtoken';
 import sendEmail from '../../utils/email.js';
-import otpGenerator from 'otp-generator';
 
 export const register = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  const email = req.body.email;
+  const user = await User.findOne({ email: email });
   if (user) {
     throw new ErrorWithStatus(409, 'Email đã được đăng ký!');
   }
-
-  const newUser = await User.create(req.body);
+  const otp = generateOTP();
+  const newUser = await User.create({
+    ...req.body,
+    otpVerify: { otp: otp, createdAt: Date.now(), expiredAt: Date.now() + 240000 },
+  });
+  try {
+    await sendEmail({
+      email: email,
+      subject: 'Cài lại mật khẩu (OTP hợp lệ trong 4 phút)',
+      message: `Mã Xác Nhận: ${otp}`,
+    });
+  } catch (err) {
+    throw new ErrorWithStatus(500, 'Có lỗi khi gửi email. Thử lại Sau!!');
+  }
+  res.status(200).json({
+    message: 'OTP đã được gửi đến email của bạn!',
+  });
   res.status(201).json(newUser);
+});
+
+export const verify = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email: email });
+  if (user.otpVerify.expiredAt < Date.now()) {
+    await User.findOneAndUpdate({ email: email }, { $set: { otpVerify: null } }, { new: true });
+    throw new ErrorWithStatus(400, 'OTP đã hết hạn! Vui lòng kích hoạt lại');
+  }
+  if (otp !== user.otpVerify.otp) {
+    throw new ErrorWithStatus(400, 'OTP không hợp lệ');
+  }
+  await User.findOneAndUpdate({ email: email }, { isVerify: true }, { new: true });
+  res.status(200).json({
+    message: 'Đăng kí thành công.',
+  });
 });
 
 export const googleAuth = asyncHandler(async (req, res) => {
@@ -62,7 +93,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded) => {
-    if (err || user._id !== decoded.id) throw new ErrorWithStatus(400, 'Đã có lỗi với refresh token');
+    if (err || user._id != decoded.id) throw new ErrorWithStatus(400, 'Đã có lỗi với refresh token');
     const token = generateAccessToken({ id: decoded.id, isAdmin: decoded.isAdmin });
     res.json({ token });
   });
@@ -89,23 +120,22 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const user = await User.findOne({ email: email });
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
-  const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+  const otp = generateOTP();
   await User.findOneAndUpdate(
     { email: email },
-    { $set: { otpVerify: { otp: otp, createAt: Date.now(), expiresAt: Date.now() + 3600000 } } },
+    { $set: { otpVerify: { otp: otp, createdAt: Date.now(), expiredAt: Date.now() + 240000 } } },
     { new: true },
   );
   try {
     await sendEmail({
       email: email,
-      subject: 'Your password reset token (valid for 10min)',
+      subject: 'Cài lại mật khẩu (OTP hợp lệ trong 4 phút)',
       message: `Mã Xác Nhận: ${otp}`,
     });
   } catch (err) {
     throw new ErrorWithStatus(500, 'Có lỗi khi gửi email. Thử lại Sau!!');
   }
   res.status(200).json({
-    status: 'thành công',
     message: 'OTP đã được gửi đến email của bạn!',
   });
 });
@@ -117,16 +147,26 @@ export const resetPassword = asyncHandler(async (req, res) => {
     if (!user || !user.otpVerify) {
       throw new ErrorWithStatus(400, 'Không tìm thấy thông tin OTP cho người dùng');
     }
-    if (user.otpVerify.expiresAt < Date.now()) {
+    if (user.otpVerify.expiredAt < Date.now()) {
       await User.findOneAndUpdate({ email: email }, { $set: { otpVerify: null } }, { new: true });
       throw new ErrorWithStatus(400, 'OTP đã hết hạn! Vui lòng kích hoạt lại');
     }
-    if (otp !== user.otpVerify.OTP) {
+    if (otp !== user.otpVerify.otp) {
       throw new ErrorWithStatus(400, 'OTP không hợp lệ');
     }
-    const newUser = await User.findOneAndUpdate({ email: email }, { $set: { password: newPassword } }, { new: true });
-    res.status(200).json(newUser);
+    await User.findOneAndUpdate({ email: email }, { $set: { password: newPassword } }, { new: true });
+    res.status(200).json({
+      message: 'Mật khẩu đã được đổi thành công.',
+    });
   } catch (err) {
     throw new ErrorWithStatus(500, 'Có lỗi khi cố thay đổi mật khẩu. Thử lại Sau!!');
   }
 });
+
+function generateOTP() {
+  let otp = '';
+  for (let i = 0; i < 6; i++) {
+    otp += Math.floor(Math.random() * 10);
+  }
+  return otp;
+}
