@@ -2,5 +2,6 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "cSpell.words": ["hookform", "reduxjs", "Repapic", "simplebar", "swiper", "Tiktok", "toastify"],
-  "eslint.workingDirectories": ["./server"]
+  "eslint.workingDirectories": ["./server"],
+  "cSpell.language": "en,vi"
 }

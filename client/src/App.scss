@@ -20,6 +20,7 @@ body {
   font-family: 'Public Sans', sans-serif;
   font-optical-sizing: auto;
   color: var(--default-color);
+  line-height: 1.5;
 }
 
 input[type='number'] {
@@ -90,4 +91,21 @@ input[type='number'] {
     filter: blur(0);
     transition: filter 0.3s;
   }
+}
+
+.background-hero {
+  background-image: url('../public/images/backgrounds/overlay_1.svg'), url('../public/images/backgrounds/hero.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+
+.background-about {
+  background: linear-gradient(rgba(22, 28, 36, 0.9), rgba(22, 28, 36, 0.9)),
+    url('../public/images/about/testimonials.jpg');
+  background-position: center center;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
