@@ -6,6 +6,7 @@ import CommentCard from './CommentCard';
 import { Masonry } from '@mui/lab';
 import Member from '~/types/MemberType';
 import MemberCard from './MemberCard';
+import SimpleBar from 'simplebar-react';
 
 const commentList: Comment[] = [
   {
@@ -97,10 +98,10 @@ const AboutUs = () => {
         <div className="grid xl:grid-cols-12 lg:grid-cols-2">
           <div className="max-lg:hidden xl:col-span-7">
             <div className="flex items-center pl-3 pr-14">
-              <div className="flex-1 px-3 ">
+              <div className="flex-1 px-3">
                 <img src="/images/about/what_2.png" alt="about1" />
               </div>
-              <div className="flex-1 px-3 ">
+              <div className="flex-1 px-3">
                 <img src="/images/about/what_1.png" alt="about2" />
               </div>
             </div>
@@ -144,7 +145,7 @@ const AboutUs = () => {
       </Container>
       <div className="relative pb-20 bg-[#f4f6f8] before:absolute before:top-0 before:left-0 before:h-[120px] before:w-full before:bg-white">
         <Container>
-          <div className="relative mb-20 overflow-hidden rounded-2xl  before:bg-[#161c247a] before:absolute before:top-0 before:left-0 before:size-full ">
+          <div className="relative mb-20 overflow-hidden rounded-2xl before:bg-[#161c247a] before:absolute before:top-0 before:left-0 before:size-full">
             <img src="/images/about/vision.jpg" alt="about3" />
             <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
               <Fab color="primary">
@@ -200,13 +201,13 @@ const AboutUs = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-3 col-start-4 lg:h-[840px] overflow-y-auto max-lg:mt-2 lg:py-20">
-              <Masonry columns={{ xs: 1, md: 2 }} spacing={2}>
+            <SimpleBar className="col-span-3 col-start-4 lg:h-[840px] overflow-y-clip max-lg:mt-2 lg:py-20">
+              <Masonry columns={{ xs: 1, md: 2 }} spacing={2} sx={{ margin: 0 }}>
                 {commentList.map((comment, index) => (
                   <CommentCard key={index} data={comment} />
                 ))}
               </Masonry>
-            </div>
+            </SimpleBar>
             <div className="absolute max-lg:hidden bottom-16 left-4">
               <Button color="success" variant="text" endIcon={<FaAngleRight />}>
                 Đọc thêm lời chứng thực
