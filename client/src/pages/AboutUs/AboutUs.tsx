@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button, Container, Fab, LinearProgress } from '@mui/material';
 import { FaAngleRight } from 'react-icons/fa6';
 import { CiPlay1 } from 'react-icons/ci';
@@ -7,7 +6,6 @@ import CommentCard from './CommentCard';
 import { Masonry } from '@mui/lab';
 import Member from '~/types/MemberType';
 import MemberCard from './MemberCard';
-import { useMount } from '~/hooks';
 
 const commentList: Comment[] = [
   {
@@ -78,17 +76,6 @@ const memberList: Member[] = [
 ];
 
 const AboutUs = () => {
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1024);
-
-  useMount(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  })
-  
   return (
     <div className="mt-16 md:mt-20">
       <div className="background-hero relative lg:h-[560px]">
@@ -210,7 +197,7 @@ const AboutUs = () => {
                 </div>
               </div>
               <div className="lg:h-[840px] lg:py-20 lg:overflow-auto lg:col-span-4 xl:col-span-1 max-lg:pt-2">
-                <Masonry columns={isMobile?1:2} spacing={2}>
+                <Masonry columns={{ xs: 1, md: 2 }} spacing={2}>
                   {commentList.map((comment, index) => (
                     <CommentCard key={index} data={comment} />
                   ))}
