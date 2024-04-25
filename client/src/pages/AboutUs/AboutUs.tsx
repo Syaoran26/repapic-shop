@@ -113,22 +113,28 @@ const AboutUs = () => {
               được cài đặt sẵn mà bạn có thể nhập chỉ bằng một cú nhấp chuột và mọi thứ từ tùy chọn chủ đề đến nội dung
               trang có thể được chỉnh sửa từ front-end. Đây là chủ đề bạn đang tìm kiếm.
             </p>
-            <div className="flex flex-col my-10 ">
-              <div className="flex flex-row items-center mb-2 text-sm leading-6">
-                <div className="font-semibold leading-6 text-left grow">Development</div>
-                <p className="font-normal leading-6 text-gray-600 ">20%</p>
+            <div className="flex flex-col gap-6 my-10">
+              <div>
+                <div className="flex flex-row items-center mb-2 text-sm">
+                  <div className="font-semibold leading-6 grow">Development</div>
+                  <p className="text-fade">20%</p>
+                </div>
+                <LinearProgress variant="determinate" value={20} />
               </div>
-              <LinearProgress variant="determinate" value={20} />
-              <div className="flex flex-row items-center mt-6 mb-2 text-sm leading-6">
-                <div className="font-semibold text-left grow">Design</div>
-                <p className="font-normal text-gray-600 ">40%</p>
+              <div>
+                <div className="flex flex-row items-center mb-2 text-sm">
+                  <div className="font-semibold grow">Design</div>
+                  <p className="text-fade">40%</p>
+                </div>
+                <LinearProgress color="warning" variant="determinate" value={40} />
               </div>
-              <LinearProgress color="warning" variant="determinate" value={40} />
-              <div className="flex flex-row items-center mt-6 mb-2 text-sm leading-6">
-                <div className="font-semibold text-left grow">Marketing</div>
-                <p className="font-normal text-gray-600 ">60%</p>
+              <div>
+                <div className="flex flex-row items-center mb-2 text-sm">
+                  <div className="font-semibold text-left grow">Marketing</div>
+                  <p className="text-fade">60%</p>
+                </div>
+                <LinearProgress color="error" variant="determinate" value={60} />
               </div>
-              <LinearProgress color="error" variant="determinate" value={60} />
             </div>
             <Button size="large" variant="outlined" endIcon={<FaAngleRight />}>
               Our Work
@@ -136,9 +142,9 @@ const AboutUs = () => {
           </div>
         </div>
       </Container>
-      <div className="relative pb-20 bg-slate-100 before:absolute before:h-[120px] before:bg-white before:top-0 before:left-0 before:w-full">
+      <div className="relative pb-20 bg-[#f4f6f8] before:absolute before:top-0 before:left-0 before:h-[120px] before:w-full before:bg-white">
         <Container>
-          <div className="overflow-hidden rounded-2xl relative mb-20 before:bg-[#161c247a] before:absolute before:top-0 before:left-0 before:size-full ">
+          <div className="relative mb-20 overflow-hidden rounded-2xl  before:bg-[#161c247a] before:absolute before:top-0 before:left-0 before:size-full ">
             <img src="/images/about/vision.jpg" alt="about3" />
             <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
               <Fab color="primary">
@@ -146,14 +152,14 @@ const AboutUs = () => {
               </Fab>
             </div>
           </div>
-          <div className="mx-auto text-center max-sm:text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold lg:w-[800px]">
+          <div className="mx-auto max-w-[800px] text-center text-2xl md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold">
             Tầm nhìn của chúng tôi cung cấp sản phẩm tốt nhất dự kiến không có phương tiện nào bị hư hỏng.
           </div>
         </Container>
       </div>
       <Container className="py-[120px]">
         <div className="text-center">
-          <p className="text-[12px] leading-normal font-bold text-fader uppercase">Dream team</p>
+          <p className="text-xs font-bold uppercase text-fader">Dream team</p>
           <p className="my-6 font-extrabold xl:text-5xl lg:text-[44px] md:text-[40px] text-[32px]">
             Great team is the key
           </p>
@@ -173,17 +179,16 @@ const AboutUs = () => {
           </Button>
         </div>
       </Container>
-      <div className="lg:h-[840px] py-0 max-lg:py-20 background-about">
+      <div className="lg:h-[840px] py-20 lg:py-0 background-about">
         <Container>
           <div className="relative items-center grid-cols-6 lg:grid">
             <div className="col-span-2 p-3 max-lg:grid max-lg:grid-cols-12">
               <div className="text-white max-lg:col-span-10 max-lg:text-center max-lg:col-start-2">
-                <p className="text-xs font-bold text-white uppercase opacity-[0.48]">Testimonials</p>
+                <p className="text-xs font-bold uppercase opacity-[0.48]">Testimonials</p>
                 <h2 className="my-6 font-extrabold xl:text-5xl lg:text-[44px] md:text-[40px] text-[32px]">
-                  Who love <br />
-                  my work
+                  Who love <br /> my work
                 </h2>
-                <p className="text-white ">
+                <p>
                   Mục tiêu của chúng tôi là tạo ra sản phẩm và dịch vụ mà bạn hài lòng và sử dụng hàng ngày. Đây là lý
                   do tại sao chúng tôi không ngừng nỗ lực cải tiến dịch vụ của mình để cải thiện dịch vụ mỗi ngày và
                   thực sự lắng nghe những gì người dùng nói.
@@ -194,15 +199,15 @@ const AboutUs = () => {
                   </Button>
                 </div>
               </div>
-              <div className="lg:h-[840px] lg:py-20 lg:overflow-auto lg:col-span-4 xl:col-span-1 max-lg:pt-2">
-                <Masonry columns={{ xs: 1, md: 2 }} spacing={2}>
-                  {commentList.map((comment, index) => (
-                    <CommentCard key={index} data={comment} />
-                  ))}
-                </Masonry>
-              </div>
             </div>
-            <div className="absolute text-sm font-bold max-lg:hidden lg:bottom-16 lg:left-4">
+            <div className="col-span-3 col-start-4 lg:h-[840px] overflow-y-auto max-lg:mt-2 lg:py-20">
+              <Masonry columns={{ xs: 1, md: 2 }} spacing={2}>
+                {commentList.map((comment, index) => (
+                  <CommentCard key={index} data={comment} />
+                ))}
+              </Masonry>
+            </div>
+            <div className="absolute max-lg:hidden bottom-16 left-4">
               <Button color="success" variant="text" endIcon={<FaAngleRight />}>
                 Đọc thêm lời chứng thực
               </Button>
