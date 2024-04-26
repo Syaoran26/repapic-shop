@@ -9,7 +9,7 @@ const tabs = {
 };
 
 const ProductTabs = () => {
-  const [tabIndex, setTabIndex] = useState(tabs.description);
+  const [tabIndex, setTabIndex] = useState(tabs.reviews);
   const handleChange = (event: React.SyntheticEvent, newTab: string) => {
     setTabIndex(newTab);
   };

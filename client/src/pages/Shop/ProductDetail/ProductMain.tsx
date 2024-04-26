@@ -7,7 +7,7 @@ import Quantity from '~/components/Quantity';
 import { formatPrice } from '~/utils/format';
 
 const ProductMain = () => {
-  const [quantity, setQuantity] = useState(3);
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <Stack gap={2}>
@@ -31,7 +31,7 @@ const ProductMain = () => {
       </Stack>
       <Divider style={{ borderStyle: 'dashed' }} />
       <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
-        <Button size="large" fullWidth color="primary" startIcon={<CartPlusIcon />}>
+        <Button size="large" fullWidth color="warning" startIcon={<CartPlusIcon />}>
           Thêm vào giỏ hàng
         </Button>
         <Button size="large" fullWidth>

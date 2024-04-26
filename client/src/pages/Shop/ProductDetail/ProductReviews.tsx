@@ -1,11 +1,12 @@
-import { Button, LinearProgress, Rating, Stack } from '@mui/material';
+import { Avatar, Button, Divider, LinearProgress, Pagination, Rating, Stack } from '@mui/material';
 import { FaPen } from 'react-icons/fa6';
 import { StarIcon } from '~/components/Icons';
+import Comment from '~/types/CommentType';
 
 const ProductReviews = () => {
   return (
     <>
-      <div className="grid-cols-3 lg:grid">
+      <div className="grid-cols-3 lg:grid max-lg:py-10">
         <Stack alignItems="center" justifyContent="center" gap={1}>
           <h6 className="text-sm font-semibold">Đánh giá trung bình</h6>
           <h2 className="xl:text-5xl lg:text-[44px] md:text-[40px] text-[32px] font-extrabold leading-tight">
@@ -57,7 +58,39 @@ const ProductReviews = () => {
           </Button>
         </Stack>
       </div>
+      <Divider style={{ borderStyle: 'dashed' }} />
+      <div className="grid-cols-2 pb-10 lg:grid">
+        <Review />
+        <Review />
+        <Review />
+        <Review />
+        <Review />
+        <Review />
+        <div className="col-span-2 mt-10">
+          <Pagination className="mt-16 text-center" color="default" count={10} />
+        </div>
+      </div>
     </>
+  );
+};
+
+const Review = ({ data }: { data?: Comment }) => {
+  return (
+    <Stack gap={2} marginTop={5} paddingInline={4}>
+      <Stack direction="row" gap={2} alignItems="center">
+        <Avatar sx={{ width: 48, height: 48 }} src="/images/avatar/avatar_2.jpg" />
+        <div>
+          <div className="mb-1 text-sm font-semibold">Jayvion Simon</div>
+          <div className="text-xs text-fade">26/04/2024</div>
+        </div>
+      </Stack>
+      <Stack gap={1}>
+        <Rating size="small" value={4} readOnly />
+        <p className="text-sm text-fade">
+          Mặt trời từ từ lặn phía chân trời, tô điểm bầu trời với những gam màu rực rỡ như cam và hồng.
+        </p>
+      </Stack>
+    </Stack>
   );
 };
 
