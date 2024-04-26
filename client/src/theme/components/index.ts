@@ -16,7 +16,9 @@ import { MuiOutlinedInput } from './outlinedInput.modifier';
 import { MuiPagination } from './pagination.modifier';
 import { MuiPaper } from './paper.modifier';
 import { MuiPopover } from './popover.modifier';
+import { MuiRating } from './rating.modifier';
 import { MuiSkeleton } from './skeleton.modifier';
+import { MuiTabs } from './tabs.modifier';
 
 export const components: Components<Theme> = {
   MuiAlert,
@@ -35,5 +37,7 @@ export const components: Components<Theme> = {
   MuiPagination,
   MuiPaper,
   MuiPopover,
+  MuiRating,
   MuiSkeleton,
+  MuiTabs,
 };
