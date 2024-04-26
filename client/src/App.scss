@@ -49,11 +49,41 @@ input[type='number'] {
   background-image: url('../public/images/backgrounds/overlay_4.jpg');
 }
 
+// Swiper
 .swiper-pagination-bullet {
   transition: 0.35s;
 
   &.swiper-pagination-bullet-active {
     width: 20px;
+  }
+}
+
+.product-thumbs-slide {
+  max-width: 384px;
+
+  .swiper-slide:not(.swiper-slide-thumb-active) {
+    opacity: 0.5;
+  }
+
+  .swiper-slide-thumb-active {
+    border: 2.5px solid var(--primary-color);
+    border-radius: 16px;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+    position: absolute;
+    width: 42.6667px;
+    height: 100%;
+    top: 0px;
+    z-index: 9;
+  }
+
+  &::after {
+    right: 0px;
+    transform: scaleX(-1);
   }
 }
 
