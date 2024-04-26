@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { ErrorWithStatus } from '../../utils/error.js';
+import { ErrorWithStatus } from './error.js';
 
 const sendEmail = async function (options) {
   // 1> Create a transporter
@@ -18,7 +18,7 @@ const sendEmail = async function (options) {
   // 2> Define the email options
   const mailOptions = {
     from: {
-      name: `Kiet Ngo`,
+      name: 'Repapic Support',
       address: process.env.EMAIL_USERNAME,
     },
     to: options.email,

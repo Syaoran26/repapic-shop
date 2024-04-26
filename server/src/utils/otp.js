@@ -1,7 +1,6 @@
-import sendEmail from '../../utils/email.js';
-import { ErrorWithStatus } from '../../utils/error.js';
+import sendEmail from './email.js';
 
-const generateOTP = () => {
+export const generateOTP = () => {
   let otp = '';
   for (let i = 0; i < 6; i++) {
     otp += Math.floor(Math.random() * 10);
@@ -9,12 +8,10 @@ const generateOTP = () => {
   return otp;
 };
 
-const sendOTP = async (email, otp) => {
+export const sendOTP = async (email, otp) => {
   await sendEmail({
     email: email,
-    subject: 'Cài lại mật khẩu (OTP hợp lệ trong 4 phút)',
-    message: `Mã Xác Nhận: ${otp}`,
+    subject: '[Repapic] Xác thực mã OTP',
+    message: `Mã xác nhận của bạn là ${otp}`,
   });
 };
-
-export default { generateOTP, sendOTP };
