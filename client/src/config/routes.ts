@@ -8,6 +8,7 @@ const routes = {
   faqs: '/faqs',
   shop: '/san-pham',
   detail: '/san-pham/:cateSlug/:slug',
+  aboutUs: '/ve-chung-toi',
 };
 
 export default routes;
