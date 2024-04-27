@@ -35,7 +35,7 @@ const ContactUs = () => {
         <div className="grid gap-20 lg:grid-cols-2">
           <div className="flex flex-col gap-10">
             <h3 className="font-bold text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px]">
-              Chúng tôi sẽ rất vui khi được nghe ý kiến của bạn, anh bạn.
+              Chúng tôi sẽ rất vui khi được nghe ý kiến của bạn
             </h3>
             <div className="flex flex-col gap-6">
               <FormControl>
