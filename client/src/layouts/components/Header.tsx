@@ -60,7 +60,7 @@ const Header = () => {
           <Link to={config.routes.aboutUs} className="nav-link">
             Về chúng tôi
           </Link>
-          <Link to="#" className="nav-link">
+          <Link to={config.routes.contactUs} className="nav-link">
             Liên hệ
           </Link>
         </div>
