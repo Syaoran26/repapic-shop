@@ -35,7 +35,6 @@ const ContactUs = () => {
         <div className="grid gap-20 lg:grid-cols-2">
           <div className="flex flex-col gap-10">
             <h3 className="font-bold text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px]">
-              Cứ liên lạc nếu cần. <br />
               Chúng tôi sẽ rất vui khi được nghe ý kiến của bạn, anh bạn.
             </h3>
             <div className="flex flex-col gap-6">
@@ -48,8 +47,8 @@ const ContactUs = () => {
                 <OutlinedInput id="email" label="Email" />
               </FormControl>
               <FormControl>
-                <InputLabel htmlFor="subject">Chủ quan</InputLabel>
-                <OutlinedInput id="subject" label="Chủ quan" />
+                <InputLabel htmlFor="subject">Tiêu đề</InputLabel>
+                <OutlinedInput id="subject" label="Tiêu đề" />
               </FormControl>
               <FormControl>
                 <InputLabel htmlFor="message">Nhập tin nhắn của bạn ở đây</InputLabel>
@@ -58,7 +57,7 @@ const ContactUs = () => {
             </div>
             <div>
               <Button size="large" variant="contained">
-                Xác nhận ngay bây giờ
+                Gửi ngay
               </Button>
             </div>
           </div>
