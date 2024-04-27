@@ -8,7 +8,7 @@ const routes = {
   faqs: '/faqs',
   shop: '/san-pham',
   aboutUs: '/ve-chung-toi',
-  contactUs:'/contact-us',
+  contactUs: '/lien-he',
 };
 
 export default routes;
