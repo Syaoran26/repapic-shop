@@ -35,30 +35,30 @@ const ContactUs = () => {
         <div className="grid gap-20 lg:grid-cols-2">
           <div className="flex flex-col gap-10">
             <h3 className="font-bold text-2xl leading-normal md:text-[26px] lg:text-[30px] xl:text-[32px]">
-              Feel free to contact us. <br />
-              We'll be glad to hear from you, buddy.
+              Cứ liên lạc nếu cần. <br />
+              Chúng tôi sẽ rất vui khi được nghe ý kiến của bạn, anh bạn.
             </h3>
             <div className="flex flex-col gap-6">
               <FormControl>
-                <InputLabel htmlFor="name">Name</InputLabel>
-                <OutlinedInput id="name" label="Name" />
+                <InputLabel htmlFor="name">Tên</InputLabel>
+                <OutlinedInput id="name" label="Tên" />
               </FormControl>
               <FormControl>
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <OutlinedInput id="email" label="Email" />
               </FormControl>
               <FormControl>
-                <InputLabel htmlFor="subject">Subject</InputLabel>
-                <OutlinedInput id="subject" label="Subject" />
+                <InputLabel htmlFor="subject">Chủ quan</InputLabel>
+                <OutlinedInput id="subject" label="Chủ quan" />
               </FormControl>
               <FormControl>
-                <InputLabel htmlFor="message">Enter your message here</InputLabel>
-                <OutlinedInput multiline rows={4} id="message" label="Enter your message here" />
+                <InputLabel htmlFor="message">Nhập tin nhắn của bạn ở đây</InputLabel>
+                <OutlinedInput multiline rows={4} id="message" label="Nhập tin nhắn của bạn ở đây" />
               </FormControl>
             </div>
             <div>
               <Button size="large" variant="contained">
-                Submit Now
+                Xác nhận ngay bây giờ
               </Button>
             </div>
           </div>
