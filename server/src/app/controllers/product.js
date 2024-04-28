@@ -1,7 +1,7 @@
 import Product from '../models/Product.js';
 import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
-
+import APIFeatures from '../../utils/APIFeatures.js';
 export const createProduct = asyncHandler(async (req, res) => {
   const thumbnailFile = req.files[0];
   const imageFiles = req.files;
@@ -46,4 +46,15 @@ export const getProduct = asyncHandler(async (req, res) => {
 export const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find().select('-reviews').populate('category');
   res.status(200).json(products);
+  const features = new APIFeatures(Product.find().select('-reviews').populate('category'), req.body) // Options: body, query
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const product = await features.query;
+  if (!product) {
+    throw new ErrorWithStatus(404, 'Không tìm thấy sản phẩm!');
+  }
+
+  res.status(200).json({ data: { product }, count: product.countDocuments });
 });
