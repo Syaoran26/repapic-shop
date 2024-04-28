@@ -44,8 +44,6 @@ export const getProduct = asyncHandler(async (req, res) => {
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().select('-reviews').populate('category');
-  res.status(200).json(products);
   const features = new APIFeatures(Product.find().select('-reviews').populate('category'), req.body) // Options: body, query
     .filter()
     .sort()
