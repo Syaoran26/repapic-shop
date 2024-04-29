@@ -15,7 +15,12 @@ const app = express();
 
 app.use(morgan('tiny'));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.WEBSITE,
+    credentials: true,
+  }),
+);
 app.use(cookieParser(process.env.COOKIES_KEY));
 
 routes(app);

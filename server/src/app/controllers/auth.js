@@ -47,7 +47,13 @@ export const verify = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .cookie('refreshToken', newRefreshToken, { httpOnly: true, signed: true })
+    .cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      signed: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/api/auth',
+    })
     .json({
       data: { ...user._doc, token: accessToken },
       message: 'Xác thực thành công.',
@@ -75,7 +81,13 @@ export const googleAuth = asyncHandler(async (req, res) => {
   ]);
   res
     .status(200)
-    .cookie('refreshToken', newRefreshToken, { httpOnly: true, signed: true })
+    .cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      signed: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/api/auth',
+    })
     .json({ ...user, token: accessToken });
 });
 
@@ -101,7 +113,13 @@ export const login = asyncHandler(async (req, res) => {
   ]);
   res
     .status(200)
-    .cookie('refreshToken', newRefreshToken, { httpOnly: true, signed: true })
+    .cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      signed: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/api/auth',
+    })
     .json({ ...user._doc, token: accessToken });
 });
 
@@ -112,10 +130,21 @@ export const refreshToken = asyncHandler(async (req, res) => {
   const user = await User.findOne({ refreshToken });
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded) => {
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN, async (err, decoded) => {
+    // eslint-disable-next-line eqeqeq
     if (err || user._id != decoded.id) throw new ErrorWithStatus(400, 'Đã có lỗi với refresh token');
     const token = generateAccessToken({ id: decoded.id, isAdmin: decoded.isAdmin });
-    res.json({ token });
+    const newRefreshToken = generateRefreshToken({ id: decoded._id, isAdmin: decoded.isAdmin });
+    await User.findByIdAndUpdate(decoded.id, { refreshToken: newRefreshToken });
+    res
+      .cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        signed: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/api/auth',
+      })
+      .json({ token });
   });
 });
 
