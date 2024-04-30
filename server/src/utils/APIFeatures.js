@@ -1,11 +1,21 @@
 export default class APIFeatures {
-  constructor(query, queryString) {
-    this.query = query;
+  constructor(schema, queryString) {
+    this.schema = schema;
+    this.query = schema.find();
     this.queryString = queryString;
+  }
+  search(...fields) {
+    const { search } = this.queryString;
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      const orQueries = fields.map((field) => ({ [field]: { $regex: regex } }));
+      this.query.or(orQueries);
+    }
+    return this;
   }
   filter() {
     const queryObj = { ...this.queryString };
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    const excludedFields = ['search', 'page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     let queryStr = JSON.stringify(queryObj);
@@ -36,10 +46,10 @@ export default class APIFeatures {
     const page = this.queryString.page * 1 || 1;
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
-
+    // Count total documents
+    this.total = this.schema.countDocuments(this.query.getFilter());
     // Pagination
     this.query = this.query.skip(skip).limit(limit);
-
     return this;
   }
 }

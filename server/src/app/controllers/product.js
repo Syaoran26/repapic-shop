@@ -44,15 +44,8 @@ export const getProduct = asyncHandler(async (req, res) => {
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const features = new APIFeatures(Product.find().select('-reviews').populate('category'), req.body) // Options: body, query
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const product = await features.query;
-  if (!product) {
-    throw new ErrorWithStatus(404, 'Không tìm thấy sản phẩm!');
-  }
+  const features = new APIFeatures(Product, req.query).search('title').filter().sort().limitFields().paginate();
 
-  res.status(200).json({ data: { product }, count: product.countDocuments });
+  const [products, total] = await Promise.all([features.query.select('-reviews').populate('category'), features.total]);
+  res.status(200).json({ products, total });
 });
