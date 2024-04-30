@@ -1,6 +1,7 @@
 import Product from '../models/Product.js';
 import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
+import APIFeatures from '../../utils/APIFeatures.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
   const thumbnailFile = req.files[0];
@@ -44,6 +45,8 @@ export const getProduct = asyncHandler(async (req, res) => {
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().select('-reviews').populate('category');
-  res.status(200).json(products);
+  const features = new APIFeatures(Product, req.query).search('title').filter().sort().limitFields().paginate();
+
+  const [products, total] = await Promise.all([features.query.select('-reviews').populate('category'), features.total]);
+  res.status(200).json({ products, total });
 });
