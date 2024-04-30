@@ -2,6 +2,7 @@ import Product from '../models/Product.js';
 import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
 import APIFeatures from '../../utils/APIFeatures.js';
+
 export const createProduct = asyncHandler(async (req, res) => {
   const thumbnailFile = req.files[0];
   const imageFiles = req.files;

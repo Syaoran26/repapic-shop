@@ -4,6 +4,7 @@ export default class APIFeatures {
     this.query = schema.find();
     this.queryString = queryString;
   }
+
   search(...fields) {
     const { search } = this.queryString;
     if (search) {
