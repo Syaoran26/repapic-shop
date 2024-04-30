@@ -14,5 +14,10 @@ const login = async (credentials: Credentials) => {
   return user;
 };
 
-const authServices = { login };
+const logout = async () => {
+  await api.get('/auth/logout');
+  localStorage.removeItem('user');
+};
+
+const authServices = { login, logout };
 export default authServices;

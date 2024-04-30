@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import {
   Alert,
   FormControl,
@@ -46,7 +46,7 @@ const LoginForm = () => {
     dispatch(login(data));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user && !isLoading && !isError) {
       navigate('/');
     }

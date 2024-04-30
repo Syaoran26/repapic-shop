@@ -160,7 +160,10 @@ export const logout = asyncHandler(async (req, res) => {
   res
     .clearCookie('refreshToken', {
       httpOnly: true,
+      signed: true,
+      sameSite: 'none',
       secure: true,
+      path: '/api/auth',
     })
     .sendStatus(204);
 });
