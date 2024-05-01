@@ -2,15 +2,15 @@ import { FC } from 'react';
 import { IconButton, Paper, Tooltip } from '@mui/material';
 import { BiLogoFacebook, BiLogoInstagramAlt, BiLogoLinkedin, BiLogoTiktok } from 'react-icons/bi';
 
-
-interface Member {
+export interface Member {
   role: string;
   author: string;
-  image:string;
+  image: string;
 }
-interface MemberProps{
-  data: Member
+interface MemberProps {
+  data: Member;
 }
+
 const MemberCard: FC<MemberProps> = ({ data }) => {
   return (
     <div className="px-3 py-20 text-center">

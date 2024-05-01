@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { useState } from 'react';
-import Image from '~/components/Image';
+import { Image } from '@common/components';
 
 const slideVariants = [
   'https://swiperjs.com/demos/images/nature-1.jpg',

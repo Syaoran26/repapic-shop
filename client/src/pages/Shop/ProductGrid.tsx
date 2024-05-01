@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ProductCard } from '~/components';
-import { ProductCardSkeleton } from '~/components/ProductCard';
+import { ProductCard } from '@common/components';
+import { ProductCardSkeleton } from '@common/components/ProductCard';
 
 const product = {
   name: '(Couple) Tranh tự thiết kế',

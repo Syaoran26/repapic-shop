@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import User from '~/types/UserType';
+import { User } from '@common/types';
 import authServices, { Credentials } from './authServices';
-import constants from '~/utils/constants';
+import { constants } from '@common/utils';
 
 interface AuthState {
   user: User | null;
@@ -11,7 +11,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem('user') || 'null') as User,
   isError: false,
   isLoading: false,
   message: '',
@@ -20,6 +20,14 @@ const initialState: AuthState = {
 export const login = createAsyncThunk('auth/login', async (credentials: Credentials, thunkAPI) => {
   try {
     return await authServices.login(credentials);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+  try {
+    return await authServices.logout();
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
@@ -44,6 +52,20 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.user = null;
+        state.message = action.payload.response?.data.message || constants.sthWentWrong;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.isLoading = false;
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(logout.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.isError = true;
         state.message = action.payload.response?.data.message || constants.sthWentWrong;
       });
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import {
   Alert,
   FormControl,
@@ -20,7 +20,7 @@ import { Credentials } from '~/features/auth/authServices';
 import { login } from '~/features/auth/authSlice';
 import config from '~/config';
 import { useNavigate } from 'react-router-dom';
-import constants from '~/utils/constants';
+import { constants } from '@common/utils';
 
 const schema = yup.object().shape({
   email: yup.string().required('Vui lòng nhập email').matches(constants.emailRegex, 'Email không hợp lệ'),
@@ -46,7 +46,7 @@ const LoginForm = () => {
     dispatch(login(data));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user && !isLoading && !isError) {
       navigate('/');
     }

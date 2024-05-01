@@ -3,8 +3,8 @@ import { Checkbox, IconButton, Link, Paper, Skeleton, SxProps, Tooltip } from '@
 import { CartPlusIcon, HeartIcon } from './Icons';
 import { motion } from 'framer-motion';
 import { FaEye } from 'react-icons/fa6';
-import Product from '~/types/ProductType';
-import { formatPrice } from '~/utils/format';
+import { Product } from '../types';
+import { format } from '@common/utils';
 import { toast } from 'react-toastify';
 import Image from './Image';
 
@@ -94,7 +94,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         </Link>
         <div className="flex justify-end gap-1 font-semibold">
           <del className="text-fader"></del>
-          <span>{formatPrice(data.price)}</span>
+          <span>{format.price(data.price)}</span>
         </div>
       </div>
     </Paper>

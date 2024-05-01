@@ -1,5 +1,5 @@
 import { Components, Theme } from '@mui/material/styles';
-import { StarIcon } from '~/components/Icons';
+import { StarIcon } from '@icons';
 
 export const MuiRating: Components<Theme>['MuiRating'] = {
   defaultProps: {

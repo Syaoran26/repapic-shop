@@ -17,7 +17,7 @@ import { IoReload } from 'react-icons/io5';
 import { AiOutlineClose } from 'react-icons/ai';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
-import { useDebounce, useUpdateEffect } from '~/hooks';
+import { useDebounce, useUpdateEffect } from '@common/hooks';
 import { resetFilter, selectIsFiltering, setFilter } from '~/features/products/optionsSlice';
 
 interface FilterDrawerProps {
