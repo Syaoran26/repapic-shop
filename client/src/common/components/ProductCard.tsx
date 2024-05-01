@@ -3,7 +3,7 @@ import { Checkbox, IconButton, Link, Paper, Skeleton, SxProps, Tooltip } from '@
 import { CartPlusIcon, HeartIcon } from './Icons';
 import { motion } from 'framer-motion';
 import { FaEye } from 'react-icons/fa6';
-import Product from '~/types/ProductType';
+import { Product } from '../types';
 import { formatPrice } from '~/utils/format';
 import { toast } from 'react-toastify';
 import Image from './Image';

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Avatar, Rating } from '@mui/material';
 import { RiDoubleQuotesL } from 'react-icons/ri';
-import Comment from '~/types/CommentType';
+import { Comment } from '@common/types';
 
 interface CommentProps {
   data: Comment;

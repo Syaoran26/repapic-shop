@@ -18,7 +18,7 @@ import constants from '~/utils/constants';
 import { Helmet } from 'react-helmet';
 import api from '~/config/api';
 import { AxiosError } from 'axios';
-import ErrorResponse from '~/types/ErrorResponseType';
+import { ErrorResponse } from '@common/types';
 
 const schema = yup
   .object({

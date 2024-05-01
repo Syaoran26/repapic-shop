@@ -2,7 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
-import Product from '~/types/ProductType';
+import { Product } from '../types';
 import { Navigation } from 'swiper/modules';
 
 const slideVariants = {

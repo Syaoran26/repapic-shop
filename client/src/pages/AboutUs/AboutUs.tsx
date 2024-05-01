@@ -1,11 +1,10 @@
 import { Button, Container, Fab, LinearProgress } from '@mui/material';
 import { FaAngleRight } from 'react-icons/fa6';
 import { CiPlay1 } from 'react-icons/ci';
-import Comment from '~/types/CommentType';
+import { Comment } from '@common/types';
 import CommentCard from './CommentCard';
 import { Masonry } from '@mui/lab';
-import Member from '~/types/MemberType';
-import MemberCard from './MemberCard';
+import MemberCard, { Member } from './MemberCard';
 import SimpleBar from 'simplebar-react';
 
 const commentList: Comment[] = [
