@@ -14,7 +14,7 @@ import { FaAngleRight } from 'react-icons/fa6';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import constants from '~/utils/constants';
+import { constants } from '@common/utils';
 import { Helmet } from 'react-helmet';
 import api from '~/config/api';
 import { AxiosError } from 'axios';

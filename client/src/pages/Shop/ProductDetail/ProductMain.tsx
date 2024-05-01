@@ -4,7 +4,7 @@ import { FiPlus } from 'react-icons/fi';
 import { IoShareSocial } from 'react-icons/io5';
 import { CartPlusIcon, HeartIcon } from '@icons';
 import { Quantity } from '@common/components';
-import { formatPrice } from '~/utils/format';
+import { format } from '@common/utils';
 
 const ProductMain = () => {
   const [quantity, setQuantity] = useState(1);
@@ -19,7 +19,7 @@ const ProductMain = () => {
         <Rating readOnly value={4.5} precision={0.25} />
         <span className="text-sm text-fade">(20 đánh giá)</span>
       </Stack>
-      <span className="text-xl font-bold">{formatPrice(120000)}</span>
+      <span className="text-xl font-bold">{format.price(120000)}</span>
       <p className="text-sm text-fade">
         Với thiết kế gợn sóng nguyên bản lấy cảm hứng từ tàu cao tốc Nhật Bản, Nike Air Max 97 cho phép bạn đẩy mạnh
         phong cách của mình về phía trước.

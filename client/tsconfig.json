@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
       "@common": ["src/common"],
       "@common/*": ["src/common/*"],
-      "@icons": ["src/common/components/Icons"]
+      "@icons": ["src/common/components/Icons"],
+      "~/*": ["src/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
