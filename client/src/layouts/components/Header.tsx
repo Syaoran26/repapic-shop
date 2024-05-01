@@ -2,7 +2,7 @@ import { MouseEvent, useLayoutEffect, useState } from 'react';
 import { Avatar, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
 import config from '../../config';
 import { Link } from 'react-router-dom';
-import { CartIcon, HeartIcon, MenuIcon } from '../../components/Icons';
+import { CartIcon, HeartIcon, MenuIcon } from '@icons';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { logout } from '~/features/auth/authSlice';

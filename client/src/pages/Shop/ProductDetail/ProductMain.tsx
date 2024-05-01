@@ -2,8 +2,8 @@ import { Button, Checkbox, Chip, Divider, Link, Rating, Stack } from '@mui/mater
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import { IoShareSocial } from 'react-icons/io5';
-import { CartPlusIcon, HeartIcon } from '~/components/Icons';
-import Quantity from '~/components/Quantity';
+import { CartPlusIcon, HeartIcon } from '@icons';
+import { Quantity } from '@common/components';
 import { formatPrice } from '~/utils/format';
 
 const ProductMain = () => {

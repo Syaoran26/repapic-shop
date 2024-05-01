@@ -6,7 +6,7 @@ import {
   Character500Icon,
   CharacterComingSoonIcon,
   CharacterMaintenanceIcon,
-} from '~/components/Icons';
+} from '@icons';
 import BaseLayout from '~/layouts/BaseLayout';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';

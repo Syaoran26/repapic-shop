@@ -1,6 +1,6 @@
 import { Avatar, Button, Divider, LinearProgress, Pagination, Rating, Stack } from '@mui/material';
 import { FaPen } from 'react-icons/fa6';
-import { StarIcon } from '~/components/Icons';
+import { StarIcon } from '@icons';
 import Comment from '~/types/CommentType';
 
 const ProductReviews = () => {
