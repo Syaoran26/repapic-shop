@@ -17,7 +17,6 @@ export const register = asyncHandler(async (req, res) => {
   });
   sendOTP(email, otp);
   res.status(201).json({
-    data: email,
     message: 'OTP đã được gửi đến email của bạn.',
   });
 });
@@ -37,27 +36,11 @@ export const verify = asyncHandler(async (req, res) => {
     throw new ErrorWithStatus(400, 'OTP không hợp lệ.');
   }
 
-  const accessToken = generateAccessToken({ id: user._id, isAdmin: user.isAdmin });
-  const newRefreshToken = generateRefreshToken({ id: user._id, isAdmin: user.isAdmin });
-  user = await User.findByIdAndUpdate(
-    user._id,
-    { isVerified: true, refreshToken: newRefreshToken, otpVerify: null },
-    { new: true },
-  ).select(['-otpVerify', '-refreshToken', '-isAdmin', '-password', '-cart', '-wishlist', '-deliveryAddress']);
+  user = await User.findByIdAndUpdate(user._id, { isVerified: true, otpVerify: null }, { new: true });
 
-  res
-    .status(200)
-    .cookie('refreshToken', newRefreshToken, {
-      httpOnly: true,
-      signed: true,
-      sameSite: 'none',
-      secure: true,
-      path: '/api/auth',
-    })
-    .json({
-      data: { ...user._doc, token: accessToken },
-      message: 'Xác thực thành công.',
-    });
+  res.status(200).json({
+    message: 'Xác thực thành công.',
+  });
 });
 
 export const googleAuth = asyncHandler(async (req, res) => {

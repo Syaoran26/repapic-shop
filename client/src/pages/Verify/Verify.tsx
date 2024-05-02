@@ -1,63 +1,36 @@
-import { ChangeEvent, ClipboardEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { Button, FormHelperText, Link, OutlinedInput } from '@mui/material';
+import { FormEvent, useState } from 'react';
+import { Button, Link } from '@mui/material';
 import config from '~/config';
 import { FaAngleLeft } from 'react-icons/fa6';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { OTPInput } from '@common/components';
+import { useMount } from '@common/hooks';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
+import { constants } from '@common/utils';
 
 const Verify = () => {
-  const inputsRef = useRef<HTMLInputElement[]>([]);
-  const [error, setError] = useState<string>('');
+  const [otp, setOtp] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    inputsRef.current[0].focus();
-  }, []);
+  useMount(() => {
+    if (!location.state?.email) navigate(-1);
+  });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const nextElementSibling = event.target.parentElement?.nextElementSibling?.firstChild as HTMLInputElement;
-
-    setError('');
-    inputsRef.current.forEach((el) => {
-      if (!el.value) {
-        setError('Mã xác nhận phải gồm 6 chữ số');
-        return;
-      }
-    });
-
-    if (value.length > 1) {
-      event.target.value = value.charAt(0);
-      nextElementSibling?.focus();
-    } else {
-      if (value.match('[0-9]{1}')) {
-        nextElementSibling?.focus();
-      } else {
-        event.target.value = '';
-      }
-    }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    const { key } = event;
-    const target = event.target as HTMLInputElement;
-    const previousElementSibling = target.parentElement?.previousElementSibling?.firstChild as HTMLInputElement;
-    if (key === 'Backspace') {
-      target.value = '';
-      previousElementSibling?.focus();
-      event.preventDefault();
-    }
-  };
-
-  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-    event.target.select();
-  };
-
-  const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
+  const handleSubmit = () => (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const pastedValue = event.clipboardData.getData('Text');
-    if (pastedValue.match('[0-9]{6}')) {
-      for (let i = 0; i < pastedValue.length; i++) {
-        inputsRef.current[i].value = pastedValue.charAt(i);
-      }
-      setError('');
+    const { email } = location.state;
+    if (otp.length === 6 && email) {
+      api
+        .patch('/auth/verify', { otp, email })
+        .then((res) => {
+          toast.success(res.data?.message);
+          navigate(config.routes.login);
+        })
+        .catch((err) => {
+          toast.error(err.response?.data.message || constants.sthWentWrong);
+        });
     }
   };
 
@@ -179,38 +152,12 @@ const Verify = () => {
       <div className="flex flex-col gap-2 mt-6 mb-10 text-center">
         <h3 className="text-2xl md:text-3xl lg:text-[2rem] font-bold">Kiểm tra email của bạn!</h3>
         <p className="text-sm text-fade">
-          Chúng tôi đã gửi mã xác nhận gồm 6 chữ số tới acb@domain qua email, vui lòng nhập mã vào ô bên dưới để xác
-          minh email của bạn.
+          Chúng tôi đã gửi mã xác nhận gồm 6 chữ số tới {location.state?.email} qua email, vui lòng nhập mã vào ô bên
+          dưới để xác minh email của bạn.
         </p>
       </div>
-      <form className="flex flex-col gap-6">
-        <div className="grid grid-cols-6 gap-3">
-          {Array.from(Array(6).keys()).map((i) => (
-            <OutlinedInput
-              error={!!error}
-              color="default"
-              key={i}
-              placeholder="-"
-              type="tel"
-              inputProps={{
-                maxLength: 1,
-                style: { textAlign: 'center' },
-              }}
-              inputRef={(el) => {
-                inputsRef.current[i] = el;
-              }}
-              onKeyDown={handleKeyDown}
-              onFocus={handleFocus}
-              onInput={handleChange}
-              onPaste={handlePaste}
-            />
-          ))}
-        </div>
-        {error && (
-          <FormHelperText className="px-4" error={!!error}>
-            {error}
-          </FormHelperText>
-        )}
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit()}>
+        <OTPInput onChange={(value) => setOtp(value)} />
         <Button type="submit" size="large" color="default">
           Xác thực
         </Button>

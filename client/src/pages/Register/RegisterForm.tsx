@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Alert,
   Button,
   FormControl,
   FormHelperText,
@@ -14,11 +13,12 @@ import { FaAngleRight } from 'react-icons/fa6';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { constants } from '@common/utils';
 import { Helmet } from 'react-helmet';
 import api from '~/config/api';
-import { AxiosError } from 'axios';
-import { ErrorResponse } from '@common/types';
+import { constants } from '@common/utils';
+import { useNavigate } from 'react-router-dom';
+import config from '~/config';
+import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -37,7 +37,7 @@ const schema = yup
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const {
     register,
@@ -51,10 +51,11 @@ const RegisterForm = () => {
     api
       .post('/auth/register', data)
       .then((res) => {
-        console.log(res);
+        toast.success(res.data?.message);
+        navigate(config.routes.verify, { state: { email: data.email } });
       })
-      .catch((err: AxiosError<ErrorResponse>) => {
-        setError(err.response?.data.message || constants.sthWentWrong);
+      .catch((err) => {
+        toast.error(err.response?.data.message || constants.sthWentWrong, { position: 'top-left' });
       });
   };
 
@@ -121,11 +122,6 @@ const RegisterForm = () => {
         />
         {errors.confirmPassword && <FormHelperText>{errors.confirmPassword.message}</FormHelperText>}
       </FormControl>
-      {error && (
-        <Alert severity="error" onClose={undefined}>
-          {error}
-        </Alert>
-      )}
       <Button
         type="submit"
         color="default"
