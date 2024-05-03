@@ -47,7 +47,7 @@ const RegisterForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: yup.InferType<typeof schema>) => {
     api
       .post('/auth/register', data)
       .then((res) => {
