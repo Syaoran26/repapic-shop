@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import {
   Alert,
+  Button,
   FormControl,
   FormHelperText,
   IconButton,
@@ -21,6 +22,8 @@ import { login } from '~/features/auth/authSlice';
 import config from '~/config';
 import { useNavigate } from 'react-router-dom';
 import { constants } from '@common/utils';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
 
 const schema = yup.object().shape({
   email: yup.string().required('Vui lòng nhập email').matches(constants.emailRegex, 'Email không hợp lệ'),
@@ -30,6 +33,7 @@ const schema = yup.object().shape({
 const LoginForm = () => {
   const { user, message, isLoading, isError } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -44,6 +48,21 @@ const LoginForm = () => {
 
   const onSubmit = (data: Credentials) => {
     dispatch(login(data));
+    setEmail(data.email);
+  };
+
+  const handleVerify = () => {
+    if (email) {
+      api
+        .post('/auth/resend', { email })
+        .then((res) => {
+          toast.success(res.data?.message);
+          navigate(config.routes.verify, { state: { email } });
+        })
+        .catch((err) => {
+          toast.error(err.response?.data.message || constants.sthWentWrong, { position: 'top-left' });
+        });
+    }
   };
 
   useLayoutEffect(() => {
@@ -93,8 +112,17 @@ const LoginForm = () => {
         Quên mật khẩu?
       </Link>
       {isError && (
-        <Alert severity="error" onClose={undefined}>
-          {message}
+        <Alert
+          severity="error"
+          action={
+            message?.status === 401 && (
+              <Button type="button" variant="text" color="inherit" size="small" onClick={handleVerify}>
+                Xác thực
+              </Button>
+            )
+          }
+        >
+          {message?.data.message || constants.sthWentWrong}
         </Alert>
       )}
       <LoadingButton

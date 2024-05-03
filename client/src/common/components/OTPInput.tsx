@@ -1,4 +1,14 @@
-import { ChangeEvent, ClipboardEvent, FC, FocusEvent, KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ClipboardEvent,
+  FC,
+  FocusEvent,
+  KeyboardEvent,
+  memo,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { FormHelperText, OutlinedInput } from '@mui/material';
 
 interface OTPInputProps {
@@ -104,4 +114,4 @@ const OTPInput: FC<OTPInputProps> = ({ onChange }) => {
   );
 };
 
-export default OTPInput;
+export default memo(OTPInput);

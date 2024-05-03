@@ -6,7 +6,7 @@ import {
   refreshToken,
   register,
   verify,
-  forgotPassword,
+  resendOTP,
   resetPassword,
 } from '../app/controllers/auth.js';
 
@@ -18,7 +18,8 @@ router.post('/google', googleAuth);
 router.put('/refresh-token', refreshToken);
 router.get('/logout', logout);
 router.patch('/verify', verify);
-router.post('/forgot-password', forgotPassword);
+router.post('/forgot-password', resendOTP);
+router.post('/resend', resendOTP);
 router.patch('/reset-password', resetPassword);
 
 export default router;

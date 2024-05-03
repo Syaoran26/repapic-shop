@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { Button, Link } from '@mui/material';
 import config from '~/config';
 import { FaAngleLeft } from 'react-icons/fa6';
@@ -11,6 +11,7 @@ import { constants } from '@common/utils';
 
 const Verify = () => {
   const [otp, setOtp] = useState('');
+  const [seconds, setSeconds] = useState(60);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,6 +34,29 @@ const Verify = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [seconds]);
+
+  const handleChangeOTP = useCallback((value: string) => setOtp(value), []);
+
+  const handleResend = useCallback(() => {
+    const { email } = location.state;
+    if (email) {
+      api
+        .post('/auth/resend', { email })
+        .then((res) => toast.success(res.data?.message))
+        .catch((err) => toast.error(err.response?.data.message || constants.sthWentWrong));
+    }
+    setSeconds(60);
+  }, [location.state]);
 
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
@@ -157,15 +181,15 @@ const Verify = () => {
         </p>
       </div>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit()}>
-        <OTPInput onChange={(value) => setOtp(value)} />
+        <OTPInput onChange={handleChangeOTP} />
         <Button type="submit" size="large" color="default">
           Xác thực
         </Button>
         <p className="text-sm text-center">
           Bạn chưa nhận được mã?{' '}
-          <Link fontWeight={600} underline="hover">
-            Gửi lại mã
-          </Link>
+          <Button variant="text" disabled={seconds > 0} onClick={handleResend}>
+            {seconds > 0 ? `Gửi lại (${seconds})` : 'Gửi lại'}
+          </Button>
         </p>
         <Link href={config.routes.login} color="inherit" underline="hover" fontWeight={600}>
           <span className="flex items-center justify-center gap-1 text-sm text-center">
