@@ -18,7 +18,7 @@ function App() {
         <meta name="theme-color" content="#00A76F" />
       </Helmet>
       <RouterProvider router={router} />
-      <ToastContainer closeOnClick draggable />
+      <ToastContainer closeOnClick draggable className="custom-toast" />
     </div>
   );
 }

@@ -9,6 +9,9 @@
   --secondary-color: #8e33ff;
   --fade-color: #637381;
   --fader-color: #919eab;
+  --info-color: #00b8d9;
+  --success-color: #22c55e;
+  --warning-color: #ffab00;
   --error-color: #ff5630;
 }
 
@@ -32,6 +35,18 @@ input[type='number'] {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+.custom-toast {
+  --toastify-icon-color-info: var(--info-color);
+  --toastify-icon-color-success: var(--success-color);
+  --toastify-icon-color-warning: var(--warning-color);
+  --toastify-icon-color-error: var(--error-color);
+
+  --toastify-color-progress-info: var(--info-color);
+  --toastify-color-progress-success: var(--success-color);
+  --toastify-color-progress-warning: var(--warning-color);
+  --toastify-color-progress-error: var(--error-color);
 }
 
 .background-3::before {

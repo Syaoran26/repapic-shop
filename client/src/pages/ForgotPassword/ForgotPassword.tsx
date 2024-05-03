@@ -1,18 +1,48 @@
-import { FormEvent, useState } from 'react';
 import { Button, FormControl, FormHelperText, InputLabel, Link, OutlinedInput } from '@mui/material';
 import { FaAngleLeft } from 'react-icons/fa6';
 import config from '~/config';
+import { Helmet } from 'react-helmet';
+import * as yup from 'yup';
+import { constants } from '@common/utils';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+const schema = yup.object().shape({
+  email: yup.string().required('Vui lòng nhập email').matches(constants.emailRegex, 'Email không hợp lệ'),
+});
 
 const ForgotPassword = () => {
-  const [error, setError] = useState<string>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError('Vui lòng nhập email');
+  const navigate = useNavigate();
+
+  const onSubmit = (data: yup.InferType<typeof schema>) => {
+    const { email } = data;
+    api
+      .post('/auth/forgot-password', { email })
+      .then((res) => {
+        toast.success(res.data?.message);
+        navigate(config.routes.newPassword, { state: { email } });
+      })
+      .catch((err) => {
+        toast.error(err.response?.data.message || constants.sthWentWrong);
+      });
   };
 
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
+      <Helmet>
+        <title>Đặt lại mật khẩu</title>
+      </Helmet>
       <div className="h-24">
         <svg className="h-full mx-auto" fill="none" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -102,11 +132,11 @@ const ForgotPassword = () => {
           email để đặt lại mật khẩu của bạn.
         </p>
       </div>
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <FormControl variant="outlined" color="default" error={!!error}>
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <FormControl variant="outlined" color="default" error={!!errors.email}>
           <InputLabel htmlFor="email">Email</InputLabel>
-          <OutlinedInput id="email" label="Email" />
-          {error && <FormHelperText>{error}</FormHelperText>}
+          <OutlinedInput id="email" label="Email" {...register('email')} />
+          {errors.email && <FormHelperText>{errors.email.message}</FormHelperText>}
         </FormControl>
         <Button color="default" size="large" type="submit">
           Gửi yêu cầu
