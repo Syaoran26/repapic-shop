@@ -41,7 +41,7 @@ const ForgotPassword = () => {
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
       <Helmet>
-        <title>Đặt lại mật khẩu</title>
+        <title>Quên mật khẩu</title>
       </Helmet>
       <div className="h-24">
         <svg className="h-full mx-auto" fill="none" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">

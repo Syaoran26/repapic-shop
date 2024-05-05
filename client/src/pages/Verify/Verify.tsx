@@ -3,6 +3,7 @@ import { Button, Link } from '@mui/material';
 import config from '~/config';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { OTPInput } from '@common/components';
 import { useMount } from '@common/hooks';
 import api from '~/config/api';
@@ -60,6 +61,9 @@ const Verify = () => {
 
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
+      <Helmet>
+        <title>Xác thực OTP</title>
+      </Helmet>
       <div className="h-24">
         <svg className="h-full mx-auto" fill="none" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_di_1870_133886)">

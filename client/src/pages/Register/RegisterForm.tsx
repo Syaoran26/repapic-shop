@@ -13,7 +13,6 @@ import { FaAngleRight } from 'react-icons/fa6';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Helmet } from 'react-helmet';
 import api from '~/config/api';
 import { constants } from '@common/utils';
 import { useNavigate } from 'react-router-dom';
@@ -61,9 +60,6 @@ const RegisterForm = () => {
 
   return (
     <form className="flex flex-col gap-5 none" onSubmit={handleSubmit(onSubmit)}>
-      <Helmet>
-        <title>Đăng ký</title>
-      </Helmet>
       <FormControl variant="outlined" color="default" error={!!errors.name}>
         <InputLabel htmlFor="name">Họ tên</InputLabel>
         <OutlinedInput id="name" label="Họ tên" {...register('name')} />

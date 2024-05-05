@@ -1,8 +1,12 @@
 import { Button, Container, FormControl, InputLabel, OutlinedInput } from '@mui/material';
+import { Helmet } from 'react-helmet';
 
 const ContactUs = () => {
   return (
     <div className="mt-16 md:mt-20">
+      <Helmet>
+        <title>Liên hệ</title>
+      </Helmet>
       <div className="background-contact relative lg:h-[560px]">
         <Container>
           <div className="py-20 text-center lg:absolute lg:bottom-20 lg:text-left lg:py-0">

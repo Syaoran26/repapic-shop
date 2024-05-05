@@ -6,6 +6,7 @@ import CommentCard from './CommentCard';
 import { Masonry } from '@mui/lab';
 import MemberCard, { Member } from './MemberCard';
 import SimpleBar from 'simplebar-react';
+import { Helmet } from 'react-helmet';
 
 const commentList: Comment[] = [
   {
@@ -78,6 +79,9 @@ const memberList: Member[] = [
 const AboutUs = () => {
   return (
     <div className="mt-16 md:mt-20">
+      <Helmet>
+        <title>Về chúng tôi</title>
+      </Helmet>
       <div className="background-hero relative lg:h-[560px]">
         <Container>
           <div className="py-20 text-center lg:absolute bottom-20 lg:text-left lg:py-0">
