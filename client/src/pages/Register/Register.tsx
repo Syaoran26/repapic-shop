@@ -1,11 +1,14 @@
 import { Link } from '@mui/material';
-
 import config from '~/config';
 import RegisterForm from './RegisterForm';
+import { Helmet } from 'react-helmet';
 
 const Register = () => {
   return (
     <div className="w-full max-lg:bg-white max-lg:rounded-2xl max-lg:py-10 max-lg:px-6 max-lg:shadow-sm">
+      <Helmet>
+        <title>Đăng ký</title>
+      </Helmet>
       <div className="mb-10">
         <h4 className="mb-4 text-xl lg:text-2xl font-bold leading-[1.5]">Bắt đầu hoàn toàn miễn phí</h4>
         <p className="text-sm">
