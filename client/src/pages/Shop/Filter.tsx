@@ -27,14 +27,14 @@ interface FilterDrawerProps {
 const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
   const options = useAppSelector((state) => state.options);
   const {
-    filter: { min, max, categories },
+    filter: { price, categories },
   } = options;
   const dispatch = useAppDispatch();
-  const [range, setRange] = useState<number[]>([min, max]);
+  const [range, setRange] = useState<number[]>([price.lte, price.gte]);
   const debounceRange = useDebounce(range, 300);
 
   useUpdateEffect(() => {
-    dispatch(setFilter({ min: debounceRange[0], max: debounceRange[1] }));
+    dispatch(setFilter({ price: { lte: debounceRange[0], gte: debounceRange[1] } }));
   }, [debounceRange]);
 
   const handleChangeRange = (event: Event, newValue: number | number[]) => {
@@ -42,7 +42,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
   };
 
   const handleReset = () => {
-    if (selectIsFiltering(options)) {
+    if (selectIsFiltering(options.filter)) {
       setRange([0, 240_000]);
       dispatch(resetFilter());
     }
@@ -66,7 +66,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
         <span className="flex-1 text-lg font-bold">Bộ lọc</span>
         <Tooltip title="Cài lại">
           <IconButton onClick={handleReset}>
-            <Badge variant="dot" color="error" invisible={!selectIsFiltering(options)}>
+            <Badge variant="dot" color="error" invisible={!selectIsFiltering(options.filter)}>
               <IoReload fontSize={20} />
             </Badge>
           </IconButton>

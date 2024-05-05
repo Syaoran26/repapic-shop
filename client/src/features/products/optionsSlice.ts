@@ -1,37 +1,33 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Options } from '@common/types';
 
-interface OptionsState {
-  search: string;
-  page: number;
-  limit: number;
-  filter: {
-    min: number;
-    max: number;
-    categories: Array<string>;
+interface ProductFilter {
+  price: {
+    lte: number;
+    gte: number;
   };
-  sort?: {
-    by: string;
-    in: 'asc' | 'desc';
-  };
+  categories: Array<string>;
 }
 
-const initialState: OptionsState = {
+const initialState: Options<ProductFilter> = {
   search: '',
   page: 1,
   limit: 12,
+  sort: [],
   filter: {
-    min: 0,
-    max: 240_000,
+    price: {
+      lte: 0,
+      gte: 240_000,
+    },
     categories: [],
   },
 };
 
-export const selectIsFiltering = (options: OptionsState): boolean => {
-  const filter = options.filter;
+export const selectIsFiltering = (filter: ProductFilter): boolean => {
   const initialFilter = initialState.filter;
   return (
-    filter.min !== initialFilter.min ||
-    filter.max !== initialFilter.max ||
+    filter.price.lte !== initialFilter.price.lte ||
+    filter.price.gte !== initialFilter.price.gte ||
     filter.categories.length !== initialFilter.categories.length ||
     !filter.categories.every((category) => initialFilter.categories.includes(category))
   );
@@ -60,9 +56,7 @@ export const optionsSlice = createSlice({
       };
     },
     resetFilter: (state) => {
-      if (selectIsFiltering(state)) {
-        state.filter = initialState.filter;
-      }
+      state.filter = initialState.filter;
     },
     reset: () => {
       return initialState;

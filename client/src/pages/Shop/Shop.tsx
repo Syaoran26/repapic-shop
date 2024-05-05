@@ -25,13 +25,13 @@ import { sortMenu } from './constants';
 
 const Shop = () => {
   const options = useAppSelector((state) => state.options);
-  const { search, sort, page } = options;
+  const { search, sort, page, filter } = options;
   const dispatch = useAppDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const openSort = Boolean(anchorEl);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>(search);
+  const [searchTerm, setSearchTerm] = useState<string>(search as string);
   const debounceSearch = useDebounce(searchTerm, 300);
 
   useMount(() => {
@@ -82,7 +82,7 @@ const Shop = () => {
           <Button
             variant="text"
             endIcon={
-              <Badge variant="dot" color="error" invisible={!selectIsFiltering(options)}>
+              <Badge variant="dot" color="error" invisible={!selectIsFiltering(filter)}>
                 <MdFilterList />
               </Badge>
             }
