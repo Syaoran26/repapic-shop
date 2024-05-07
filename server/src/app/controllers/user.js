@@ -55,32 +55,24 @@ export const getUsers = asyncHandler(async (req, res) => {
 });
 
 export const getWishList = asyncHandler(async (req, res) => {
-  let token;
-  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-    token = req.headers.authorization.split(' ')[1];
-  }
-  const user = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
-  let userWishList = await User.findById(user.id).populate('wishlist')
+  const userId = req.user.id
+  let userWishList = await User.findById(userId).populate('wishlist').wishlist
   if(!userWishList.wishlist){
     throw new ErrorWithStatus('Danh sách Wishlist rỗng')
   }
-  res.status(200).json(userWishList.wishlist)
+  res.status(200).json(userWishList)
   
 });
 
 export const addProductToWishList = asyncHandler(async (req,res)=>{
-  let token;
-  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-    token = req.headers.authorization.split(' ')[1];
-  }
-  const user = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
+  const userId = req.user.id;
   const productIdList = req.body;
   let validProduct = [];
   let nonValidProduct = [];
 
   let promises = productIdList.map(async(productId)=>{
     let product = await Product.findById(new mongoose.Types.ObjectId(productId)).populate('category');
-    let userWishList = await User.findById(user.id).populate('wishlist');
+    let userWishList = await User.findById(userId).populate('wishlist');
     let productWishList = userWishList.wishlist.find(item => item._id.toString() === productId);
 
     if(product && !productWishList){
@@ -95,7 +87,7 @@ export const addProductToWishList = asyncHandler(async (req,res)=>{
   if(validProduct.length === 0){
     throw new ErrorWithStatus(501, 'Product Không tồn tại')
   }
-    const updateUser = await User.findByIdAndUpdate(user.id,
+    const updateUser = await User.findByIdAndUpdate(userId,
       {$push:{wishlist:{$each:validProduct}}},
       {new : true}
     )
@@ -108,12 +100,8 @@ export const addProductToWishList = asyncHandler(async (req,res)=>{
 export const deleteProductToWishList = asyncHandler(async(req, res)=>{
   let productIdList = req.body
   
-  let token;
-  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-    token = req.headers.authorization.split(' ')[1];
-  }
-  const user = await promisify(jwt.verify)(token, process.env.ACCESS_TOKEN);
-  let userWishList = await User.findById(user.id).populate('wishlist')
+  const userId = req.user.id
+  let userWishList = await User.findById(userId).populate('wishlist')
   if(!userWishList.wishlist){
     throw new ErrorWithStatus('Danh sách Wishlist rỗng')
   }
