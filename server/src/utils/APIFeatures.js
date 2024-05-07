@@ -29,8 +29,6 @@ export default class APIFeatures {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
-    } else {
-      this.query = this.query.sort('-createdAt');
     }
     return this;
   }
@@ -45,7 +43,7 @@ export default class APIFeatures {
   }
   paginate() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 100;
+    const limit = this.queryString.limit * 1 || 30;
     const skip = (page - 1) * limit;
     // Count total documents
     this.total = this.schema.countDocuments(this.query.getFilter());

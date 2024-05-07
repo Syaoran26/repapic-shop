@@ -18,23 +18,23 @@ import { AiOutlineClose } from 'react-icons/ai';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { useDebounce, useUpdateEffect } from '@common/hooks';
-import { resetFilter, selectIsFiltering, setFilter } from '~/features/products/optionsSlice';
+import { resetFilter, selectIsFiltering, setFilter } from '~/features/products/productsSlice';
 
 interface FilterDrawerProps {
   onClose: () => void;
 }
 
 const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
-  const options = useAppSelector((state) => state.options);
+  const options = useAppSelector((state) => state.products.options);
   const {
     filter: { price, categories },
   } = options;
   const dispatch = useAppDispatch();
-  const [range, setRange] = useState<number[]>([price.lte, price.gte]);
+  const [range, setRange] = useState<number[]>([price.gte, price.lte]);
   const debounceRange = useDebounce(range, 300);
 
   useUpdateEffect(() => {
-    dispatch(setFilter({ price: { lte: debounceRange[0], gte: debounceRange[1] } }));
+    dispatch(setFilter({ price: { gte: debounceRange[0], lte: debounceRange[1] } }));
   }, [debounceRange]);
 
   const handleChangeRange = (event: Event, newValue: number | number[]) => {
@@ -54,7 +54,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
     } else {
       dispatch(
         setFilter({
-          categories: categories.filter((item) => item !== id),
+          categories: categories.filter((item: string) => item !== id),
         }),
       );
     }

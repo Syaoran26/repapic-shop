@@ -1,7 +1,8 @@
 import { Options } from '@common/types';
 
-const price = (price: number): string => {
-  return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+const price = (price: number, discount: number = 0): string => {
+  const finalPrice = price - price * discount * 100;
+  return finalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 };
 
 const queryMapping = (key: string, value: any) => {
@@ -13,7 +14,7 @@ const queryMapping = (key: string, value: any) => {
     return `${key}=${uriValue.join(',')}`;
   } else if (typeof value === 'object') {
     const innerParams = Object.keys(value).map((innerKey: string) => {
-      return `${key}.${innerKey}=${encodeURIComponent(value[innerKey])}`;
+      return `${key}[${innerKey}]=${encodeURIComponent(value[innerKey])}`;
     });
     return innerParams.join('&');
   } else {

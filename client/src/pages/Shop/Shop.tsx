@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import {
   Badge,
   Button,
@@ -19,13 +19,14 @@ import ProductGrid from './ProductGrid';
 import { Helmet } from 'react-helmet';
 import Filter from './Filter';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
-import { reset, selectIsFiltering, setPage, setSearch, setSort } from '~/features/products/optionsSlice';
+import { resetFilter, selectIsFiltering, setPage, setSearch, setSort } from '~/features/products/productsSlice';
 import { useDebounce, useMount, useUpdateEffect } from '@common/hooks';
 import { sortMenu } from './constants';
+import { getProducts } from '~/features/products/productsSlice';
 
 const Shop = () => {
-  const options = useAppSelector((state) => state.options);
-  const { search, sort, page, filter } = options;
+  const { total, options } = useAppSelector((state) => state.products);
+  const { search, sort, page, filter, limit } = options;
   const dispatch = useAppDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -35,12 +36,16 @@ const Shop = () => {
   const debounceSearch = useDebounce(searchTerm, 300);
 
   useMount(() => {
-    dispatch(reset());
+    dispatch(resetFilter());
   });
 
   useUpdateEffect(() => {
     dispatch(setSearch(debounceSearch));
   }, [debounceSearch, dispatch]);
+
+  useEffect(() => {
+    dispatch(getProducts(options));
+  }, [options, dispatch]);
 
   const handleOpenSort = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,8 +53,8 @@ const Shop = () => {
   const handleCloseSort = () => {
     setAnchorEl(null);
   };
-  const handleSortChange = (value: any) => () => {
-    dispatch(setSort(value));
+  const handleSortChange = (value: string | undefined) => () => {
+    dispatch(setSort([value]));
     handleCloseSort();
   };
   const toggleFilter = (toggle: boolean) => () => {
@@ -57,6 +62,10 @@ const Shop = () => {
   };
   const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
     dispatch(setPage(page));
+  };
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (!value.startsWith(' ')) setSearchTerm(event.target.value);
   };
 
   return (
@@ -70,7 +79,7 @@ const Shop = () => {
           <OutlinedInput
             placeholder="Tìm kiếm..."
             value={searchTerm}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             startAdornment={
               <InputAdornment position="start">
                 <IoSearchOutline className="size-5" />
@@ -99,7 +108,7 @@ const Shop = () => {
             <Filter onClose={toggleFilter(false)} />
           </Drawer>
           <Button variant="text" endIcon={openSort ? <GoTriangleUp /> : <GoTriangleDown />} onClick={handleOpenSort}>
-            Sắp xếp: {sortMenu.find((item) => item.value === sort)?.label}
+            Sắp xếp: {sortMenu.find((item) => item.value === sort![0])?.label}
           </Button>
           <Menu
             open={openSort}
@@ -119,7 +128,15 @@ const Shop = () => {
         </div>
       </div>
       <ProductGrid />
-      <Pagination className="mt-16 text-center" color="default" count={10} page={page} onChange={handlePageChange} />
+      {total > (limit as number) && (
+        <Pagination
+          className="mt-16 text-center"
+          color="default"
+          count={Math.ceil(total / (limit as number))}
+          page={page}
+          onChange={handlePageChange}
+        />
+      )}
     </Container>
   );
 };
