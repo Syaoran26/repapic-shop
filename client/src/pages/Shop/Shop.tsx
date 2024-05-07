@@ -20,7 +20,7 @@ import { Helmet } from 'react-helmet';
 import Filter from './Filter';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { reset, selectIsFiltering, setPage, setSearch, setSort } from '~/features/products/optionsSlice';
-import { useDebounce, useMount, useUpdateEffect } from '~/hooks';
+import { useDebounce, useMount, useUpdateEffect } from '@common/hooks';
 import { sortMenu } from './constants';
 
 const Shop = () => {

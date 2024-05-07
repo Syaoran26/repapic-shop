@@ -1,14 +1,79 @@
-import { useState } from 'react';
-import { Button, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput } from '@mui/material';
+import { useCallback, useState } from 'react';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
+  OutlinedInput,
+} from '@mui/material';
 import { RiEyeCloseLine, RiEyeFill } from 'react-icons/ri';
 import { FaAngleLeft } from 'react-icons/fa6';
+import { Helmet } from 'react-helmet';
+import { OTPInput } from '@common/components';
 import config from '~/config';
+import * as yup from 'yup';
+import { constants } from '@common/utils';
+import { useMount } from '@common/hooks';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import api from '~/config/api';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+const schema = yup
+  .object({
+    password: yup
+      .string()
+      .required('Vui lòng nhập nật khẩu')
+      .matches(
+        constants.passwordRegex,
+        'Mật khẩu ít nhất 8 kí tự bao gồm ít nhất một chữ hoa, một chữ thường, một chữ số và một kí tự số',
+      ),
+    confirmPassword: yup.string().oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
+  })
+  .required();
 
 const NewPassword = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [otp, setOtp] = useState<string>('');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleChangeOTP = useCallback((value: string) => setOtp(value), []);
+
+  useMount(() => {
+    if (!location.state?.email) navigate(-1);
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: yup.InferType<typeof schema>) => {
+    const { email } = location.state;
+    if (otp.length === 6 && email) {
+      api
+        .patch('/auth/reset-password', { email, otp, password: data.password })
+        .then((res) => {
+          toast.success(res.data?.message);
+          navigate(config.routes.login);
+        })
+        .catch((err) => toast.error(err.response?.data.message || constants.sthWentWrong));
+    }
+  };
 
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
+      <Helmet>
+        <title>Đặt lại mật khẩu</title>
+      </Helmet>
       <div className="h-24">
         <svg className="h-full mx-auto" fill="none" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -51,27 +116,26 @@ const NewPassword = () => {
       <div className="flex flex-col gap-2 mt-6 mb-10 text-center">
         <h3 className="text-2xl md:text-3xl lg:text-[2rem] font-bold">Đặt lại mật khẩu</h3>
         <p className="text-sm text-fade">
-          Vui lòng nhập địa chỉ email được liên kết với tài khoản của bạn và chúng tôi sẽ gửi cho bạn một liên kết qua
-          email để đặt lại mật khẩu của bạn.
+          Chúng tôi đã gửi email xác nhận gồm 6 chữ số tới email của bạn. Vui lòng nhập mã vào ô bên dưới để xác minh
+          email của bạn.
         </p>
       </div>
-      <form className="flex flex-col gap-6">
-        <FormControl variant="outlined" color="default">
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <OutlinedInput id="email" label="Email" />
-        </FormControl>
-        <FormControl variant="outlined" color="default">
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <OTPInput onChange={handleChangeOTP} />
+        <FormControl variant="outlined" color="default" error={!!errors.password}>
           <InputLabel htmlFor="password">Mật khẩu mới</InputLabel>
           <OutlinedInput
             id="password"
             type={showPassword ? 'text' : 'password'}
             label="Mật khẩu mới"
+            {...register('password')}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() => setShowPassword(!showPassword)}
                   onMouseDown={(event) => event.preventDefault()}
+                  tabIndex={-1}
                   size="small"
                   edge="end"
                 >
@@ -80,19 +144,22 @@ const NewPassword = () => {
               </InputAdornment>
             }
           />
+          {errors.password && <FormHelperText>{errors.password.message}</FormHelperText>}
         </FormControl>
-        <FormControl variant="outlined" color="default">
+        <FormControl variant="outlined" color="default" error={!!errors.confirmPassword}>
           <InputLabel htmlFor="confirmPassword">Xác nhận mật khẩu</InputLabel>
           <OutlinedInput
             id="confirmPassword"
             type={showPassword ? 'text' : 'password'}
             label="Xác nhận mật khẩu"
+            {...register('confirmPassword')}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() => setShowPassword(!showPassword)}
                   onMouseDown={(event) => event.preventDefault()}
+                  tabIndex={-1}
                   size="small"
                   edge="end"
                 >
@@ -101,6 +168,7 @@ const NewPassword = () => {
               </InputAdornment>
             }
           />
+          {errors.confirmPassword && <FormHelperText>{errors.confirmPassword.message}</FormHelperText>}
         </FormControl>
         <Button color="default" size="large" type="submit">
           Cập nhật mật khẩu

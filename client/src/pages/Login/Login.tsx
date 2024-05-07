@@ -1,6 +1,6 @@
 import { FaFacebookF } from 'react-icons/fa6';
 import config from '~/config';
-import { GoogleIcon } from '~/components/Icons';
+import { GoogleIcon } from '@icons';
 import { Helmet } from 'react-helmet';
 import { auth, facebookProvider, googleProvider } from '~/config/firebase';
 import { AuthProvider, signInWithPopup } from 'firebase/auth';
