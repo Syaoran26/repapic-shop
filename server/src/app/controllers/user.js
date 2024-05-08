@@ -3,9 +3,6 @@ import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
 import { getAddress } from '../../utils/address.js';
 import Product from '../models/Product.js';
-import jwt from 'jsonwebtoken'
-import {promisify} from 'util'
-import mongoose from 'mongoose';
 
 export const createUser = asyncHandler(async (req, res) => {
   const { mimetype, buffer } = req.file;
@@ -56,59 +53,48 @@ export const getUsers = asyncHandler(async (req, res) => {
 
 export const getWishList = asyncHandler(async (req, res) => {
   const userId = req.user.id
-  let userWishList = await User.findById(userId).populate('wishlist').wishlist
-  if(!userWishList.wishlist){
-    throw new ErrorWithStatus('Danh sách Wishlist rỗng')
-  }
-  res.status(200).json(userWishList)
+  let userWishList = await User.findById(userId).select("wishlist").populate('wishlist')
+
+  res.status(200).json(userWishList.wishlist)
   
 });
 
 export const addProductToWishList = asyncHandler(async (req,res)=>{
-  const userId = req.user.id;
-  const productIdList = req.body;
-  let validProduct = [];
-  let nonValidProduct = [];
-
-  let promises = productIdList.map(async(productId)=>{
-    let product = await Product.findById(new mongoose.Types.ObjectId(productId)).populate('category');
-    let userWishList = await User.findById(userId).populate('wishlist');
-    let productWishList = userWishList.wishlist.find(item => item._id.toString() === productId);
-
-    if(product && !productWishList){
-      validProduct.push(productId)
-    }else{
-      nonValidProduct.push(productId)
-    }
-  })
-
-  await Promise.all(promises);
+  const userId = req.user.id
+  const productId = req.params.productId;
   
-  if(validProduct.length === 0){
-    throw new ErrorWithStatus(501, 'Product Không tồn tại')
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    throw new ErrorWithStatus(404, 'Không tìm thấy sản phẩm!');
   }
-    const updateUser = await User.findByIdAndUpdate(userId,
-      {$push:{wishlist:{$each:validProduct}}},
-      {new : true}
-    )
-    res.status(200).json({
-      ProductAddSuccess: updateUser,
-      ProductNotFound: nonValidProduct
-    })
+
+  const user = await User.findById(userId).select('wishlist').populate("wishlist")
+  
+  const existedProduct = user.wishlist.find(item => item.equals(productId))
+
+  if(existedProduct){
+    throw new ErrorWithStatus(404, 'Đã tồn tại sản phẩm!');
+  }
+
+  
+  const newWishList =await User.findByIdAndUpdate(userId, { $push: { wishlist: product._id } }, { new: true }).select("wishlist").populate("wishlist")
+
+    res.status(200).json(newWishList)
 })
 
 export const deleteProductToWishList = asyncHandler(async(req, res)=>{
-  let productIdList = req.body
   
   const userId = req.user.id
-  let userWishList = await User.findById(userId).populate('wishlist')
-  if(!userWishList.wishlist){
-    throw new ErrorWithStatus('Danh sách Wishlist rỗng')
-  }
-  let productWishList = userWishList.wishlist.filter(item => !productIdList.includes(item._id.toString()))
-  userWishList.wishlist=[...productWishList]
 
-  userWishList.save()
+  const productId = req.params.productId
+  const product = await Product.findById(productId);
+  
+  if(!product){
+    throw new ErrorWithStatus('Không tìm thấy sản phẩm!')
+  }
+
+  await User.findByIdAndUpdate(userId, { $pull: { wishlist: product._id } }, { new: true })
   
   res.status(200).json({status:"Deleted Success"})
 
