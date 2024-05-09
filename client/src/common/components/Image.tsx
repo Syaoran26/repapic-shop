@@ -21,7 +21,7 @@ const Image: FC<ImageProps> = ({ width, height, rounded, ...props }) => {
       {...props}
       wrapperProps={{ style: { display: 'block' } }}
       wrapperClassName={classStyle}
-      className={classNames('absolute top-0 left-0 size-full', props.className, {
+      className={classNames('absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full', props.className, {
         [`rounded-[${rounded}px]`]: rounded,
       })}
       effect="blur"
