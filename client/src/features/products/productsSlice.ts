@@ -5,11 +5,16 @@ import { toast } from 'react-toastify';
 import { constants } from '@common/utils';
 
 export interface ProductFilter {
+  categories: Array<string>;
   price: {
     gte: number;
     lte: number;
   };
-  categories: Array<string>;
+  rating?:
+    | {
+        gte: number;
+      }
+    | number;
 }
 
 interface ProductsState {
@@ -48,7 +53,8 @@ export const selectIsFiltering = (filter: ProductFilter): boolean => {
     filter.price.lte !== initialFilter.price.lte ||
     filter.price.gte !== initialFilter.price.gte ||
     filter.categories.length !== initialFilter.categories.length ||
-    !filter.categories.every((category) => initialFilter.categories.includes(category))
+    !filter.categories.every((category) => initialFilter.categories.includes(category)) ||
+    filter.rating !== initialFilter.rating
   );
 };
 

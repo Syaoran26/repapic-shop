@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import {
   Badge,
+  Button,
   Checkbox,
   Divider,
   FilledInput,
@@ -9,6 +10,7 @@ import {
   FormGroup,
   IconButton,
   InputAdornment,
+  Rating,
   Slider,
   Stack,
   Tooltip,
@@ -138,6 +140,17 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
                 max={240_000}
               />
             </div>
+          </Stack>
+          <Stack>
+            <h6 className="mb-2 text-sm font-semibold">Đánh giá</h6>
+            <Stack>
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Button variant="text" key={index} onClick={() => dispatch(setFilter({ rating: { gte: 4 - index } }))}>
+                  <Rating readOnly defaultValue={4 - index} />
+                  <span className="ml-1">trở lên</span>
+                </Button>
+              ))}
+            </Stack>
           </Stack>
         </div>
       </SimpleBar>
