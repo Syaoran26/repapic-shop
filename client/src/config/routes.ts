@@ -10,6 +10,7 @@ const routes = {
   detail: '/san-pham/:cateSlug/:slug',
   aboutUs: '/ve-chung-toi',
   contactUs: '/lien-he',
+  cart: '/gio-hang',
 };
 
 export default routes;
