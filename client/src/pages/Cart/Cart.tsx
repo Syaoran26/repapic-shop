@@ -2,6 +2,7 @@ import { Button, Container } from '@mui/material';
 import { Helmet } from 'react-helmet';
 import CheckoutStepper from './components/CheckoutStepper';
 import CartTable from './components/CartTable';
+import Order from './components/Order';
 import { FaAngleLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
@@ -25,7 +26,14 @@ const Cart = () => {
             </Button>
           </div>
         </div>
-        <div className="col-span-1"></div>
+        <div className="col-span-1">
+          <Order />
+          <div className="mt-6">
+            <Button size="large" fullWidth>
+              Tiếp tục
+            </Button>
+          </div>
+        </div>
       </div>
     </Container>
   );
