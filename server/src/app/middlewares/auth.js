@@ -7,7 +7,6 @@ export const verifyToken = (req, res, next) => {
   if (!token) {
     throw new ErrorWithStatus(401, 'Vui lòng đăng nhập để thực hiện hành động!');
   }
-
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
     if (err) throw new ErrorWithStatus(401, 'Token đã hết hạn');
     req.user = user;

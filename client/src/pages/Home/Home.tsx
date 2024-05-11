@@ -1,5 +1,5 @@
 import Carousel from './Carousel';
-import { ProductCarousel } from '@common';
+import { ProductCarousel } from '@common/components';
 import { Container } from '@mui/material';
 import Heading from './Heading';
 

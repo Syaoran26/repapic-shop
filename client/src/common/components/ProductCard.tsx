@@ -3,10 +3,10 @@ import { Checkbox, IconButton, Link, Paper, Skeleton, SxProps, Tooltip } from '@
 import { CartPlusIcon, HeartIcon } from './Icons';
 import { motion } from 'framer-motion';
 import { FaEye } from 'react-icons/fa6';
-import Product from '~/types/ProductType';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { formatPrice } from '~/utils/format';
+import { Product } from '../types';
+import { format } from '@common/utils';
 import { toast } from 'react-toastify';
+import Image from './Image';
 
 const actionVariants = {
   initial: {
@@ -53,15 +53,8 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
   return (
     <Paper onMouseLeave={() => setHover(false)} onMouseOver={() => setHover(true)}>
       <div className="p-2">
-        <div className="relative overflow-hidden rounded-xl">
-          <LazyLoadImage
-            src={data.thumbnail}
-            alt={data.name}
-            wrapperProps={{ style: { display: 'block' } }}
-            wrapperClassName="relative pb-[100%]"
-            className="absolute top-0 left-0 size-full"
-            effect="blur"
-          />
+        <div className="relative overflow-hidden">
+          <Image src={data.thumbnail} alt={data.title} effect="blur" rounded="xl" />
           <motion.div
             className="absolute flex flex-col gap-2 left-1 top-1"
             variants={actionVariants}
@@ -96,12 +89,12 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5 px-6 pt-4 pb-6">
-        <Link color="inherit" fontWeight={600}>
-          {data.name}
+        <Link color="inherit" fontWeight={600} className="truncate">
+          {data.title}
         </Link>
         <div className="flex justify-end gap-1 font-semibold">
           <del className="text-fader"></del>
-          <span>{formatPrice(data.price)}</span>
+          <span>{format.price(data.price, data.discount)}</span>
         </div>
       </div>
     </Paper>

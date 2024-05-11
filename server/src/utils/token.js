@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const generateAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN, { expiresIn: '10h' });
+  return jwt.sign(payload, process.env.ACCESS_TOKEN, { expiresIn: '10m' });
 };
 
 export const generateRefreshToken = (payload) => {
