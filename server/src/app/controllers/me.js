@@ -46,7 +46,7 @@ export const removeCart = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ErrorWithStatus(400, 'Người dùng không tồn tại!');
   }
-  user.cart = user.cart.filter((i) => i.product._id !== id);
+  user.cart = user.cart.filter((i) => !i.product._id.equals(id));
   await user.save();
   res.status(200).json({ message: 'Đã xóa sản phẩm ra khỏi giỏ hàng.' });
 });
@@ -58,7 +58,7 @@ export const updateCart = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ErrorWithStatus(400, 'Người dùng không tồn tại!');
   }
-  const item = user.cart.findIndex((i) => i.product._id === id);
+  const item = user.cart.findIndex((i) => i.product._id.equals(id));
   if (item === -1) {
     throw new ErrorWithStatus(400, 'Sản phẩm không tồn tại trong giỏ hàng!');
   }
