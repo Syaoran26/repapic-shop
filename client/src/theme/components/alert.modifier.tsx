@@ -1,5 +1,5 @@
 import { Components, Theme } from '@mui/material/styles';
-import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from '../../components/Icons';
+import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from '@icons';
 
 export const MuiAlert: Components<Theme>['MuiAlert'] = {
   defaultProps: {

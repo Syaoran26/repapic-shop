@@ -1,10 +1,12 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
-import User from '~/types/UserType';
+import User from '~/common/types/UserType';
 
 const api = axios.create({
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 api.interceptors.request.use(

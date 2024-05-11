@@ -1,5 +1,5 @@
 import { Button, Container } from '@mui/material';
-import { ThunderIcon } from '@common/Icons';
+import { ThunderIcon } from '@icons';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';

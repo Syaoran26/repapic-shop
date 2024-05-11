@@ -10,5 +10,4 @@ router.post('/cart/add', verifyToken, addToCart);
 router.delete('/cart/remove/:itemId', verifyToken, removeCart);
 router.patch('/cart/update/:itemId', verifyToken, updateCart);
 router.patch('/change-password', verifyToken, changePassword);
-
 export default router;

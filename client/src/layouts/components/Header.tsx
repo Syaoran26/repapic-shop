@@ -1,11 +1,15 @@
 import { MouseEvent, useLayoutEffect, useState } from 'react';
-import { Avatar, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
+import { Avatar, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
 import config from '../../config';
 import { Link } from 'react-router-dom';
-import { CartIcon, HeartIcon, MenuIcon } from '../../components/Icons';
+import { CartIcon, HeartIcon, MenuIcon } from '@icons';
 import classNames from 'classnames';
+import { useAppDispatch, useAppSelector } from '~/app/hooks';
+import { logout } from '~/features/auth/authSlice';
 
 const Header = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const open = Boolean(anchorEl);
@@ -57,10 +61,10 @@ const Header = () => {
           <Link to="#" className="nav-link">
             Workshop
           </Link>
-          <Link to="#" className="nav-link">
+          <Link to={config.routes.aboutUs} className="nav-link">
             Về chúng tôi
           </Link>
-          <Link to="#" className="nav-link">
+          <Link to={config.routes.contactUs} className="nav-link">
             Liên hệ
           </Link>
         </div>
@@ -96,14 +100,36 @@ const Header = () => {
         onClose={handleClose}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        MenuListProps={{ disablePadding: true }}
       >
-        <Stack padding={1}>
-          <MenuItem component={Link} to={config.routes.login}>
-            Đăng nhập
-          </MenuItem>
-          <MenuItem component={Link} to={config.routes.register}>
-            Đăng ký
-          </MenuItem>
+        <Stack>
+          {user ? (
+            <>
+              <div className="px-4 pt-4 pb-3 text-sm">
+                <h6 className="font-semibold">{user.name}</h6>
+                <p className="text-fade">{user.email}</p>
+              </div>
+              <Divider style={{ borderStyle: 'dashed' }} />
+              <Stack padding={1}>
+                <MenuItem component={Link} to={config.routes.home}>
+                  Trang chủ
+                </MenuItem>
+                <MenuItem component={Link} to={config.routes.home}>
+                  Tài khoản
+                </MenuItem>
+                <MenuItem onClick={() => dispatch(logout())}>Đăng xuất</MenuItem>
+              </Stack>
+            </>
+          ) : (
+            <Stack padding={1}>
+              <MenuItem component={Link} to={config.routes.login}>
+                Đăng nhập
+              </MenuItem>
+              <MenuItem component={Link} to={config.routes.register}>
+                Đăng ký
+              </MenuItem>
+            </Stack>
+          )}
         </Stack>
       </Menu>
     </header>

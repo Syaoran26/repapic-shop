@@ -1,68 +1,69 @@
-import { ChangeEvent, ClipboardEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { Button, FormHelperText, Link, OutlinedInput } from '@mui/material';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { Button, Link } from '@mui/material';
 import config from '~/config';
 import { FaAngleLeft } from 'react-icons/fa6';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { OTPInput } from '@common/components';
+import { useMount } from '@common/hooks';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
+import { constants } from '@common/utils';
 
 const Verify = () => {
-  const inputsRef = useRef<HTMLInputElement[]>([]);
-  const [error, setError] = useState<string>('');
+  const [otp, setOtp] = useState('');
+  const [seconds, setSeconds] = useState(60);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useMount(() => {
+    if (!location.state?.email) navigate(-1);
+  });
+
+  const handleSubmit = () => (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { email } = location.state;
+    if (otp.length === 6 && email) {
+      api
+        .patch('/auth/verify', { otp, email })
+        .then((res) => {
+          toast.success(res.data?.message);
+          navigate(config.routes.login);
+        })
+        .catch((err) => {
+          toast.error(err.response?.data.message || constants.sthWentWrong);
+        });
+    }
+  };
 
   useEffect(() => {
-    inputsRef.current[0].focus();
-  }, []);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const nextElementSibling = event.target.parentElement?.nextElementSibling?.firstChild as HTMLInputElement;
-
-    setError('');
-    inputsRef.current.forEach((el) => {
-      if (!el.value) {
-        setError('Mã xác nhận phải gồm 6 chữ số');
-        return;
+    const intervalId = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds((prevSeconds) => prevSeconds - 1);
       }
-    });
+    }, 1000);
 
-    if (value.length > 1) {
-      event.target.value = value.charAt(0);
-      nextElementSibling?.focus();
-    } else {
-      if (value.match('[0-9]{1}')) {
-        nextElementSibling?.focus();
-      } else {
-        event.target.value = '';
-      }
+    return () => clearInterval(intervalId);
+  }, [seconds]);
+
+  const handleChangeOTP = useCallback((value: string) => setOtp(value), []);
+
+  const handleResend = useCallback(() => {
+    const { email } = location.state;
+    if (email) {
+      api
+        .post('/auth/resend', { email })
+        .then((res) => toast.success(res.data?.message))
+        .catch((err) => toast.error(err.response?.data.message || constants.sthWentWrong));
     }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    const { key } = event;
-    const target = event.target as HTMLInputElement;
-    const previousElementSibling = target.parentElement?.previousElementSibling?.firstChild as HTMLInputElement;
-    if (key === 'Backspace') {
-      target.value = '';
-      previousElementSibling?.focus();
-      event.preventDefault();
-    }
-  };
-
-  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-    event.target.select();
-  };
-
-  const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const pastedValue = event.clipboardData.getData('Text');
-    if (pastedValue.match('[0-9]{6}')) {
-      for (let i = 0; i < pastedValue.length; i++) {
-        inputsRef.current[i].value = pastedValue.charAt(i);
-      }
-      setError('');
-    }
-  };
+    setSeconds(60);
+  }, [location.state]);
 
   return (
     <div className="max-w-[420px] w-full bg-white rounded-2xl py-10 px-6 shadow-sm">
+      <Helmet>
+        <title>Xác thực OTP</title>
+      </Helmet>
       <div className="h-24">
         <svg className="h-full mx-auto" fill="none" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_di_1870_133886)">
@@ -179,46 +180,20 @@ const Verify = () => {
       <div className="flex flex-col gap-2 mt-6 mb-10 text-center">
         <h3 className="text-2xl md:text-3xl lg:text-[2rem] font-bold">Kiểm tra email của bạn!</h3>
         <p className="text-sm text-fade">
-          Chúng tôi đã gửi mã xác nhận gồm 6 chữ số tới acb@domain qua email, vui lòng nhập mã vào ô bên dưới để xác
-          minh email của bạn.
+          Chúng tôi đã gửi mã xác nhận gồm 6 chữ số tới {location.state?.email} qua email, vui lòng nhập mã vào ô bên
+          dưới để xác minh email của bạn.
         </p>
       </div>
-      <form className="flex flex-col gap-6">
-        <div className="grid grid-cols-6 gap-3">
-          {Array.from(Array(6).keys()).map((i) => (
-            <OutlinedInput
-              error={!!error}
-              color="default"
-              key={i}
-              placeholder="-"
-              type="tel"
-              inputProps={{
-                maxLength: 1,
-                style: { textAlign: 'center' },
-              }}
-              inputRef={(el) => {
-                inputsRef.current[i] = el;
-              }}
-              onKeyDown={handleKeyDown}
-              onFocus={handleFocus}
-              onInput={handleChange}
-              onPaste={handlePaste}
-            />
-          ))}
-        </div>
-        {error && (
-          <FormHelperText className="px-4" error={!!error}>
-            {error}
-          </FormHelperText>
-        )}
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit()}>
+        <OTPInput onChange={handleChangeOTP} />
         <Button type="submit" size="large" color="default">
           Xác thực
         </Button>
         <p className="text-sm text-center">
           Bạn chưa nhận được mã?{' '}
-          <Link fontWeight={600} underline="hover">
-            Gửi lại mã
-          </Link>
+          <Button variant="text" disabled={seconds > 0} onClick={handleResend}>
+            {seconds > 0 ? `Gửi lại (${seconds})` : 'Gửi lại'}
+          </Button>
         </p>
         <Link href={config.routes.login} color="inherit" underline="hover" fontWeight={600}>
           <span className="flex items-center justify-center gap-1 text-sm text-center">
