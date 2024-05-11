@@ -12,7 +12,6 @@ export const getUser = asyncHandler(async (req, res) => {
 // Get user's cart
 export const getCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
-  console.log(user);
   const { cart } = user._doc;
   res.status(200).json(cart);
 });
