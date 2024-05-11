@@ -18,6 +18,7 @@ import { MuiPaper } from './paper.modifier';
 import { MuiPopover } from './popover.modifier';
 import { MuiRating } from './rating.modifier';
 import { MuiSkeleton } from './skeleton.modifier';
+import { MuiTable } from './table.modifier';
 import { MuiTabs } from './tabs.modifier';
 
 export const components: Components<Theme> = {
@@ -39,5 +40,6 @@ export const components: Components<Theme> = {
   MuiPopover,
   MuiRating,
   MuiSkeleton,
+  MuiTable,
   MuiTabs,
 };

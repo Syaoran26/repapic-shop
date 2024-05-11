@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import config from '~/config';
 import MainLayout from '~/layouts/MainLayout';
 import AboutUs from '~/pages/AboutUs';
+import Cart from '~/pages/Cart';
 import ContactUs from '~/pages/ContactUs';
 import Home from '~/pages/Home';
 import Shop from '~/pages/Shop';
@@ -28,9 +29,13 @@ const router: RouteObject = {
       element: <AboutUs />,
     },
     {
-      path:config.routes.contactUs,
-      element: <ContactUs />
-    }
+      path: config.routes.contactUs,
+      element: <ContactUs />,
+    },
+    {
+      path: config.routes.cart,
+      element: <Cart />,
+    },
   ],
 };
 

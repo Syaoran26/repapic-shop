@@ -1,7 +1,7 @@
 import { MouseEvent, useLayoutEffect, useState } from 'react';
-import { Avatar, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
+import { Avatar, Badge, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
 import config from '../../config';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CartIcon, HeartIcon, MenuIcon } from '@icons';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
@@ -9,10 +9,12 @@ import { logout } from '~/features/auth/authSlice';
 
 const Header = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -77,8 +79,10 @@ const Header = () => {
             </Tooltip>
           </div>
           <Tooltip title="Giỏ hàng">
-            <IconButton>
-              <CartIcon />
+            <IconButton onClick={() => navigate(config.routes.cart)}>
+              <Badge badgeContent={cart.items.length} color="error">
+                <CartIcon />
+              </Badge>
             </IconButton>
           </Tooltip>
           <Tooltip title="Tài khoản">

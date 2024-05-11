@@ -50,7 +50,7 @@ const Quantity: FC<QuantityProps> = ({ value, available, onChange, onIncrease, o
   };
 
   return (
-    <div className="text-right">
+    <div className="inline-block text-right">
       <div className="flex items-center justify-between w-[88px] p-1 border rounded-lg">
         <IconButton size="small" onClick={handleDecrease} disabled={value <= 0 || quantity <= 0}>
           <HiMinusSmall />
