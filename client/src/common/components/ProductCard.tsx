@@ -54,7 +54,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
     <Paper onMouseLeave={() => setHover(false)} onMouseOver={() => setHover(true)}>
       <div className="p-2">
         <div className="relative overflow-hidden">
-          <Image src={data.thumbnail} alt={data.name} effect="blur" rounded="xl" />
+          <Image src={data.thumbnail} alt={data.title} effect="blur" rounded="xl" />
           <motion.div
             className="absolute flex flex-col gap-2 left-1 top-1"
             variants={actionVariants}
@@ -89,12 +89,12 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5 px-6 pt-4 pb-6">
-        <Link color="inherit" fontWeight={600}>
-          {data.name}
+        <Link color="inherit" fontWeight={600} className="truncate">
+          {data.title}
         </Link>
         <div className="flex justify-end gap-1 font-semibold">
           <del className="text-fader"></del>
-          <span>{format.price(data.price)}</span>
+          <span>{format.price(data.price, data.discount)}</span>
         </div>
       </div>
     </Paper>
