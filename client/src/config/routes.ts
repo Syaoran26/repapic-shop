@@ -11,6 +11,8 @@ const routes = {
   aboutUs: '/ve-chung-toi',
   contactUs: '/lien-he',
   cart: '/gio-hang',
+  cartAddress: '/gio-hang/dia-chi',
+  cartPayment: '/gio-hang/thanh-toan',
 };
 
 export default routes;
