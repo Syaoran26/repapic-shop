@@ -63,7 +63,8 @@ export const deleteProductToWishList = asyncHandler(async (req, res) => {
     'wishlist',
   );
   res.status(200).json(user.wishlist);
-  
+});
+
 export const addToCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) {
