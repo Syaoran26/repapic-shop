@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import {
   Badge,
+  Button,
   Checkbox,
   Divider,
   FilledInput,
@@ -9,6 +10,7 @@ import {
   FormGroup,
   IconButton,
   InputAdornment,
+  Rating,
   Slider,
   Stack,
   Tooltip,
@@ -17,24 +19,24 @@ import { IoReload } from 'react-icons/io5';
 import { AiOutlineClose } from 'react-icons/ai';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
-import { useDebounce, useUpdateEffect } from '~/hooks';
-import { resetFilter, selectIsFiltering, setFilter } from '~/features/products/optionsSlice';
+import { useDebounce, useUpdateEffect } from '@common/hooks';
+import { resetFilter, selectIsFiltering, setFilter } from '~/features/products/productsSlice';
 
 interface FilterDrawerProps {
   onClose: () => void;
 }
 
 const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
-  const options = useAppSelector((state) => state.options);
+  const options = useAppSelector((state) => state.products.options);
   const {
-    filter: { min, max, categories },
+    filter: { price, categories },
   } = options;
   const dispatch = useAppDispatch();
-  const [range, setRange] = useState<number[]>([min, max]);
+  const [range, setRange] = useState<number[]>([price.gte, price.lte]);
   const debounceRange = useDebounce(range, 300);
 
   useUpdateEffect(() => {
-    dispatch(setFilter({ min: debounceRange[0], max: debounceRange[1] }));
+    dispatch(setFilter({ price: { gte: debounceRange[0], lte: debounceRange[1] } }));
   }, [debounceRange]);
 
   const handleChangeRange = (event: Event, newValue: number | number[]) => {
@@ -42,7 +44,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
   };
 
   const handleReset = () => {
-    if (selectIsFiltering(options)) {
+    if (selectIsFiltering(options.filter)) {
       setRange([0, 240_000]);
       dispatch(resetFilter());
     }
@@ -54,7 +56,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
     } else {
       dispatch(
         setFilter({
-          categories: categories.filter((item) => item !== id),
+          categories: categories.filter((item: string) => item !== id),
         }),
       );
     }
@@ -66,7 +68,7 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
         <span className="flex-1 text-lg font-bold">Bộ lọc</span>
         <Tooltip title="Cài lại">
           <IconButton onClick={handleReset}>
-            <Badge variant="dot" color="error" invisible={!selectIsFiltering(options)}>
+            <Badge variant="dot" color="error" invisible={!selectIsFiltering(options.filter)}>
               <IoReload fontSize={20} />
             </Badge>
           </IconButton>
@@ -138,6 +140,17 @@ const FilterDrawer: FC<FilterDrawerProps> = ({ onClose }) => {
                 max={240_000}
               />
             </div>
+          </Stack>
+          <Stack>
+            <h6 className="mb-2 text-sm font-semibold">Đánh giá</h6>
+            <Stack>
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Button variant="text" key={index} onClick={() => dispatch(setFilter({ rating: { gte: 4 - index } }))}>
+                  <Rating readOnly defaultValue={4 - index} />
+                  <span className="ml-1">trở lên</span>
+                </Button>
+              ))}
+            </Stack>
           </Stack>
         </div>
       </SimpleBar>

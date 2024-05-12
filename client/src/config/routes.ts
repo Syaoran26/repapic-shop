@@ -7,6 +7,10 @@ const routes = {
   newPassword: '/mat-khau-moi',
   faqs: '/faqs',
   shop: '/san-pham',
+  detail: '/san-pham/:slug',
+  aboutUs: '/ve-chung-toi',
+  contactUs: '/lien-he',
+  cart: '/gio-hang',
 };
 
 export default routes;

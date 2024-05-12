@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import { ErrorWithStatus } from '../../utils/error.js';
+import Product from '../models/Product.js';
 
 // Get current user
 export const getUser = asyncHandler(async (req, res) => {
@@ -24,7 +25,45 @@ export const changePassword = asyncHandler(async (req, res) => {
 
   res.status(200).json({ message: 'Thay đổi mật khẩu thành công!' });
 });
+export const getWishList = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).select('wishlist').populate('wishlist');
+  res.status(200).json(user.wishlist);
+});
 
+export const addProductToWishList = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  // Check sản phẩm có tồn tại không
+  const product = await Product.findById(req.params.productId).select('_id');
+  if (!product) {
+    throw new ErrorWithStatus(404, 'Không tìm thấy sản phẩm!');
+  }
+
+  // Check sản phẩm đã có trong wishlist chưa
+  const user = await User.findById(userId).select('wishlist');
+  const existedProduct = user.wishlist.find((item) => item.equals(product._id));
+  if (existedProduct) {
+    throw new ErrorWithStatus(404, 'Đã tồn tại sản phẩm!');
+  }
+
+  const newUser = await User.findByIdAndUpdate(userId, { $push: { wishlist: product._id } }, { new: true }).select(
+    'wishlist',
+  );
+  res.status(200).json(newUser.wishlist);
+});
+
+export const deleteProductToWishList = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const product = await Product.findById(req.params.productId);
+
+  if (!product) {
+    throw new ErrorWithStatus('Không tìm thấy sản phẩm!');
+  }
+
+  const user = await User.findByIdAndUpdate(userId, { $pull: { wishlist: product._id } }, { new: true }).select(
+    'wishlist',
+  );
+  res.status(200).json(user.wishlist);
+  
 export const addToCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) {

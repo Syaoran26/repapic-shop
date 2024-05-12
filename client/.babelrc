@@ -5,7 +5,8 @@
       {
         "alias": {
           "~": "./src",
-          "@common": "./src/components"
+          "@common": "./src/common",
+          "@icons": "./src/common/components/Icons"
         }
       }
     ]

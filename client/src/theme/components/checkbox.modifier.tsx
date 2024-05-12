@@ -1,5 +1,5 @@
 import { Components, Theme } from '@mui/material/styles';
-import { CheckedIcon, IndeterminateIcon, UncheckedIcon } from '../../components/Icons';
+import { CheckedIcon, IndeterminateIcon, UncheckedIcon } from '@icons';
 
 export const MuiCheckbox: Components<Theme>['MuiCheckbox'] = {
   defaultProps: {
