@@ -30,11 +30,15 @@ export const addToCart = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ErrorWithStatus(400, 'Người dùng không tồn tại!');
   }
-  const cartItem = {
-    product: req.body.product,
-    quantity: req.body.quantity,
-  };
-  user.cart.push(cartItem);
+  const { product, quantity } = req.body;
+
+  const existCartItemIndex = user.cart.findIndex((item) => item.product.equals(product));
+
+  if (existCartItemIndex !== -1) {
+    user.cart[existCartItemIndex].quantity += quantity;
+  } else {
+    user.cart.push({ product, quantity });
+  }
   await user.save();
   res.status(200).json({ message: 'Đã thêm sản phẩm vào giỏ hàng.' });
 });
@@ -61,7 +65,11 @@ export const updateCart = asyncHandler(async (req, res) => {
   if (item === -1) {
     throw new ErrorWithStatus(400, 'Sản phẩm không tồn tại trong giỏ hàng!');
   }
-  user.cart[item].quantity = quantity;
+  if (quantity === 0) {
+    user.cart.splice(item, 1);
+  } else {
+    user.cart[item].quantity = quantity;
+  }
   await user.save();
   res.status(200).json({ message: 'Đã cập nhật sản phẩm thành công.' });
 });
