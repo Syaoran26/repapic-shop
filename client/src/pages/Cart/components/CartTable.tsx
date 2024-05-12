@@ -2,7 +2,7 @@ import { Image, NoData, Quantity } from '@common/components';
 import { CartEmptyIcon, TrashIcon } from '@common/components/Icons';
 import { CartItem } from '@common/types';
 import { format } from '@common/utils';
-import { Checkbox, IconButton, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { IconButton, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { FC } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';

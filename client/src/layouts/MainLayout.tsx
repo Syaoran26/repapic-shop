@@ -1,9 +1,15 @@
-import React from 'react';
 import Header from './components/Header';
-import { Outlet } from 'react-router-dom';
 import Footer from './components/Footer';
+import { Outlet, useLocation } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
 
 const MainLayout = () => {
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <>
       <Header />

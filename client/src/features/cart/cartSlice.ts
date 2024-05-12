@@ -2,20 +2,6 @@ import { CartItem } from '@common/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-//Fake data
-const items: CartItem[] = [
-  {
-    product: {
-      _id: '1',
-      price: 120000,
-      title: 'Tranh gia đình',
-      thumbnail: 'https://api-prod-minimal-v510.vercel.app/assets/images/m_product/product_2.jpg',
-      stock: 20,
-    },
-    quantity: 2,
-  },
-];
-
 interface CartState {
   items: CartItem[];
   isError: boolean;
@@ -24,7 +10,7 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: items,
+  items: JSON.parse(localStorage.getItem('cart') || '[]') as CartItem[],
   isError: false,
   isLoading: false,
   message: '',
@@ -50,6 +36,7 @@ export const cartSlice = createSlice({
         state.items.push(newItem);
         toast.success('Đã thêm vào giỏ hàng');
       }
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       const itemIdToRemove = action.payload;
@@ -58,6 +45,7 @@ export const cartSlice = createSlice({
       if (index !== -1) {
         state.items.splice(index, 1);
       }
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
     changeQuantity: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
       const { productId, quantity } = action.payload;
@@ -73,6 +61,7 @@ export const cartSlice = createSlice({
           itemToChange.quantity = Math.min(quantity, itemToChange.product.stock);
         }
       }
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
   },
 });
