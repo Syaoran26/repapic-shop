@@ -1,7 +1,7 @@
 import { MouseEvent, useLayoutEffect, useState } from 'react';
 import { Avatar, Badge, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from '@mui/material';
 import config from '../../config';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CartIcon, HeartIcon, MenuIcon } from '@icons';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
@@ -14,7 +14,6 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -79,7 +78,7 @@ const Header = () => {
             </Tooltip>
           </div>
           <Tooltip title="Giỏ hàng">
-            <IconButton onClick={() => navigate(config.routes.cart)}>
+            <IconButton component={Link} to={config.routes.cart}>
               <Badge badgeContent={cart.items.length} color="error">
                 <CartIcon />
               </Badge>

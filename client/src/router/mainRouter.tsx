@@ -3,6 +3,7 @@ import config from '~/config';
 import MainLayout from '~/layouts/MainLayout';
 import AboutUs from '~/pages/AboutUs';
 import Cart from '~/pages/Cart';
+import Address from '~/pages/Cart/Address';
 import ContactUs from '~/pages/ContactUs';
 import Home from '~/pages/Home';
 import Shop from '~/pages/Shop';
@@ -35,6 +36,10 @@ const router: RouteObject = {
     {
       path: config.routes.cart,
       element: <Cart />,
+    },
+    {
+      path: config.routes.cartAddress,
+      element: <Address />,
     },
   ],
 };
