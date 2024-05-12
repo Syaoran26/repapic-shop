@@ -67,9 +67,6 @@ export const deleteProductToWishList = asyncHandler(async (req, res) => {
 
 export const addToCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
-  if (!user) {
-    throw new ErrorWithStatus(400, 'Người dùng không tồn tại!');
-  }
   const { product, quantity } = req.body;
 
   const existCartItemIndex = user.cart.findIndex((item) => item.product.equals(product));
@@ -80,7 +77,7 @@ export const addToCart = asyncHandler(async (req, res) => {
     user.cart.push({ product, quantity });
   }
   await user.save();
-  res.status(200).json({ message: 'Đã thêm sản phẩm vào giỏ hàng.' });
+  res.status(200).json(user.cart);
 });
 
 export const removeCart = asyncHandler(async (req, res) => {
@@ -91,7 +88,7 @@ export const removeCart = asyncHandler(async (req, res) => {
   }
   user.cart = user.cart.filter((i) => !i.product._id.equals(id));
   await user.save();
-  res.status(200).json({ message: 'Đã xóa sản phẩm ra khỏi giỏ hàng.' });
+  res.status(200).json(user.cart);
 });
 
 export const updateCart = asyncHandler(async (req, res) => {
@@ -111,5 +108,5 @@ export const updateCart = asyncHandler(async (req, res) => {
     user.cart[item].quantity = quantity;
   }
   await user.save();
-  res.status(200).json({ message: 'Đã cập nhật sản phẩm thành công.' });
+  res.status(200).json(user.cart);
 });
