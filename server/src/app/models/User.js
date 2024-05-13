@@ -103,8 +103,10 @@ const User = new Schema(
 );
 
 User.pre('save', async function () {
-  const salt = bcrypt.genSaltSync(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.password) {
+    const salt = bcrypt.genSaltSync(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 });
 
 User.pre('findOneAndUpdate', async function (next) {
