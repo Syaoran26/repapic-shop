@@ -1,5 +1,15 @@
 import { Router } from 'express';
-import { getUser, getCart, changePassword, addToCart, removeCart, updateCart, getWishList, addProductToWishList, deleteProductToWishList, } from '../app/controllers/me.js';
+import {
+  getUser,
+  getCart,
+  changePassword,
+  addToCart,
+  removeCart,
+  updateCart,
+  getWishList,
+  addProductToWishList,
+  deleteProductToWishList,
+} from '../app/controllers/me.js';
 import {} from '../app/controllers/user.js';
 
 const router = Router();
