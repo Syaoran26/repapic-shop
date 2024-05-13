@@ -12,7 +12,7 @@ export const getUser = asyncHandler(async (req, res) => {
 
 // Get user's cart
 export const getCart = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate('cart.product');
   const { cart } = user._doc;
   res.status(200).json(cart);
 });
@@ -71,6 +71,11 @@ export const addToCart = asyncHandler(async (req, res) => {
     throw new ErrorWithStatus(400, 'Người dùng không tồn tại!');
   }
   const { product, quantity } = req.body;
+
+  const existProduct = await Product.findById(product);
+  if (!existProduct) {
+    throw new ErrorWithStatus(400, 'Sản phẩm không tồn tại!');
+  }
 
   const existCartItemIndex = user.cart.findIndex((item) => item.product.equals(product));
 
