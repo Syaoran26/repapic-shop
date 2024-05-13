@@ -6,9 +6,9 @@ import {
   addToCart,
   removeCart,
   updateCart,
-  getWishList,
-  addProductToWishList,
-  deleteProductToWishList,
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
 } from '../app/controllers/me.js';
 import {} from '../app/controllers/user.js';
 
@@ -20,7 +20,7 @@ router.post('/cart', addToCart);
 router.delete('/cart/:itemId', removeCart);
 router.patch('/cart/:itemId', updateCart);
 router.patch('/change-password', changePassword);
-router.get('/wishlist', getWishList);
-router.post('/wishlist/:productId', addProductToWishList);
-router.patch('/wishlist/:productId', deleteProductToWishList);
+router.get('/wishlist', getWishlist);
+router.post('/wishlist/:productId', addToWishlist);
+router.patch('/wishlist/:productId', removeFromWishlist);
 export default router;
