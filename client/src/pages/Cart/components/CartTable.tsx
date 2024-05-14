@@ -1,9 +1,10 @@
 import { Image, NoData, Quantity } from '@common/components';
 import { CartEmptyIcon, TrashIcon } from '@common/components/Icons';
+import { useDebounce, useUpdateEffect } from '@common/hooks';
 import { CartItem } from '@common/types';
 import { format } from '@common/utils';
 import { IconButton, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { changeQuantity, removeFromCart } from '~/features/cart/cartSlice';
@@ -54,6 +55,8 @@ interface CartRowProps {
 const CartRow: FC<CartRowProps> = ({ data }) => {
   const { product, quantity } = data;
   const dispatch = useAppDispatch();
+  const [rowQuantity, setRowQuantity] = useState(quantity);
+  const debounceQuantity = useDebounce(rowQuantity, 250);
 
   const finalPrice = product.discount ? product.price - product.price * product.discount : product.price;
 
@@ -62,8 +65,12 @@ const CartRow: FC<CartRowProps> = ({ data }) => {
   };
 
   const handleChangeQuantity = (value: number) => {
-    dispatch(changeQuantity({ productId: product._id, quantity: value }));
+    setRowQuantity(value);
   };
+
+  useUpdateEffect(() => {
+    dispatch(changeQuantity({ product, quantity: debounceQuantity }));
+  }, [debounceQuantity]);
 
   return (
     <TableRow>
@@ -77,9 +84,9 @@ const CartRow: FC<CartRowProps> = ({ data }) => {
       </TableCell>
       <TableCell>{format.price(finalPrice)}</TableCell>
       <TableCell align="center">
-        <Quantity value={quantity} available={product.stock || 0} onChange={handleChangeQuantity} />
+        <Quantity value={rowQuantity} available={product.stock || 0} onChange={handleChangeQuantity} />
       </TableCell>
-      <TableCell align="right">{format.price(finalPrice * quantity)}</TableCell>
+      <TableCell align="right">{format.price(finalPrice * rowQuantity)}</TableCell>
       <TableCell>
         <IconButton color="error" onClick={handleRemove}>
           <TrashIcon />

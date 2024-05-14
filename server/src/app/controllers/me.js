@@ -78,7 +78,8 @@ export const addToCart = asyncHandler(async (req, res) => {
     user.cart.push({ product, quantity });
   }
   await user.save();
-  res.status(200).json(user.cart);
+  await user.populate('cart.product');
+  res.status(200).json({ data: user.cart, message: 'Đã thêm vào giỏ hàng' });
 });
 
 export const removeCart = asyncHandler(async (req, res) => {
@@ -89,7 +90,8 @@ export const removeCart = asyncHandler(async (req, res) => {
   }
   user.cart = user.cart.filter((i) => !i.product._id.equals(id));
   await user.save();
-  res.status(200).json(user.cart);
+  await user.populate('cart.product');
+  res.status(200).json({ data: user.cart, message: 'Đã xoá khỏi giỏ hàng' });
 });
 
 export const updateCart = asyncHandler(async (req, res) => {
@@ -109,5 +111,6 @@ export const updateCart = asyncHandler(async (req, res) => {
     user.cart[item].quantity = quantity;
   }
   await user.save();
-  res.status(200).json(user.cart);
+  await user.populate('cart.product');
+  res.status(200).json({ data: user.cart, message: 'Đã cập nhật giỏ hàng' });
 });

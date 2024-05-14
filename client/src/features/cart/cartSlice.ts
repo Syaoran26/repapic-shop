@@ -11,15 +11,39 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: JSON.parse(sessionStorage.getItem('cart') || '[]') as CartItem[],
+  items: [],
   isError: false,
   isLoading: false,
   message: '',
 };
 
-export const getCart = createAsyncThunk('auth/me/cart', async (_, thunkAPI) => {
+export const getCart = createAsyncThunk('getCart', async (_, thunkAPI) => {
   try {
     return await cartServices.getCart();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const addToCart = createAsyncThunk('addToCart', async (data: CartItem, thunkAPI) => {
+  try {
+    return await cartServices.addToCart({ product: data.product._id, quantity: data.quantity });
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const removeFromCart = createAsyncThunk('removeFromCart', async (data: string, thunkAPI) => {
+  try {
+    return await cartServices.removeFromCart(data);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const changeQuantity = createAsyncThunk('changeQuantity', async (data: CartItem, thunkAPI) => {
+  try {
+    return await cartServices.changeQuantity({ product: data.product._id, quantity: data.quantity });
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
@@ -29,51 +53,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState: initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<CartItem>) => {
-      const newItem = action.payload;
-      const existingItem = state.items.find((item) => item.product._id === newItem.product._id);
-
-      if (existingItem) {
-        const quantity = existingItem.quantity + newItem.quantity;
-        if (quantity > existingItem.product.stock) {
-          toast.error('Không thể thêm vào giỏ hàng');
-        } else {
-          existingItem.quantity = quantity;
-          toast.success('Đã thêm vào giỏ hàng');
-        }
-      } else {
-        state.items.push(newItem);
-        toast.success('Đã thêm vào giỏ hàng');
-      }
-      sessionStorage.setItem('cart', JSON.stringify(state.items));
-    },
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      const itemIdToRemove = action.payload;
-      const index = state.items.findIndex((item) => item.product._id === itemIdToRemove);
-
-      if (index !== -1) {
-        state.items.splice(index, 1);
-      }
-      sessionStorage.setItem('cart', JSON.stringify(state.items));
-    },
-    changeQuantity: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
-      const { productId, quantity } = action.payload;
-      const itemToChange = state.items.find((item) => item.product._id === productId);
-
-      if (itemToChange) {
-        if (quantity < 1) {
-          const indexToRemove = state.items.findIndex((item) => item.product._id === productId);
-          if (indexToRemove !== -1) {
-            state.items.splice(indexToRemove, 1);
-          }
-        } else {
-          itemToChange.quantity = Math.min(quantity, itemToChange.product.stock);
-        }
-      }
-      sessionStorage.setItem('cart', JSON.stringify(state.items));
-    },
     resetCart: () => {
-      sessionStorage.removeItem('cart');
       return initialState;
     },
   },
@@ -84,7 +64,7 @@ export const cartSlice = createSlice({
         state.isError = false;
         state.isLoading = true;
       })
-      .addCase(getCart.fulfilled, (state, action) => {
+      .addCase(getCart.fulfilled, (state, action: PayloadAction<CartItem[]>) => {
         state.isError = false;
         state.isLoading = false;
         state.items = action.payload;
@@ -94,10 +74,57 @@ export const cartSlice = createSlice({
         state.isLoading = false;
         state.items = [];
         state.message = action.payload.response;
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(addToCart.fulfilled, (state, action: PayloadAction<{ data: CartItem[]; message: string }>) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.items = action.payload.data;
+        toast.success(action.payload.message);
+      })
+      .addCase(addToCart.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload.response;
+        toast.error(action.payload.response.data.message);
+      })
+      .addCase(removeFromCart.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action: PayloadAction<{ data: CartItem[]; message: string }>) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.items = action.payload.data;
+        toast.success(action.payload.message);
+      })
+      .addCase(removeFromCart.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload.response;
+        toast.error(action.payload.response.data.message);
+      })
+      .addCase(changeQuantity.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(changeQuantity.fulfilled, (state, action: PayloadAction<{ data: CartItem[]; message: string }>) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.items = action.payload.data;
+      })
+      .addCase(changeQuantity.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.message = action.payload.response;
+        toast.error(action.payload.response.data.message);
       });
   },
 });
 
-export const { addToCart, removeFromCart, changeQuantity, resetCart } = cartSlice.actions;
+export const { resetCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

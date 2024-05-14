@@ -12,7 +12,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: JSON.parse(sessionStorage.getItem('user') || 'null') as User,
+  user: null,
   isError: false,
   isLoading: false,
   message: '',
