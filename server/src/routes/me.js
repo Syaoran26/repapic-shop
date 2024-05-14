@@ -11,6 +11,7 @@ import {
   removeFromWishlist,
 } from '../app/controllers/me.js';
 import {} from '../app/controllers/user.js';
+import { getUserOrderById, getUserOrders } from '../app/controllers/order.js';
 
 const router = Router();
 
@@ -23,4 +24,6 @@ router.patch('/change-password', changePassword);
 router.get('/wishlist', getWishlist);
 router.post('/wishlist/:productId', addToWishlist);
 router.patch('/wishlist/:productId', removeFromWishlist);
+router.get('orders', getUserOrders)
+router.get('orders/:orderId', getUserOrderById)
 export default router;
