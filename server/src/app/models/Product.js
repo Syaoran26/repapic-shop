@@ -1,7 +1,7 @@
 import { Schema, model, plugin } from 'mongoose';
 import slug from 'mongoose-slug-updater';
 
-const Product = new Schema(
+export const Product = new Schema(
   {
     title: {
       type: String,
