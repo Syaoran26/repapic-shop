@@ -9,8 +9,27 @@ import { RouterProvider } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ToastContainer } from 'react-toastify';
 import router from './router';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useMount, useUpdateEffect } from '@common/hooks';
+import { loginByRefreshToken } from './features/auth/authSlice';
+import { getCart, resetCart } from './features/cart/cartSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  useMount(() => {
+    dispatch(loginByRefreshToken());
+  });
+
+  useUpdateEffect(() => {
+    if (user) {
+      dispatch(getCart());
+    } else {
+      dispatch(resetCart());
+    }
+  }, [user?._id]);
+
   return (
     <div className="App">
       <Helmet defaultTitle="Repapic" titleTemplate="%s | Repapic">

@@ -103,7 +103,7 @@ const User = new Schema(
 );
 
 User.pre('save', async function () {
-  if (this.password) {
+  if (this.isModified('password')) {
     const salt = bcrypt.genSaltSync(10);
     this.password = await bcrypt.hash(this.password, salt);
   }
