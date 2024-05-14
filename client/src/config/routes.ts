@@ -13,6 +13,7 @@ const routes = {
   cart: '/gio-hang',
   cartAddress: '/gio-hang/dia-chi',
   cartPayment: '/gio-hang/thanh-toan',
+  account: '/tai-khoan',
 };
 
 export default routes;

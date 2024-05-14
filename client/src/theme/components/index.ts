@@ -20,6 +20,7 @@ import { MuiRating } from './rating.modifier';
 import { MuiSkeleton } from './skeleton.modifier';
 import { MuiTable } from './table.modifier';
 import { MuiTabs } from './tabs.modifier';
+import { MuiTextField } from './textField.modifier';
 
 export const components: Components<Theme> = {
   MuiAlert,
@@ -42,4 +43,5 @@ export const components: Components<Theme> = {
   MuiSkeleton,
   MuiTable,
   MuiTabs,
+  MuiTextField,
 };
