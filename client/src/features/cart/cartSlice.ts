@@ -1,6 +1,7 @@
 import { CartItem } from '@common/types';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import cartServices from './cartServices';
 
 interface CartState {
   items: CartItem[];
@@ -10,11 +11,19 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: JSON.parse(localStorage.getItem('cart') || '[]') as CartItem[],
+  items: JSON.parse(sessionStorage.getItem('cart') || '[]') as CartItem[],
   isError: false,
   isLoading: false,
   message: '',
 };
+
+export const getCart = createAsyncThunk('auth/me/cart', async (_, thunkAPI) => {
+  try {
+    return await cartServices.getCart();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -36,7 +45,7 @@ export const cartSlice = createSlice({
         state.items.push(newItem);
         toast.success('Đã thêm vào giỏ hàng');
       }
-      localStorage.setItem('cart', JSON.stringify(state.items));
+      sessionStorage.setItem('cart', JSON.stringify(state.items));
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       const itemIdToRemove = action.payload;
@@ -45,7 +54,7 @@ export const cartSlice = createSlice({
       if (index !== -1) {
         state.items.splice(index, 1);
       }
-      localStorage.setItem('cart', JSON.stringify(state.items));
+      sessionStorage.setItem('cart', JSON.stringify(state.items));
     },
     changeQuantity: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
       const { productId, quantity } = action.payload;
@@ -61,11 +70,34 @@ export const cartSlice = createSlice({
           itemToChange.quantity = Math.min(quantity, itemToChange.product.stock);
         }
       }
-      localStorage.setItem('cart', JSON.stringify(state.items));
+      sessionStorage.setItem('cart', JSON.stringify(state.items));
     },
+    resetCart: () => {
+      sessionStorage.removeItem('cart');
+      return initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCart.pending, (state) => {
+        state.items = [];
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(getCart.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.items = action.payload;
+      })
+      .addCase(getCart.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.items = [];
+        state.message = action.payload.response;
+      });
   },
 });
 
-export const { addToCart, removeFromCart, changeQuantity } = cartSlice.actions;
+export const { addToCart, removeFromCart, changeQuantity, resetCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

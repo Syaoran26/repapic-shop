@@ -9,7 +9,16 @@ const login = async (credentials: Credentials) => {
   const response = await api.post('/auth/login', credentials);
   const user = response.data;
   if (user) {
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
+  }
+  return user;
+};
+
+const loginByRefreshToken = async () => {
+  const response = await api.post('/auth/login-refresh');
+  const user = response.data;
+  if (user) {
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
   return user;
 };
@@ -19,5 +28,5 @@ const logout = async () => {
   localStorage.removeItem('user');
 };
 
-const authServices = { login, logout };
+const authServices = { login, logout, loginByRefreshToken };
 export default authServices;

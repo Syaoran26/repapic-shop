@@ -11,7 +11,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const user: User = JSON.parse(localStorage.getItem('user') || 'null');
+    const user: User = JSON.parse(sessionStorage.getItem('user') || 'null');
     if (user?.token) {
       config.headers.Authorization = `Bearer ${user.token}`;
     }
@@ -36,9 +36,9 @@ api.interceptors.response.use(
 
         try {
           const res = await api.put('/auth/refresh-token');
-          let user = JSON.parse(localStorage.getItem('user') || 'null');
+          let user = JSON.parse(sessionStorage.getItem('user') || 'null');
           user.token = res.data?.token;
-          localStorage.setItem('user', JSON.stringify(user));
+          sessionStorage.setItem('user', JSON.stringify(user));
           return api(config);
         } catch (error) {
           return Promise.reject(error);

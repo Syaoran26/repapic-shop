@@ -109,7 +109,7 @@ export const login = asyncHandler(async (req, res) => {
     .json({ ...user._doc, token: accessToken });
 });
 
-export const refreshToken = asyncHandler(async (req, res) => {
+export const refreshToken = asyncHandler(async (req, res, next) => {
   const refreshToken = req.signedCookies.refreshToken;
   if (!refreshToken) throw new ErrorWithStatus(400, 'Không có refresh token!');
 
@@ -118,9 +118,9 @@ export const refreshToken = asyncHandler(async (req, res) => {
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN, async (err, decoded) => {
     // eslint-disable-next-line eqeqeq
-    if (err || user._id != decoded.id) throw new ErrorWithStatus(400, 'Đã có lỗi với refresh token');
+    if (err || user._id != decoded.id) return next(new ErrorWithStatus(400, 'Đã có lỗi với refresh token'));
     const token = generateAccessToken({ id: decoded.id, isAdmin: decoded.isAdmin });
-    const newRefreshToken = generateRefreshToken({ id: decoded._id, isAdmin: decoded.isAdmin });
+    const newRefreshToken = generateRefreshToken({ id: decoded.id, isAdmin: decoded.isAdmin });
     await User.findByIdAndUpdate(decoded.id, { refreshToken: newRefreshToken });
     res
       .cookie('refreshToken', newRefreshToken, {
@@ -136,7 +136,6 @@ export const refreshToken = asyncHandler(async (req, res) => {
 
 export const logout = asyncHandler(async (req, res) => {
   const refreshToken = req.signedCookies.refreshToken;
-  if (!refreshToken) throw new ErrorWithStatus(404, 'Không có refresh token!');
   await User.findOneAndUpdate(
     { refreshToken },
     {
@@ -184,5 +183,38 @@ export const resetPassword = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(user._id, { $set: { password, otpVerify: null } });
   res.status(200).json({
     message: 'Mật khẩu đã được đổi thành công.',
+  });
+});
+
+export const loginByRefreshToken = asyncHandler(async (req, res, next) => {
+  const refreshToken = req.signedCookies.refreshToken;
+  if (!refreshToken) throw new ErrorWithStatus(400, 'Không có refresh token!');
+
+  const user = await User.findOne({ refreshToken });
+  if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN, async (err, decoded) => {
+    // eslint-disable-next-line eqeqeq
+    if (err || user._id != decoded.id) return next(new ErrorWithStatus(400, 'Đã có lỗi với refresh token'));
+    const token = generateAccessToken({ id: decoded.id, isAdmin: decoded.isAdmin });
+    const newRefreshToken = generateRefreshToken({ id: decoded.id, isAdmin: decoded.isAdmin });
+    const updatedUser = await User.findByIdAndUpdate(decoded.id, { refreshToken: newRefreshToken }).select([
+      '-otpVerify',
+      '-refreshToken',
+      '-isAdmin',
+      '-password',
+      '-cart',
+      '-wishlist',
+      '-deliveryAddress',
+    ]);
+    res
+      .cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        signed: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/api/auth',
+      })
+      .json({ ...updatedUser._doc, token });
   });
 });
