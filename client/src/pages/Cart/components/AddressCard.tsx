@@ -1,13 +1,20 @@
 import { FC } from 'react';
 import { AddressShipping } from '@common/types';
-import { Button, Chip, Link, Paper, Stack } from '@mui/material';
+import { Button, Chip, Paper, Stack } from '@mui/material';
 import config from '~/config';
+import { useNavigate } from 'react-router-dom';
 
 interface AddressCardProps {
   data: AddressShipping;
 }
 
 const AddressCard: FC<AddressCardProps> = ({ data }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(config.routes.cartPayment, { state: { address: data } });
+  };
+
   return (
     <Paper className="flex flex-col justify-between gap-4 p-6 text-sm md:flex-row">
       <Stack gap={1}>
@@ -25,7 +32,7 @@ const AddressCard: FC<AddressCardProps> = ({ data }) => {
             Xoá
           </Button>
         )}
-        <Button variant="outlined" size="small" component={Link} href={config.routes.cartPayment}>
+        <Button variant="outlined" size="small" onClick={handleClick}>
           Tiếp tục
         </Button>
       </Stack>

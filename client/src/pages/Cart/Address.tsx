@@ -63,7 +63,7 @@ const Address = () => {
           </Stack>
         </div>
         <div className="col-span-1">
-          <Order />
+          <Order editable />
         </div>
       </div>
     </Container>
