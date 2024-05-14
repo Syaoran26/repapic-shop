@@ -1,44 +1,46 @@
 import { Schema, model } from 'mongoose';
+import { Product } from './Product.js';
 
 const Order = new Schema(
   {
-    address: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     status: {
       type: String,
       enum: ['pending', 'delivering', 'completed', 'cancelled', 'refunded'],
       default: 'pending',
     },
+    paid: {
+      type: Boolean,
+      default: false,
+    },
+    deliveryInfo: {
+      name: {
+        type: String,
+        required: true,
+      },
+      address: {
+        type: String,
+        required: true,
+      },
+      phone: {
+        type: String,
+        required: true,
+      },
+    },
+    deliveryPrice: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+    },
     items: [
       {
-        title: {
-          type: String,
-          required: true,
-        },
-        slug: {
-          type: String,
-          required: true,
-        },
-        thumbnail: {
-          type: String,
-          required: true,
-        },
-        discount: {
-          type: Number,
-        },
-        price: {
-          type: Number,
+        product: {
+          type: Product,
           required: true,
         },
         quantity: {

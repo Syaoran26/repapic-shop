@@ -2,6 +2,9 @@ import { RouteObject } from 'react-router-dom';
 import config from '~/config';
 import MainLayout from '~/layouts/MainLayout';
 import AboutUs from '~/pages/AboutUs';
+import Cart from '~/pages/Cart';
+import Address from '~/pages/Cart/Address';
+import Payment from '~/pages/Cart/Payment';
 import Account from '~/pages/Account';
 import ContactUs from '~/pages/ContactUs';
 import Home from '~/pages/Home';
@@ -33,6 +36,15 @@ const router: RouteObject = {
       element: <ContactUs />
     },
     {
+      path:config.routes.cart,
+      element: <Cart />
+    },{
+      path:config.routes.cartAddress,
+      element: <Address />
+    },{
+      path:config.routes.cartPayment,
+      element: <Payment />
+    },{
       path:config.routes.account,
       element: <Account />
     }

@@ -1,5 +1,4 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
-import User from '~/common/types/UserType';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
@@ -11,9 +10,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const user: User = JSON.parse(localStorage.getItem('user') || 'null');
-    if (user?.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -36,9 +35,7 @@ api.interceptors.response.use(
 
         try {
           const res = await api.put('/auth/refresh-token');
-          let user = JSON.parse(localStorage.getItem('user') || 'null');
-          user.token = res.data?.token;
-          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('token', res.data?.token);
           return api(config);
         } catch (error) {
           return Promise.reject(error);

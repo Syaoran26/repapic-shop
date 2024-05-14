@@ -1,7 +1,5 @@
-import CityPicker from '@common/components/CityPicker';
-import DistrictPicker from '@common/components/DistrictPicker';
-import WardPicker from '@common/components/WardPicker';
-import { Autocomplete, Avatar, Button, Paper, TextField } from '@mui/material';
+import { CityPicker, DistrictPicker, WardPicker } from '@common/components';
+import {Avatar, Button, Paper, TextField } from '@mui/material';
 
 const AccountGeneral = () => {
   return (

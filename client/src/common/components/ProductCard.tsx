@@ -5,8 +5,9 @@ import { motion } from 'framer-motion';
 import { FaEye } from 'react-icons/fa6';
 import { Product } from '../types';
 import { format } from '@common/utils';
-import { toast } from 'react-toastify';
 import Image from './Image';
+import { useAppDispatch } from '~/app/hooks';
+import { addToCart } from '~/features/cart/cartSlice';
 
 const actionVariants = {
   initial: {
@@ -36,6 +37,7 @@ const buttonStyles: SxProps = {
 const ProductCard: FC<ProductCardProps> = ({ data }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1024);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,7 +49,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
   }, []);
 
   const handleAddToCart = () => {
-    toast.success('Đã thêm sản phẩm vào giỏ hàng');
+    dispatch(addToCart({ product: data, quantity: 1 }));
   };
 
   return (
