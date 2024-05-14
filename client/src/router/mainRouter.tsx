@@ -32,22 +32,25 @@ const router: RouteObject = {
       element: <AboutUs />,
     },
     {
-      path:config.routes.contactUs,
-      element: <ContactUs />
+      path: config.routes.contactUs,
+      element: <ContactUs />,
     },
     {
-      path:config.routes.cart,
-      element: <Cart />
-    },{
-      path:config.routes.cartAddress,
-      element: <Address />
-    },{
-      path:config.routes.cartPayment,
-      element: <Payment />
-    },{
-      path:config.routes.account,
-      element: <Account />
-    }
+      path: config.routes.cart,
+      element: <Cart />,
+    },
+    {
+      path: config.routes.cartAddress,
+      element: <Address />,
+    },
+    {
+      path: config.routes.cartPayment,
+      element: <Payment />,
+    },
+    {
+      path: config.routes.account,
+      element: <Account />,
+    },
   ],
 };
 
