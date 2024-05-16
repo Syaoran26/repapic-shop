@@ -12,9 +12,11 @@ const tabs = {
 
 const Account = () => {
   const [tabIndex, setTabIndex] = useState(tabs.general);
+
   const handleChange = (event: React.SyntheticEvent, newTab: string) => {
     setTabIndex(newTab);
   };
+
   return (
     <div className="mt-16 lg:mt-20">
       <Container>

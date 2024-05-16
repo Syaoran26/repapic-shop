@@ -1,28 +1,30 @@
 import asyncHandler from 'express-async-handler';
+import City from '../models/City.js';
+import District from '../models/District.js';
+import Ward from '../models/Ward.js';
 import fs from 'fs';
+import APIFeatures from '../../utils/APIFeatures.js';
 
 const CITIES = 'src/config/db/tinh_tp.json';
 const DISTRICTS = 'src/config/db/quan_huyen.json';
 const WARDS = 'src/config/db/xa_phuong.json';
 
 export const getCities = asyncHandler(async (req, res) => {
-  const rawData = fs.readFileSync(CITIES);
-  const cities = JSON.parse(rawData);
+  const features = new APIFeatures(City, req.query).filter().sort().limitFields();
+  const cities = await features.query;
   res.status(200).json(cities);
 });
 
 export const getDistricts = asyncHandler(async (req, res) => {
-  const rawData = fs.readFileSync(DISTRICTS);
-  const districts = JSON.parse(rawData);
-  const data = districts.filter((district) => district.parent_code === req.query.city);
-  res.status(200).json(data);
+  const features = new APIFeatures(District, req.query).filter().sort().limitFields();
+  const districts = await features.query;
+  res.status(200).json(districts);
 });
 
 export const getWards = asyncHandler(async (req, res) => {
-  const rawData = fs.readFileSync(WARDS);
-  const wards = JSON.parse(rawData);
-  const data = wards.filter((ward) => ward.parent_code === req.query.district);
-  res.status(200).json(data);
+  const features = new APIFeatures(Ward, req.query).filter().sort().limitFields();
+  const wards = await features.query;
+  res.status(200).json(wards);
 });
 
 export const getAddressDetail = asyncHandler(async (req, res) => {
