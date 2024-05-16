@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { useMount } from '@common/hooks';
 import { Autocomplete, TextField } from '@mui/material';
-// import { ChangeHandler } from 'react-hook-form';
 import api from '~/config/api';
 
 interface CityPickerProps {
