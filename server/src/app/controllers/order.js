@@ -40,10 +40,11 @@ export const getOrders = asyncHandler(async (req, res) => {
 
 export const createPaymentLink = asyncHandler(async (req, res) => {
   const payOS = new PayOS(process.env.PAYOS_CLIENT_ID, process.env.PAYOS_API_KEY, process.env.PAYOS_CHECKSUM_KEY);
+  // TODO: Get order id
   const order = {
     amount: 10000,
     description: 'Test QR',
-    orderCode: 1,
+    orderCode: 999999999999996,
     returnUrl: `${process.env.WEBSITE}`,
     cancelUrl: `${process.env.WEBSITE}/gio-hang`,
   };
