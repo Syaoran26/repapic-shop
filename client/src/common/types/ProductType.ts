@@ -4,6 +4,7 @@ interface Product {
   thumbnail: string;
   stock: number;
   price: number;
+  slug: string;
   rating?: number;
   description?: string;
   discount?: number;

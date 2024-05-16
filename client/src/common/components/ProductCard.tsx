@@ -8,6 +8,7 @@ import { format } from '@common/utils';
 import Image from './Image';
 import { useAppDispatch } from '~/app/hooks';
 import { addToCart } from '~/features/cart/cartSlice';
+import config from '~/config';
 
 const actionVariants = {
   initial: {
@@ -91,7 +92,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         </div>
       </div>
       <div className="flex flex-col gap-5 px-6 pt-4 pb-6">
-        <Link color="inherit" fontWeight={600} className="truncate">
+        <Link color="inherit" fontWeight={600} className="truncate" href={`${config.routes.shop}/${data.slug}`}>
           {data.title}
         </Link>
         <div className="flex justify-end gap-1 font-semibold">

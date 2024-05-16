@@ -7,9 +7,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { AddressShipping } from '@common/types';
 import Order from './components/Order';
-import { CashIcon, RocketIcon, TruckIcon } from '@common/icons';
-import { IoQrCode } from 'react-icons/io5';
+import { CashIcon, PayOSLogo, RocketIcon, TruckIcon } from '@common/icons';
 import { format } from '@common/utils';
+import { fakePaymentLink, paymentEnum } from './constants';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
 
 const Payment = () => {
   const location = useLocation();
@@ -35,6 +37,21 @@ const Payment = () => {
       setErrors((prev) => ({ ...prev, payment: 'Vui lòng chọn phương thức thanh toán' }));
     } else {
       setErrors((prev) => ({ ...prev, payment: '' }));
+    }
+    if (payment && shipping) {
+      if (payment === paymentEnum.PayOS) {
+        //   api
+        //     .post('/orders/1/payos-link')
+        //     .then((res) => openPaymentDialog(res.data.checkoutUrl))
+        //     .catch((err) => toast.error(err.response?.data.message));
+        openPaymentDialog(fakePaymentLink);
+      }
+    }
+  };
+
+  const openPaymentDialog = async function (checkoutUrl: string) {
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
     }
   };
 
@@ -92,11 +109,11 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(1)}
-                sx={payment === 1 ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === paymentEnum.PayOS ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Mã QR</h5>
-                  <IoQrCode size={32} />
+                  <PayOSLogo width={66.8} height={32} />
                 </div>
                 <p className="text-sm text-fade">Chúng tôi hỗ trợ thanh toán trước thông qua mã QR</p>
               </Paper>
@@ -104,7 +121,7 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(2)}
-                sx={payment === 2 ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === paymentEnum.Cash ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Tiền mặt</h5>
