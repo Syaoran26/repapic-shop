@@ -1,10 +1,13 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
+import AutoIncrementFactory from 'mongoose-sequence';
 import { Product } from './Product.js';
 
-const Order = new Schema(
+const AutoIncrement = AutoIncrementFactory(mongoose);
+
+const Order = new mongoose.Schema(
   {
     user: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
     status: {
@@ -53,4 +56,6 @@ const Order = new Schema(
   { timestamps: true },
 );
 
-export default model('Order', Order);
+Order.plugin(AutoIncrement, { inc_field: 'orderCode' });
+
+export default mongoose.model('Order', Order);
