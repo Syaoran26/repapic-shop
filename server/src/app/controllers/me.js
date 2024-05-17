@@ -114,3 +114,21 @@ export const updateCart = asyncHandler(async (req, res) => {
   await user.populate('cart.product');
   res.status(200).json({ data: user.cart, message: 'Đã cập nhật giỏ hàng' });
 });
+
+export const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id }).populate('items.product', 'title price');
+  res.status(200).json(orders);
+});
+
+export const getUserOrderById = asyncHandler( async (req, res) => {
+  const { orderId } = req.params;
+ 
+
+     const order = await Order.findById(orderId).populate('items.product', 'title price');
+     if (!order) {
+       throw new ErrorWithStatus(`Không tìm thấy Đơn hàng`)
+     }
+ 
+     res.status(200).json(order);
+   }
+ );
