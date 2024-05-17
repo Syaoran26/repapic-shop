@@ -41,8 +41,13 @@ const User = new Schema(
       default: false,
     },
     providerId: String,
-    address: String,
-    street: String,
+    address: {
+      city: String,
+      district: String,
+      ward: String,
+      detail: String,
+      street: String,
+    },
     status: {
       type: String,
       enum: ['pending', 'verified', 'banned'],
@@ -54,30 +59,6 @@ const User = new Schema(
     phone: {
       type: String,
     },
-    deliveryAddress: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        street: {
-          type: String,
-          require: true,
-        },
-        detail: {
-          type: String,
-          required: true,
-        },
-        phone: {
-          type: String,
-          required: true,
-        },
-        tag: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
     cart: [
       {
         product: {

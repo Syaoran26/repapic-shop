@@ -11,6 +11,13 @@ import {
   removeFromWishlist,
 } from '../app/controllers/me.js';
 import {} from '../app/controllers/user.js';
+import {
+  createDeliveryInfo,
+  updateDeliveryInfo,
+  removeDeliveryInfo,
+  getDeliveryInfos,
+  getDeliveryInfo,
+} from '../app/controllers/address.js';
 
 const router = Router();
 
@@ -23,4 +30,10 @@ router.patch('/change-password', changePassword);
 router.get('/wishlist', getWishlist);
 router.post('/wishlist/:productId', addToWishlist);
 router.patch('/wishlist/:productId', removeFromWishlist);
+router.post('/deliveries', createDeliveryInfo);
+router.put('/deliveries/:id', updateDeliveryInfo);
+router.delete('/deliveries/:id', removeDeliveryInfo);
+router.get('/deliveries/:id', getDeliveryInfo);
+router.get('/deliveries', getDeliveryInfos);
+
 export default router;
