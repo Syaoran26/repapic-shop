@@ -16,16 +16,16 @@ import { toast } from 'react-toastify';
 const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const address = location.state?.address as AddressShipping;
+  const delivery: AddressShipping = location.state?.delivery;
   const [shipping, setShipping] = useState<number>();
   const [payment, setPayment] = useState<number>();
   const [errors, setErrors] = useState({ payment: '', shipping: '' });
 
   useLayoutEffect(() => {
-    if (!address) {
+    if (!delivery) {
       navigate(-1);
     }
-  }, [address, navigate]);
+  }, [delivery, navigate]);
 
   const handleCheckout = () => {
     if (!shipping) {
@@ -161,11 +161,11 @@ const Payment = () => {
             </Stack>
             <Stack gap={1} className="text-sm">
               <div className="flex items-center gap-2">
-                <h6 className="font-semibold">{address.name}</h6>
-                <span className="text-fade">({address.home ? 'Nhà ở' : 'Văn phòng'})</span>
+                <h6 className="font-semibold">{delivery.name}</h6>
+                <span className="text-fade">({delivery.isHome ? 'Nhà ở' : 'Văn phòng'})</span>
               </div>
-              <span className="text-fade">{address.addressStr}</span>
-              <span className="text-fade">{address.phone}</span>
+              <span className="text-fade">{`${delivery.address.street}, ${delivery.address.detail}`}</span>
+              <span className="text-fade">{delivery.phone}</span>
             </Stack>
           </Paper>
           <Order editable />
