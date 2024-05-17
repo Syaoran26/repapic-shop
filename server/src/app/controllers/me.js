@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import { ErrorWithStatus } from '../../utils/error.js';
 import Product from '../models/Product.js';
-
+import Order from '../models/Order.js';
 // Get current user
 export const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
@@ -117,6 +117,7 @@ export const updateCart = asyncHandler(async (req, res) => {
 
 export const getUserOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id }).populate('items.product', 'title price');
+  console.log(req.user._id)
   res.status(200).json(orders);
 });
 
@@ -132,3 +133,39 @@ export const getUserOrderById = asyncHandler( async (req, res) => {
      res.status(200).json(order);
    }
  );
+
+ export const cancelOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new ErrorWithStatus(`Không tìm thấy Đơn hàng`);
+  }
+
+  if (order.status === 'cancelled') {
+    throw new ErrorWithStatus(`Đơn hàng đã được hủy trước đó`);
+  }
+
+  await Promise.all(
+    order.items.map(async (item) => {
+      const product = await Product.findById(item.product);
+      if (!product) {
+        throw new ErrorWithStatus(`Không tìm thấy sản phẩm`);
+      }
+
+      await Product.findByIdAndUpdate(
+        item.product,
+        { $inc: { stock: item.quantity } },
+        { new: true, runValidators: false },
+      );
+    }),
+  );
+
+  const updatedOrder = await Order.findByIdAndUpdate(
+    orderId,
+    { status: 'cancelled' },
+    { new: true, runValidators: false },
+  );
+
+  res.status(200).json(updatedOrder);
+});

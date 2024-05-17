@@ -2,6 +2,7 @@ import Order from '../models/Order.js';
 import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
 import Product from '../models/Product.js';
+import APIFeatures from '../../utils/APIFeatures.js';
 
 export const createOrder = asyncHandler(async (req, res) => {
   const newOrder = new Order(req.body);
@@ -45,22 +46,15 @@ export const checkOutOrder = asyncHandler(async (req, res) => {
     items.map(async (item) => {
       const product = await Product.findById(item.product);
       if (!product) {
-        throw new ErrorWithStatus(`Không tìm thấy sản phẩm`);
+        throw new ErrorWithStatus(`Không tìm thấy sản phẩm`, 404);
       }
 
       if (product.stock < item.quantity) {
-        throw new ErrorWithStatus(`Không đủ số lượng sản phẩm trong kho`);
+        throw new ErrorWithStatus(`Không đủ số lượng sản phẩm trong kho`, 400);
       }
 
-      const updatedProduct = await Product.findByIdAndUpdate(
-        item.product,
-        { $inc: { stock: -item.quantity } },
-        { new: true, runValidators: true },
-      );
-
-      if (!updatedProduct) {
-        throw new ErrorWithStatus(`Cập nhật số lượng sản phẩm thất bại`);
-      }
+      product.stock -= item.quantity;
+      await product.save({validateBeforeSave:false});
 
       return { product: product._id, quantity: item.quantity };
     }),
@@ -76,7 +70,7 @@ export const checkOutOrder = asyncHandler(async (req, res) => {
     items: populatedItems,
   });
 
-  const savedOrder = await newOrder.save();
+  const savedOrder = await newOrder.save({validateBeforeSave:false});
 
   res.status(201).json(savedOrder);
 });
@@ -90,7 +84,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     throw new ErrorWithStatus(`Mã trạng thái không hợp lệ`);
   }
 
-  const updatedOrder = await Order.findByIdAndUpdate(orderId, { status }, { new: true, runValidators: true });
+  const updatedOrder = await Order.findByIdAndUpdate(orderId, { status }, { new: true, runValidators: false });
 
   if (!updatedOrder) {
     throw new ErrorWithStatus(`Không tìm thấy Đơn hàng`);
@@ -99,41 +93,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   res.status(200).json(updatedOrder);
 });
 
-export const cancelOrder = asyncHandler(async (req, res) => {
-  const { orderId } = req.params;
 
-  const order = await Order.findById(orderId);
-  if (!order) {
-    throw new ErrorWithStatus(`Không tìm thấy Đơn hàng`);
-  }
-
-  if (order.status === 'cancelled') {
-    throw new ErrorWithStatus(`Đơn hàng đã được hủy trước đó`);
-  }
-
-  await Promise.all(
-    order.items.map(async (item) => {
-      const product = await Product.findById(item.product);
-      if (!product) {
-        throw new ErrorWithStatus(`Không tìm thấy sản phẩm`);
-      }
-
-      await Product.findByIdAndUpdate(
-        item.product,
-        { $inc: { stock: item.quantity } },
-        { new: true, runValidators: true }
-      );
-    })
-  );
-
-  const updatedOrder = await Order.findByIdAndUpdate(
-    orderId,
-    { status: 'cancelled' },
-    { new: true, runValidators: true },
-  );
-
-  res.status(200).json(updatedOrder);
-});
 
 export const deleteOrderByAdmin = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
