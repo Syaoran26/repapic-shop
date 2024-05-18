@@ -1,9 +1,15 @@
 interface AddressShipping {
+  _id: string;
   name: string;
-  home: boolean;
+  isHome: boolean;
   phone: string;
-  addressStr: string;
-  isDefault: boolean;
+  address: {
+    ward?: string;
+    district: string;
+    city: string;
+    detail?: string;
+    street: string;
+  };
 }
 
 export default AddressShipping;

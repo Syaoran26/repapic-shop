@@ -6,8 +6,22 @@ import ProductTabs from './ProductTabs';
 import { IoCard, IoGift } from 'react-icons/io5';
 import { FaHeadphones } from 'react-icons/fa6';
 import { BiSolidDiscount } from 'react-icons/bi';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '~/app/hooks';
+import { getProduct } from '~/features/product/productSlice';
 
 const ProductDetail = () => {
+  const { slug } = useParams();
+  const dispatch = useAppDispatch();
+  const { product } = useAppSelector((state) => state.product);
+
+  useEffect(() => {
+    if (slug) {
+      dispatch(getProduct(slug));
+    }
+  }, [slug, dispatch]);
+
   return (
     <div className="pt-16 md:pt-20">
       <Container className="mt-10 mb-[120px]">
@@ -20,7 +34,7 @@ const ProductDetail = () => {
               Cửa hàng
             </Link>
             <Link color="inherit">Danh mục</Link>
-            <span>Tên sản phẩm</span>
+            <span>{product?.title}</span>
           </Breadcrumbs>
         </div>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 xl:grid-cols-12 xl:gap-16">

@@ -15,6 +15,7 @@ const ProductList: CartItem[] = [
       title:'Nike Air Force 1 NDESTRUKT',
       description:'abc',
       discount:10000,
+      slug:'abc'
     },
     quantity:1
   },
@@ -27,6 +28,7 @@ const ProductList: CartItem[] = [
       title:'Nike Air Force 1 NDESTRUKT',
       description:'abc',
       discount:10000,
+      slug:'abc'
     },
     quantity:1
   },
@@ -39,6 +41,7 @@ const ProductList: CartItem[] = [
       title:'Nike Air Force 1 NDESTRUKT',
       description:'abc',
       discount:10000,
+      slug:'abc'
     },
     quantity:1
   },
@@ -56,10 +59,16 @@ const Userdata: User[] = [
 const Adderssdata: AddressShipping[] = [
   {
     name: 'Lucian Obrien',
-    home: true,
-    addressStr: '19034 Verna Unions Apt. 164 - Honolulu, RI / 87535',
-    phone: '365-374-4961',
-    isDefault: true,
+    _id:'1',
+    address:{
+      city:'Da Nang',
+      district:'123',
+      street:'19034 Verna Unions Apt',
+      detail:'. 164 - Honolulu, RI / 87535',
+      ward:'ab'
+    },
+    phone:'365-374-4961',
+    isHome:true
   },
 ];
 

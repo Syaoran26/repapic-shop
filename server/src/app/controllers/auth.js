@@ -111,7 +111,7 @@ export const login = asyncHandler(async (req, res) => {
 
 export const refreshToken = asyncHandler(async (req, res, next) => {
   const refreshToken = req.signedCookies.refreshToken;
-  if (!refreshToken) throw new ErrorWithStatus(400, 'Không có refresh token!');
+  if (!refreshToken) throw new ErrorWithStatus(400, 'Vui lòng đăng nhập');
 
   const user = await User.findOne({ refreshToken });
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');
@@ -188,7 +188,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
 export const loginByRefreshToken = asyncHandler(async (req, res, next) => {
   const refreshToken = req.signedCookies.refreshToken;
-  if (!refreshToken) throw new ErrorWithStatus(400, 'Không có refresh token!');
+  if (!refreshToken) throw new ErrorWithStatus(400, 'Vui lòng đăng nhập');
 
   const user = await User.findOne({ refreshToken });
   if (!user) throw new ErrorWithStatus(404, 'Không tồn tài người dùng!');

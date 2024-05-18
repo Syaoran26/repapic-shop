@@ -1,12 +1,18 @@
-import fs from 'fs';
+import Ward from '../app/models/Ward.js';
+import District from '../app/models/District.js';
+import City from '../app/models/City.js';
 
-const WARDS = 'src/config/db/xa_phuong.json';
-
-export const getAddress = (code) => {
-  if (code) {
-    const rawData = fs.readFileSync(WARDS);
-    const wards = JSON.parse(rawData);
-    const data = wards.find((ward) => ward.code === code);
-    return data;
+export const getAddress = async (city, district, ward) => {
+  if (ward) {
+    const data = await Ward.findOne({ code: ward });
+    return data.path_with_type;
+  }
+  if (district) {
+    const data = await District.findOne({ code: district });
+    return data.path_with_type;
+  }
+  if (city) {
+    const data = await City.findOne({ code: city });
+    return data.name_with_type;
   }
 };

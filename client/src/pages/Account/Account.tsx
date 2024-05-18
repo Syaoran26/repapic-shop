@@ -4,21 +4,22 @@ import { Container, Tab } from '@mui/material';
 import AccountGeneral from './AccountGeneral';
 import AccountSecurity from './AccountSecurity';
 import { KeyIcon, UserCardIcon } from '@common/components/Icons';
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus } from 'react-icons/fa6';
 import AccountOrder from './AccountOrder';
-
 
 const tabs = {
   general: 'general',
   security: 'security',
-  order: 'order'
+  order: 'order',
 };
 
 const Account = () => {
   const [tabIndex, setTabIndex] = useState(tabs.general);
+
   const handleChange = (event: React.SyntheticEvent, newTab: string) => {
     setTabIndex(newTab);
   };
+
   return (
     <div className="mt-16 lg:mt-20">
       <Container>

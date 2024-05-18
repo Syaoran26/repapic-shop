@@ -6,5 +6,6 @@ export interface IconProps {
 }
 
 export { default as CashIcon } from './CashIcon';
+export { default as PayOSLogo } from './PayOSLogo';
 export { default as RocketIcon } from './RocketIcon';
 export { default as TruckIcon } from './TruckIcon';

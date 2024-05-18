@@ -7,23 +7,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { AddressShipping } from '@common/types';
 import Order from './components/Order';
-import { CashIcon, RocketIcon, TruckIcon } from '@common/icons';
-import { IoQrCode } from 'react-icons/io5';
+import { CashIcon, PayOSLogo, RocketIcon, TruckIcon } from '@common/icons';
 import { format } from '@common/utils';
+import { fakePaymentLink, paymentEnum } from './constants';
+import api from '~/config/api';
+import { toast } from 'react-toastify';
 
 const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const address = location.state?.address as AddressShipping;
+  const delivery: AddressShipping = location.state?.delivery;
   const [shipping, setShipping] = useState<number>();
   const [payment, setPayment] = useState<number>();
   const [errors, setErrors] = useState({ payment: '', shipping: '' });
 
   useLayoutEffect(() => {
-    if (!address) {
+    if (!delivery) {
       navigate(-1);
     }
-  }, [address, navigate]);
+  }, [delivery, navigate]);
 
   const handleCheckout = () => {
     if (!shipping) {
@@ -35,6 +37,21 @@ const Payment = () => {
       setErrors((prev) => ({ ...prev, payment: 'Vui lòng chọn phương thức thanh toán' }));
     } else {
       setErrors((prev) => ({ ...prev, payment: '' }));
+    }
+    if (payment && shipping) {
+      if (payment === paymentEnum.PayOS) {
+        //   api
+        //     .post('/orders/1/payos-link')
+        //     .then((res) => openPaymentDialog(res.data.checkoutUrl))
+        //     .catch((err) => toast.error(err.response?.data.message));
+        openPaymentDialog(fakePaymentLink);
+      }
+    }
+  };
+
+  const openPaymentDialog = async function (checkoutUrl: string) {
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
     }
   };
 
@@ -92,11 +109,11 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(1)}
-                sx={payment === 1 ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === paymentEnum.PayOS ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Mã QR</h5>
-                  <IoQrCode size={32} />
+                  <PayOSLogo width={66.8} height={32} />
                 </div>
                 <p className="text-sm text-fade">Chúng tôi hỗ trợ thanh toán trước thông qua mã QR</p>
               </Paper>
@@ -104,7 +121,7 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(2)}
-                sx={payment === 2 ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === paymentEnum.Cash ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Tiền mặt</h5>
@@ -144,11 +161,11 @@ const Payment = () => {
             </Stack>
             <Stack gap={1} className="text-sm">
               <div className="flex items-center gap-2">
-                <h6 className="font-semibold">{address.name}</h6>
-                <span className="text-fade">({address.home ? 'Nhà ở' : 'Văn phòng'})</span>
+                <h6 className="font-semibold">{delivery.name}</h6>
+                <span className="text-fade">({delivery.isHome ? 'Nhà ở' : 'Văn phòng'})</span>
               </div>
-              <span className="text-fade">{address.addressStr}</span>
-              <span className="text-fade">{address.phone}</span>
+              <span className="text-fade">{`${delivery.address.street}, ${delivery.address.detail}`}</span>
+              <span className="text-fade">{delivery.phone}</span>
             </Stack>
           </Paper>
           <Order editable />
