@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const DeliveryInfo = new Schema(
+export const DeliveryInfo = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,

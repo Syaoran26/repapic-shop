@@ -18,6 +18,7 @@ import {
   getDeliveryInfos,
   getDeliveryInfo,
 } from '../app/controllers/address.js';
+import { cancelOrder } from '../app/controllers/order.js';
 
 const router = Router();
 
@@ -35,5 +36,6 @@ router.put('/deliveries/:id', updateDeliveryInfo);
 router.delete('/deliveries/:id', removeDeliveryInfo);
 router.get('/deliveries/:id', getDeliveryInfo);
 router.get('/deliveries', getDeliveryInfos);
+router.patch('/orders/:id/cancel', cancelOrder);
 
 export default router;
