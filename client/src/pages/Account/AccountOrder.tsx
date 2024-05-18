@@ -1,17 +1,46 @@
 import { format } from '@common/utils';
 import { Paper } from '@mui/material';
 import UserCart, { User } from './component/UserCart';
-import { AddressShipping } from '@common/types';
+import { AddressShipping, CartItem } from '@common/types';
 import AddressCart from './component/AddressCart';
-import ProductCart, { Product } from './component/ProductCart';
+import ProductCart from './component/ProductCart';
 
-const ProductList: Product[] = [
+const ProductList: CartItem[] = [
   {
-    name: 'Nike Air Force 1 NDESTRUKT',
-    image: '/images/m_product/product_1.jpg',
-    type: '16H9UR0',
-    price: 210000,
-    quantity: 1,
+    product:{
+      _id:'1',
+      price:200000,
+      stock:100,
+      thumbnail:'/images/m_product/product_1.jpg',
+      title:'Nike Air Force 1 NDESTRUKT',
+      description:'abc',
+      discount:10000,
+    },
+    quantity:1
+  },
+  {
+    product:{
+      _id:'1',
+      price:200000,
+      stock:100,
+      thumbnail:'/images/m_product/product_1.jpg',
+      title:'Nike Air Force 1 NDESTRUKT',
+      description:'abc',
+      discount:10000,
+    },
+    quantity:1
+  },
+  {
+    product:{
+      _id:'1',
+      price:200000,
+      stock:100,
+      thumbnail:'/images/m_product/product_1.jpg',
+      title:'Nike Air Force 1 NDESTRUKT',
+      description:'abc',
+      discount:10000,
+    },
+    quantity:1
   },
 ];
 
@@ -40,7 +69,7 @@ const AccountOrder = () => {
       <div className="flex flex-col col-span-2 gap-6 p-3">
         <Paper className="overflow-hidden">
           <div className="px-6 pt-6 ">
-            <p className="m-0 text-lg font-bold">Details</p>
+            <p className="m-0 text-lg font-bold">Chi tiết</p>
           </div>
           <div className="px-6">
             <div>
@@ -50,23 +79,19 @@ const AccountOrder = () => {
             </div>
             <div className="flex flex-col items-end gap-4 my-6 text-right">
               <div className="flex flex-row">
-                <p className="text-fade">Subtotal</p>
+                <p className="text-fade">Tổng tiền hàng</p>
                 <p className="w-40 text-sm font-semibold">{format.price(210000)}</p>
               </div>
               <div className="flex flex-row">
-                <p className="text-fade">Shipping</p>
+                <p className="text-fade">Phí ship</p>
                 <p className="w-40 text-error">{format.price(-10000)}</p>
               </div>
               <div className="flex flex-row">
-                <p className="text-fade">Discount</p>
+                <p className="text-fade">Giảm giá</p>
                 <p className="w-40 text-error">{format.price(-10000)}</p>
-              </div>
-              <div className="flex flex-row">
-                <p className="text-fade">Taxes</p>
-                <p className="w-40">{format.price(-10000)}</p>
               </div>
               <div className="flex flex-row font-semibold">
-                <p>Total</p>
+                <p>Tổng thanh toán</p>
                 <p className="w-40">{format.price(180000)}</p>
               </div>
             </div>
@@ -76,7 +101,7 @@ const AccountOrder = () => {
       <div className="col-span-1 p-3">
         <Paper className="overflow-hidden">
           <div className="px-6 pt-6">
-            <p className="m-0 text-lg font-bold">Customer Info</p>
+            <p className="m-0 text-lg font-bold">Thông tin khách hàng</p>
           </div>
           <div>
             {Userdata.map((user, index) => (
@@ -85,7 +110,7 @@ const AccountOrder = () => {
           </div>
           <hr className="p-0 border border-t-0 border-dashed border-x-0" />
           <div className="px-6 pt-6">
-            <p className="m-0 text-lg font-bold">Shipping</p>
+            <p className="m-0 text-lg font-bold">Địa chỉ vận chuyển</p>
           </div>
           <div>
             {Adderssdata.map((address, index) => (

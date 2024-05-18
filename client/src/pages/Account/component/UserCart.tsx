@@ -23,10 +23,10 @@ const UserCart: FC<UserProps> = ({data}) => {
               <h6 className="m-0 font-semibold">{data.name}</h6>
               <p className="text-fade">{data.email}</p>
               <div>
-                IP Address:<span className="text-fade ml-[2px]">{data.IPaddress}</span>
+                Địa chỉ IP:<span className="text-fade ml-[2px]">{data.IPaddress}</span>
               </div>
               <Button variant="text" color="error" startIcon={<FaPlus />}>
-                Add to Blacklist
+                Thêm vào danh sách đen
               </Button>
             </div>
     </div>
