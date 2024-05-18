@@ -9,7 +9,7 @@ import { AddressShipping } from '@common/types';
 import Order from './components/Order';
 import { CashIcon, PayOSLogo, RocketIcon, TruckIcon } from '@common/icons';
 import { format } from '@common/utils';
-import { fakePaymentLink, paymentEnum } from './constants';
+import { fakePaymentLink, PaymentEnum, ShippingCost, ShippingEnum } from './constants';
 import api from '~/config/api';
 import { toast } from 'react-toastify';
 
@@ -17,9 +17,10 @@ const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const delivery: AddressShipping = location.state?.delivery;
-  const [shipping, setShipping] = useState<number>();
+  const [shipping, setShipping] = useState<ShippingEnum>();
   const [payment, setPayment] = useState<number>();
   const [errors, setErrors] = useState({ payment: '', shipping: '' });
+  const [total, setTotal] = useState<number>();
 
   useLayoutEffect(() => {
     if (!delivery) {
@@ -28,24 +29,20 @@ const Payment = () => {
   }, [delivery, navigate]);
 
   const handleCheckout = () => {
-    if (!shipping) {
-      setErrors((prev) => ({ ...prev, shipping: 'Vui lòng chọn cách vận chuyển' }));
-    } else {
-      setErrors((prev) => ({ ...prev, shipping: '' }));
-    }
-    if (!payment) {
-      setErrors((prev) => ({ ...prev, payment: 'Vui lòng chọn phương thức thanh toán' }));
-    } else {
-      setErrors((prev) => ({ ...prev, payment: '' }));
-    }
+    setErrors({
+      shipping: shipping ? '' : 'Vui lòng chọn cách vận chuyển',
+      payment: payment ? '' : 'Vui lòng chọn phương thức thanh toán',
+    });
     if (payment && shipping) {
-      if (payment === paymentEnum.PayOS) {
-        //   api
-        //     .post('/orders/1/payos-link')
-        //     .then((res) => openPaymentDialog(res.data.checkoutUrl))
-        //     .catch((err) => toast.error(err.response?.data.message));
-        openPaymentDialog(fakePaymentLink);
-      }
+      api
+        .post('/orders', { deliveryInfo: delivery, deliveryPrice: ShippingCost[shipping], total })
+        .then((res) => {
+          console.log(res.data);
+          if (payment === PaymentEnum.PayOS) {
+            openPaymentDialog(fakePaymentLink);
+          }
+        })
+        .catch((err) => toast.error(err.response?.data.message));
     }
   };
 
@@ -70,8 +67,8 @@ const Payment = () => {
               <Paper
                 variant="outlined"
                 className="p-5"
-                onClick={() => setShipping(1)}
-                sx={shipping === 1 ? { borderColor: 'var(--default-color)' } : undefined}
+                onClick={() => setShipping(ShippingEnum.Standard)}
+                sx={shipping === ShippingEnum.Standard ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Tiêu chuẩn</h5>
@@ -85,8 +82,8 @@ const Payment = () => {
               <Paper
                 variant="outlined"
                 className="p-5"
-                onClick={() => setShipping(2)}
-                sx={shipping === 2 ? { borderColor: 'var(--default-color)' } : undefined}
+                onClick={() => setShipping(ShippingEnum.Express)}
+                sx={shipping === ShippingEnum.Express ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Hoả tốc</h5>
@@ -109,7 +106,7 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(1)}
-                sx={payment === paymentEnum.PayOS ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === PaymentEnum.PayOS ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Mã QR</h5>
@@ -121,7 +118,7 @@ const Payment = () => {
                 variant="outlined"
                 className="p-5"
                 onClick={() => setPayment(2)}
-                sx={payment === paymentEnum.Cash ? { borderColor: 'var(--default-color)' } : undefined}
+                sx={payment === PaymentEnum.Cash ? { borderColor: 'var(--default-color)' } : undefined}
               >
                 <div className="flex items-center">
                   <h5 className="flex-1 font-semibold">Tiền mặt</h5>
@@ -168,7 +165,7 @@ const Payment = () => {
               <span className="text-fade">{delivery.phone}</span>
             </Stack>
           </Paper>
-          <Order editable />
+          <Order editable shipping={shipping} getTotal={setTotal} />
           <div className="mt-6">
             <Button size="large" fullWidth onClick={handleCheckout}>
               Hoàn thành

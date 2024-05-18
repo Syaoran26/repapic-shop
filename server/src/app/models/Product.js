@@ -1,5 +1,5 @@
 import { Schema, model, plugin } from 'mongoose';
-import slug from 'mongoose-slug-updater';
+// import slug from 'mongoose-slug-updater';
 
 export const Product = new Schema(
   {
@@ -10,7 +10,6 @@ export const Product = new Schema(
     slug: {
       type: String,
       slug: 'title',
-      unique: true,
     },
     thumbnail: {
       type: String,
@@ -54,6 +53,6 @@ export const Product = new Schema(
 );
 
 //Add plugin
-plugin(slug);
+// plugin(slug);
 
 export default model('Product', Product);

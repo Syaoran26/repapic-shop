@@ -2,7 +2,7 @@ import { Image, NoData, Quantity } from '@common/components';
 import { CartEmptyIcon, TrashIcon } from '@common/components/Icons';
 import { useDebounce, useUpdateEffect } from '@common/hooks';
 import { CartItem } from '@common/types';
-import { format } from '@common/utils';
+import { format, functions } from '@common/utils';
 import { IconButton, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { FC, useState } from 'react';
 import SimpleBar from 'simplebar-react';
@@ -58,8 +58,6 @@ const CartRow: FC<CartRowProps> = ({ data }) => {
   const [rowQuantity, setRowQuantity] = useState(quantity);
   const debounceQuantity = useDebounce(rowQuantity, 250);
 
-  const finalPrice = product.discount ? product.price - product.price * product.discount : product.price;
-
   const handleRemove = () => {
     dispatch(removeFromCart(product._id));
   };
@@ -82,11 +80,11 @@ const CartRow: FC<CartRowProps> = ({ data }) => {
           <h6 className="font-semibold line-clamp-2">{product.title}</h6>
         </Stack>
       </TableCell>
-      <TableCell>{format.price(finalPrice)}</TableCell>
+      <TableCell>{format.price(product.price, product.discount)}</TableCell>
       <TableCell align="center">
         <Quantity value={rowQuantity} available={product.stock || 0} onChange={handleChangeQuantity} />
       </TableCell>
-      <TableCell align="right">{format.price(finalPrice * rowQuantity)}</TableCell>
+      <TableCell align="right">{format.price(functions.finalPrice(product) * rowQuantity)}</TableCell>
       <TableCell>
         <IconButton color="error" onClick={handleRemove}>
           <TrashIcon />

@@ -1,4 +1,4 @@
-export const error = (err, req, res, next) => {
+export const error = (err, req, res) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Đã có lỗi xảy ra!';
   return res.status(errorStatus).json({

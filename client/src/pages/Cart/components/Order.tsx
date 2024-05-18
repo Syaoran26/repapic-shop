@@ -1,14 +1,27 @@
-import { FC } from 'react';
-import { format } from '@common/utils';
+import { FC, useEffect } from 'react';
+import { format, functions } from '@common/utils';
 import { Button, FormControl, InputAdornment, Link, OutlinedInput, Paper, Stack } from '@mui/material';
 import { FaPen } from 'react-icons/fa6';
 import config from '~/config';
+import { useAppSelector } from '~/app/hooks';
+import { ShippingCost, ShippingEnum } from '../constants';
 
 interface OrderProps {
   editable?: boolean;
+  shipping?: ShippingEnum;
+  getTotal?: (value: number) => void;
 }
 
-const Order: FC<OrderProps> = ({ editable = false }) => {
+const Order: FC<OrderProps> = ({ editable = false, shipping, getTotal }) => {
+  const { items } = useAppSelector((state) => state.cart);
+
+  const subtotal = items.reduce((total, item) => total + functions.finalPrice(item.product) * item.quantity, 0);
+  const total = subtotal + (shipping ? ShippingCost[shipping] : 0);
+
+  useEffect(() => {
+    getTotal?.(total);
+  }, [total, getTotal]);
+
   return (
     <Paper className="p-6">
       <Stack direction="row" alignItems="center" justifyContent="space-between" marginBottom={3}>
@@ -28,11 +41,11 @@ const Order: FC<OrderProps> = ({ editable = false }) => {
       <Stack gap={2} className="text-sm">
         <Stack direction="row" justifyContent="space-between">
           <span className="text-fade">Tổng tiền hàng</span>
-          <span className="font-semibold">{format.price(100000)}</span>
+          <span className="font-semibold">{format.price(subtotal)}</span>
         </Stack>
         <Stack direction="row" justifyContent="space-between">
           <span className="text-fade">Phí ship</span>
-          <span className="font-semibold">Free</span>
+          <span className="font-semibold">{shipping ? format.price(ShippingCost[shipping]) : 'Free'}</span>
         </Stack>
         <Stack direction="row" justifyContent="space-between">
           <span className="text-fade">Giảm giá</span>
@@ -41,7 +54,7 @@ const Order: FC<OrderProps> = ({ editable = false }) => {
         <hr className="border-t border-dashed" />
         <Stack direction="row" justifyContent="space-between" className="text-base font-semibold">
           <span>Tổng thanh toán</span>
-          <span className="text-error">{format.price(120000)}</span>
+          <span className="text-error">{format.price(total)}</span>
         </Stack>
         {!editable && (
           <FormControl>
