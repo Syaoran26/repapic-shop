@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
 import Product from '../models/Product.js';
 import APIFeatures from '../../utils/APIFeatures.js';
+import PayOS from '@payos/node';
 
 export const createOrder = asyncHandler(async (req, res) => {
   const newOrder = new Order(req.body);
@@ -54,7 +55,7 @@ export const checkOutOrder = asyncHandler(async (req, res) => {
       }
 
       product.stock -= item.quantity;
-      await product.save({validateBeforeSave:false});
+      await product.save({ validateBeforeSave: false });
 
       return { product: product._id, quantity: item.quantity };
     }),
@@ -70,7 +71,7 @@ export const checkOutOrder = asyncHandler(async (req, res) => {
     items: populatedItems,
   });
 
-  const savedOrder = await newOrder.save({validateBeforeSave:false});
+  const savedOrder = await newOrder.save({ validateBeforeSave: false });
 
   res.status(201).json(savedOrder);
 });
@@ -92,8 +93,6 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedOrder);
 });
-
-
 
 export const deleteOrderByAdmin = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
@@ -123,4 +122,18 @@ export const getOrderById = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json(order);
+});
+
+export const createPaymentLink = asyncHandler(async (req, res) => {
+  const payOS = new PayOS(process.env.PAYOS_CLIENT_ID, process.env.PAYOS_API_KEY, process.env.PAYOS_CHECKSUM_KEY);
+  // TODO: Get order id
+  const order = {
+    amount: 10000,
+    description: 'Test QR',
+    orderCode: 999999999999996,
+    returnUrl: `${process.env.WEBSITE}`,
+    cancelUrl: `${process.env.WEBSITE}/gio-hang`,
+  };
+  const paymentLink = await payOS.createPaymentLink(order);
+  res.json(paymentLink);
 });

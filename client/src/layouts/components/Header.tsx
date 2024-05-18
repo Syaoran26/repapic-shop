@@ -117,7 +117,7 @@ const Header = () => {
                 <MenuItem component={Link} to={config.routes.home}>
                   Trang chủ
                 </MenuItem>
-                <MenuItem component={Link} to={config.routes.home}>
+                <MenuItem component={Link} to={config.routes.account}>
                   Tài khoản
                 </MenuItem>
                 <MenuItem onClick={() => dispatch(logout())}>Đăng xuất</MenuItem>

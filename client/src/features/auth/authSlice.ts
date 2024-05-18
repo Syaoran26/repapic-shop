@@ -78,7 +78,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload.response;
-        toast.error(action.payload.response?.data.message || constants.sthWentWrong);
+        toast.error(action.payload?.response?.data.message || constants.sthWentWrong);
       })
       .addCase(loginByRefreshToken.pending, (state) => {
         state.user = null;
@@ -94,7 +94,7 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.user = null;
-        state.message = action.payload.response;
+        state.message = action.payload?.response;
       });
   },
 });

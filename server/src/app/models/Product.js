@@ -27,7 +27,6 @@ export const Product = new Schema(
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      required: true,
     },
     price: {
       type: Number,

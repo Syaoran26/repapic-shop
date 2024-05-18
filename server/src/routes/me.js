@@ -11,8 +11,16 @@ import {
   removeFromWishlist,
 } from '../app/controllers/me.js';
 import {} from '../app/controllers/user.js';
-
-import { getUserOrders, getUserOrderById, cancelOrder } from '../app/controllers/me.js';
+import {
+  createDeliveryInfo,
+  updateDeliveryInfo,
+  removeDeliveryInfo,
+  getDeliveryInfos,
+  getDeliveryInfo,
+  getUserOrders,
+  getUserOrderById,
+  cancelOrder,
+} from '../app/controllers/address.js';
 
 const router = Router();
 
@@ -28,5 +36,11 @@ router.patch('/wishlist/:productId', removeFromWishlist);
 router.get('/orders', getUserOrders);
 router.get('/orders/:orderId', getUserOrderById);
 router.patch('/orders/:orderId/cancel', cancelOrder);
+
+router.post('/deliveries', createDeliveryInfo);
+router.put('/deliveries/:id', updateDeliveryInfo);
+router.delete('/deliveries/:id', removeDeliveryInfo);
+router.get('/deliveries/:id', getDeliveryInfo);
+router.get('/deliveries', getDeliveryInfos);
 
 export default router;
