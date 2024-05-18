@@ -50,7 +50,7 @@ const AccountGeneral = () => {
       <div className="col-span-2 p-3">
         <Paper className="p-6">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid-cols-2 gap-y-6 gap-x-4 md:grid ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
               <TextField
                 id="name"
                 label="Tên"
@@ -83,7 +83,7 @@ const AccountGeneral = () => {
                 multiline
                 rows={4}
                 label="Mô tả"
-                className="col-span-2"
+                className="md:col-span-2"
                 {...register('description')}
               />
             </div>
