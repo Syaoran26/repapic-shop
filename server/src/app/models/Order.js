@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import AutoIncrementFactory from 'mongoose-sequence';
 import { Product } from './Product.js';
+import { DeliveryInfo } from './DeliveryInfo.js';
 
 const AutoIncrement = AutoIncrementFactory(mongoose);
 
@@ -20,18 +21,7 @@ const Order = new mongoose.Schema(
       default: false,
     },
     deliveryInfo: {
-      name: {
-        type: String,
-        required: true,
-      },
-      address: {
-        type: String,
-        required: true,
-      },
-      phone: {
-        type: String,
-        required: true,
-      },
+      type: DeliveryInfo,
     },
     deliveryPrice: {
       type: Number,

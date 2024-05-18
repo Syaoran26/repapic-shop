@@ -1,21 +1,21 @@
 import { Router } from 'express';
 import {
-  createOrder,
+  checkout,
   createPaymentLink,
   deleteOrder,
   getOrder,
   getOrders,
-  updateOrder,
+  updateOrderStatus,
 } from '../app/controllers/order.js';
-import { verifyAdmin } from '../app/middlewares/auth.js';
+import { verifyAdmin, verifyToken } from '../app/middlewares/auth.js';
 
 const router = Router();
 
-router.post('/', createOrder);
-router.put('/:id', verifyAdmin, updateOrder);
+router.post('/', verifyToken, checkout);
+router.patch('/:id', verifyAdmin, updateOrderStatus);
 router.delete('/:id', verifyAdmin, deleteOrder);
-router.get('/:id', verifyAdmin, getOrder);
-router.get('/', verifyAdmin, getOrders);
+router.get('/:id', verifyToken, getOrder);
+router.get('/', verifyToken, getOrders);
 router.post('/:orderId/payos-link', createPaymentLink);
 
 export default router;
