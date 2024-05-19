@@ -14,6 +14,7 @@ const routes = {
   cartAddress: '/gio-hang/dia-chi',
   cartPayment: '/gio-hang/thanh-toan',
   cartPurchase: '/gio-hang/thanh-cong',
+  returnPayment: '/thanh-toan/tra-ve',
   account: '/tai-khoan',
 };
 

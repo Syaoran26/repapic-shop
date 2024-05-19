@@ -5,6 +5,7 @@ import {
   deleteOrder,
   getOrder,
   getOrders,
+  payment,
   receiveWebhook,
   updateOrderStatus,
 } from '../app/controllers/order.js';
@@ -19,5 +20,6 @@ router.get('/:id', verifyToken, getOrder);
 router.get('/', verifyToken, getOrders);
 router.post('/:id/payos-link', createPaymentLink);
 router.post('/receive-hook', receiveWebhook);
+router.post('/payment', payment);
 
 export default router;
