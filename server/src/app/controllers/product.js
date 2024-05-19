@@ -4,16 +4,7 @@ import { ErrorWithStatus } from '../../utils/error.js';
 import APIFeatures from '../../utils/APIFeatures.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const thumbnailFile = req.files[0];
-  const imageFiles = req.files;
-
-  const thumbnail = `data:${thumbnailFile.mimetype};base64${thumbnailFile.buffer.toString('base64')}`;
-  const images = [];
-  for (const file of imageFiles) {
-    const image = `data:${file.mimetype};base64${file.buffer.toString('base64')}`;
-    images.push(image);
-  }
-  const newProduct = new Product({ ...req.body, thumbnail: thumbnail, images: images });
+  const newProduct = new Product(req.body);
   const product = await newProduct.save();
   res.status(201).json(product);
 });

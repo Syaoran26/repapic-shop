@@ -10,7 +10,6 @@ export const Product = new Schema(
     slug: {
       type: String,
       slug: 'title',
-      unique: true,
     },
     thumbnail: {
       type: String,
