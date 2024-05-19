@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import AutoIncrementFactory from 'mongoose-sequence';
-import { Product } from './Product.js';
 import { DeliveryInfo } from './DeliveryInfo.js';
+import { Product } from './Product.js';
 
 const AutoIncrement = AutoIncrementFactory(mongoose);
 

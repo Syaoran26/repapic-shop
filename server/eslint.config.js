@@ -6,7 +6,6 @@ export default [
   pluginJs.configs.recommended,
   {
     rules: {
-      'no-console': 'warn',
       'no-dupe-else-if': 'warn',
       'no-unused-vars': 'warn',
       'no-useless-catch': 'warn',

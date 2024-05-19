@@ -12,6 +12,8 @@ import { format } from '@common/utils';
 import { PaymentEnum, ShippingCost, ShippingEnum, fakePaymentLink } from './constants';
 import api from '~/config/api';
 import { toast } from 'react-toastify';
+import { useAppDispatch } from '~/app/hooks';
+import { resetCart } from '~/features/cart/cartSlice';
 
 const Payment = () => {
   const location = useLocation();
@@ -21,6 +23,7 @@ const Payment = () => {
   const [payment, setPayment] = useState<PaymentEnum>();
   const [errors, setErrors] = useState({ payment: '', shipping: '' });
   const [total, setTotal] = useState<number>();
+  const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     if (!delivery) {
@@ -37,9 +40,12 @@ const Payment = () => {
       api
         .post('/orders', { deliveryInfo: delivery, deliveryPrice: ShippingCost[shipping], total })
         .then((res) => {
+          dispatch(resetCart());
           console.log(res.data);
           if (payment === PaymentEnum.PayOS) {
             openPaymentDialog(fakePaymentLink);
+          } else {
+            navigate(config.routes.cartPurchase);
           }
         })
         .catch((err) => toast.error(err.response?.data.message));
