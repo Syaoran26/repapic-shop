@@ -1123,7 +1123,7 @@ const CharacterPurchaseIcon = () => {
       <defs>
         <linearGradient id="BG" x1="19.496%" x2="77.479%" y1="71.822%" y2="16.69%">
           <stop offset="0%" stopColor="#00A76F"></stop>
-          <stop offset="100%" stopColor="#00A76F" stop-opacity="0"></stop>
+          <stop offset="100%" stopColor="#00A76F" stopOpacity="0"></stop>
         </linearGradient>
       </defs>
       <path

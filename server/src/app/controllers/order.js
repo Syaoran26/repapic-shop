@@ -118,14 +118,32 @@ export const cancelOrder = asyncHandler(async (req, res) => {
 
 export const createPaymentLink = asyncHandler(async (req, res) => {
   const payOS = new PayOS(process.env.PAYOS_CLIENT_ID, process.env.PAYOS_API_KEY, process.env.PAYOS_CHECKSUM_KEY);
-  // TODO: Get order id
-  const order = {
-    amount: 10000,
-    description: 'Test QR',
-    orderCode: 999999999999996,
-    returnUrl: `${process.env.WEBSITE}`,
-    cancelUrl: `${process.env.WEBSITE}/gio-hang`,
+  const order = await Order.findById(req.params.id);
+  if (!order) {
+    throw new ErrorWithStatus(404, 'Không tìm thấy đơn hàng');
+  }
+  const option = {
+    amount: order.total,
+    description: `${order.deliveryInfo.name}`,
+    orderCode: order.orderCode,
+    // orderCode: 999999999999991,
+    returnUrl: req.body.returnUrl,
+    cancelUrl: req.body.cancelUrl,
+    buyerName: order.deliveryInfo.name,
+    buyerPhone: order.deliveryInfo.phone,
+    buyerAddress: `${order.deliveryInfo.address.street}, ${order.deliveryInfo.address.detail}`,
   };
-  const paymentLink = await payOS.createPaymentLink(order);
-  res.json(paymentLink);
+  const paymentLink = await payOS.createPaymentLink(option);
+  order.paymentLinkId = paymentLink.paymentLinkId;
+  await order.save();
+  res.json(paymentLink.checkoutUrl);
+});
+
+export const receiveWebhook = asyncHandler(async (req, res) => {
+  const order = await Order.findOneAndUpdate(
+    { orderCode: req.body.orderCode },
+    { $set: { paid: true } },
+    { new: true },
+  );
+  res.status(200).json(order);
 });

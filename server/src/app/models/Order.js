@@ -30,6 +30,13 @@ const Order = new mongoose.Schema(
     discount: {
       type: Number,
     },
+    total: {
+      type: Number,
+      required: true,
+    },
+    paymentLinkId: {
+      type: String,
+    },
     items: [
       {
         product: {

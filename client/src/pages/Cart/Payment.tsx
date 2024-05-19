@@ -8,8 +8,8 @@ import { useLayoutEffect, useState } from 'react';
 import { AddressShipping } from '@common/types';
 import Order from './components/Order';
 import { CashIcon, PayOSLogo, RocketIcon, TruckIcon } from '@common/icons';
-import { format } from '@common/utils';
-import { PaymentEnum, ShippingCost, ShippingEnum, fakePaymentLink } from './constants';
+import { constants, format } from '@common/utils';
+import { PaymentEnum, ShippingCost, ShippingEnum } from './constants';
 import api from '~/config/api';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '~/app/hooks';
@@ -41,9 +41,16 @@ const Payment = () => {
         .post('/orders', { deliveryInfo: delivery, deliveryPrice: ShippingCost[shipping], total })
         .then((res) => {
           dispatch(resetCart());
-          console.log(res.data);
           if (payment === PaymentEnum.PayOS) {
-            openPaymentDialog(fakePaymentLink);
+            api
+              .post(`orders/${res.data._id}/payos-link`, {
+                returnUrl: `${window.location.protocol}//${window.location.host + config.routes.cartPurchase}`,
+                cancelUrl: `${window.location.protocol}//${window.location.host + config.routes.cartPurchase}`,
+              })
+              .then((res) => {
+                openPaymentDialog(res.data);
+              })
+              .catch((err) => toast.error(err.response?.data.message || constants.sthWentWrong));
           } else {
             navigate(config.routes.cartPurchase);
           }
