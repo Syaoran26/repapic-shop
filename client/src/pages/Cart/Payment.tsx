@@ -44,8 +44,8 @@ const Payment = () => {
           if (payment === PaymentEnum.PayOS) {
             api
               .post(`orders/${res.data._id}/payos-link`, {
-                returnUrl: `${window.location.protocol}//${window.location.host + config.routes.cartPurchase}`,
-                cancelUrl: `${window.location.protocol}//${window.location.host + config.routes.cartPurchase}`,
+                returnUrl: `${window.location.protocol}//${window.location.host + config.routes.returnPayment}`,
+                cancelUrl: `${window.location.protocol}//${window.location.host + config.routes.returnPayment}`,
               })
               .then((res) => {
                 openPaymentDialog(res.data);

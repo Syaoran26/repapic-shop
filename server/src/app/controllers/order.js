@@ -141,9 +141,21 @@ export const createPaymentLink = asyncHandler(async (req, res) => {
 
 export const receiveWebhook = asyncHandler(async (req, res) => {
   const order = await Order.findOneAndUpdate(
-    { orderCode: req.body.orderCode },
+    { orderCode: req.body.data.orderCode },
     { $set: { paid: true } },
     { new: true },
   );
+  res.status(200).json(order);
+});
+
+export const payment = asyncHandler(async (req, res) => {
+  const { status, orderCode } = req.body;
+
+  const order = await Order.findOne({ orderCode: orderCode });
+  order.paid = status === 'PAID';
+  if (status === 'CANCELLED') {
+    order.status = 'cancelled';
+  }
+  await order.save();
   res.status(200).json(order);
 });
