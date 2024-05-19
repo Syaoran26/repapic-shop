@@ -23,7 +23,6 @@ interface ProductsState {
   options: Options<ProductFilter>;
   isError: boolean;
   isLoading: boolean;
-  message: any;
 }
 
 const initialState: ProductsState = {
@@ -31,7 +30,6 @@ const initialState: ProductsState = {
   total: 0,
   isError: false,
   isLoading: false,
-  message: '',
   options: {
     search: '',
     page: 1,
@@ -105,22 +103,19 @@ export const productsSlice = createSlice({
         state.products = [];
         state.isError = false;
         state.isLoading = true;
-        state.message = '';
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.products = action.payload.products;
         state.total = action.payload.total;
         state.isError = false;
         state.isLoading = false;
-        state.message = '';
       })
       .addCase(getProducts.rejected, (state, action: PayloadAction<any>) => {
         state.products = [];
         state.total = 0;
         state.isError = true;
         state.isLoading = false;
-        state.message = action.payload;
-        toast.error(action.payload.response?.data.message || constants.sthWentWrong);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       });
   },
 });

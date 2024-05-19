@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Product } from '@common/types';
 import { toast } from 'react-toastify';
 import { constants } from '@common/utils';
@@ -40,11 +40,11 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
       })
-      .addCase(getProduct.rejected, (state) => {
+      .addCase(getProduct.rejected, (state, action: PayloadAction<any>) => {
         state.product = null;
         state.isError = true;
         state.isLoading = false;
-        toast.error(constants.sthWentWrong);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       });
   },
 });

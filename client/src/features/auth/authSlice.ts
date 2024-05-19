@@ -63,7 +63,8 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.user = null;
-        state.message = action.payload.response;
+        state.message = action.payload.response?.data?.message || constants.sthWentWrong;
+        console.log(action.payload);
       })
       .addCase(logout.pending, (state) => {
         state.isLoading = true;

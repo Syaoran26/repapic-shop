@@ -111,7 +111,7 @@ const LoginForm = () => {
       >
         Quên mật khẩu?
       </Link>
-      {isError && (
+      {isError && message && (
         <Alert
           severity="error"
           action={
@@ -122,7 +122,7 @@ const LoginForm = () => {
             )
           }
         >
-          {message?.data.message || constants.sthWentWrong}
+          {message}
         </Alert>
       )}
       <LoadingButton

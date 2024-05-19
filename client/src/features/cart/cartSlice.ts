@@ -2,19 +2,18 @@ import { CartItem } from '@common/types';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import cartServices from './cartServices';
+import { constants } from '@common/utils';
 
 interface CartState {
   items: CartItem[];
   isError: boolean;
   isLoading: boolean;
-  message: any;
 }
 
 const initialState: CartState = {
   items: [],
   isError: false,
   isLoading: false,
-  message: '',
 };
 
 export const getCart = createAsyncThunk('getCart', async (_, thunkAPI) => {
@@ -73,7 +72,7 @@ export const cartSlice = createSlice({
         state.isError = true;
         state.isLoading = false;
         state.items = [];
-        state.message = action.payload.response;
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       })
       .addCase(addToCart.pending, (state) => {
         state.isError = false;
@@ -88,8 +87,7 @@ export const cartSlice = createSlice({
       .addCase(addToCart.rejected, (state, action: PayloadAction<any>) => {
         state.isError = true;
         state.isLoading = false;
-        state.message = action.payload.response;
-        toast.error(action.payload.response.data.message);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       })
       .addCase(removeFromCart.pending, (state) => {
         state.isError = false;
@@ -104,8 +102,7 @@ export const cartSlice = createSlice({
       .addCase(removeFromCart.rejected, (state, action: PayloadAction<any>) => {
         state.isError = true;
         state.isLoading = false;
-        state.message = action.payload.response;
-        toast.error(action.payload.response.data.message);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       })
       .addCase(changeQuantity.pending, (state) => {
         state.isError = false;
@@ -119,8 +116,7 @@ export const cartSlice = createSlice({
       .addCase(changeQuantity.rejected, (state, action: PayloadAction<any>) => {
         state.isError = true;
         state.isLoading = false;
-        state.message = action.payload.response;
-        toast.error(action.payload.response.data.message);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       });
   },
 });

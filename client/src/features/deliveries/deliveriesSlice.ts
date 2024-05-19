@@ -63,7 +63,7 @@ export const deliveriesSlice = createSlice({
         state.deliveries = [];
         state.isError = true;
         state.isLoading = false;
-        toast.error(action.payload.response?.data.message || constants.sthWentWrong);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       })
       .addCase(createDelivery.pending, (state) => {
         state.isError = false;
@@ -77,7 +77,7 @@ export const deliveriesSlice = createSlice({
       .addCase(createDelivery.rejected, (state, action: PayloadAction<any>) => {
         state.isError = true;
         state.isLoading = false;
-        toast.error(action.payload.response?.data.message || constants.sthWentWrong);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       })
       .addCase(deleteDelivery.pending, (state) => {
         state.isError = false;
@@ -91,7 +91,7 @@ export const deliveriesSlice = createSlice({
       .addCase(deleteDelivery.rejected, (state, action: PayloadAction<any>) => {
         state.isError = true;
         state.isLoading = false;
-        toast.error(action.payload.response?.data.message || constants.sthWentWrong);
+        toast.error(action.payload.response?.data?.message || constants.sthWentWrong);
       });
   },
 });
