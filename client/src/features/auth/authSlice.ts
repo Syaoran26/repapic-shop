@@ -77,7 +77,6 @@ export const authSlice = createSlice({
       .addCase(logout.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload.response;
         toast.error(action.payload?.response?.data.message || constants.sthWentWrong);
       })
       .addCase(loginByRefreshToken.pending, (state) => {
@@ -90,11 +89,10 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload;
       })
-      .addCase(loginByRefreshToken.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(loginByRefreshToken.rejected, (state) => {
         state.isError = true;
         state.isLoading = false;
         state.user = null;
-        state.message = action.payload?.response;
       });
   },
 });
