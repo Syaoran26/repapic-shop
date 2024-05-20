@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { IconButton, Paper, Tooltip } from '@mui/material';
+import { IconButton, Link, Paper, Tooltip } from '@mui/material';
 import { BiLogoFacebook, BiLogoInstagramAlt, BiLogoLinkedin, BiLogoTiktok } from 'react-icons/bi';
 
 export interface Member {
   role: string;
   author: string;
   image: string;
+  facebookLink: string;
 }
 interface MemberProps {
   data: Member;
@@ -20,7 +21,7 @@ const MemberCard: FC<MemberProps> = ({ data }) => {
         <img className="w-full aspect-[3/4] px-2 rounded-2xl" src={data.image} alt={data.author} />
         <div className="flex items-center justify-center p-4">
           <Tooltip title="Follow trên Facebook" arrow>
-            <IconButton sx={{ color: '#1877f2' }}>
+            <IconButton sx={{ color: '#1877f2' }} component={Link} href={data.facebookLink}>
               <BiLogoFacebook />
             </IconButton>
           </Tooltip>
