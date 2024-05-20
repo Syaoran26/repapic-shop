@@ -15,7 +15,7 @@ const router = Router();
 
 router.post('/register', register);
 router.post('/login', login);
-router.post('/google', googleAuth);
+router.post('/login/others', googleAuth);
 router.post('/login-refresh', loginByRefreshToken);
 router.put('/refresh-token', refreshToken);
 router.get('/logout', logout);

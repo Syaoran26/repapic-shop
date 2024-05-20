@@ -14,6 +14,15 @@ const login = async (credentials: Credentials) => {
   return user;
 };
 
+const logInWithOthers = async (data: any) => {
+  const response = await api.post('/auth/login/others', data);
+  const user = response.data;
+  if (user) {
+    localStorage.setItem('token', user.token);
+  }
+  return user;
+};
+
 const loginByRefreshToken = async () => {
   const response = await api.post('/auth/login-refresh');
   const user = response.data;
@@ -28,5 +37,5 @@ const logout = async () => {
   localStorage.removeItem('token');
 };
 
-const authServices = { login, logout, loginByRefreshToken };
+const authServices = { login, logout, loginByRefreshToken, logInWithOthers };
 export default authServices;

@@ -44,24 +44,34 @@ export const verify = asyncHandler(async (req, res) => {
 });
 
 export const googleAuth = asyncHandler(async (req, res) => {
-  const { email, providerId } = req.body;
-  let user = await User.findOne({ email });
-  if (user && user.providerId !== providerId) {
-    throw new ErrorWithStatus(400, 'Email đã được đăng ký bằng một phương thức khác');
+  const { user, providerId } = req.body;
+  let googleUser = await User.findOne({ email: user.email });
+  if (googleUser) {
+    if (providerId !== googleUser.providerId) {
+      throw new ErrorWithStatus(400, 'Email đã được đăng ký bằng một phương thức khác');
+    }
+    googleUser.name = user.displayName;
+    googleUser.phone = user.phoneNumber;
+    googleUser.avatar = user.photoURL;
+    await googleUser.save();
   }
-  if (!user) user = await User.create(req.body);
+  if (!googleUser)
+    googleUser = await User.create({
+      name: user.displayName,
+      email: user.email,
+      phone: user.phoneNumber,
+      avatar: user.photoURL,
+      isVerified: user.emailVerified,
+      providerId,
+    });
 
-  const accessToken = generateAccessToken({ id: user._id, isAdmin: user.isAdmin });
-  const newRefreshToken = generateRefreshToken({ id: user._id, isAdmin: user.isAdmin });
-  user = await User.findByIdAndUpdate(user._id, { ...req.body, refreshToken: newRefreshToken }, { new: true }).select([
-    '-otpVerify',
-    '-refreshToken',
-    '-isAdmin',
-    '-password',
-    '-cart',
-    '-wishlist',
-    '-deliveryAddress',
-  ]);
+  const accessToken = generateAccessToken({ id: googleUser._id, isAdmin: googleUser.isAdmin });
+  const newRefreshToken = generateRefreshToken({ id: googleUser._id, isAdmin: googleUser.isAdmin });
+  googleUser = await User.findByIdAndUpdate(
+    googleUser._id,
+    { $set: { refreshToken: newRefreshToken } },
+    { new: true },
+  ).select(['-otpVerify', '-refreshToken', '-isAdmin', '-password', '-cart', '-wishlist', '-deliveryAddress']);
   res
     .status(200)
     .cookie('refreshToken', newRefreshToken, {
@@ -71,7 +81,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
       secure: true,
       path: '/api/auth',
     })
-    .json({ ...user, token: accessToken });
+    .json({ ...googleUser._doc, token: accessToken });
 });
 
 export const login = asyncHandler(async (req, res) => {

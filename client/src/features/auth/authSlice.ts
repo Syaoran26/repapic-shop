@@ -26,6 +26,14 @@ export const login = createAsyncThunk('auth/login', async (credentials: Credenti
   }
 });
 
+export const loginWithOthers = createAsyncThunk('auth/login-others', async (data: any, thunkAPI) => {
+  try {
+    return await authServices.logInWithOthers(data);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     return await authServices.logout();
@@ -64,7 +72,22 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.message = action.payload.response?.data?.message || constants.sthWentWrong;
-        console.log(action.payload);
+      })
+      .addCase(loginWithOthers.pending, (state) => {
+        state.user = null;
+        state.isError = false;
+        state.isLoading = true;
+      })
+      .addCase(loginWithOthers.fulfilled, (state, action: PayloadAction<User>) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(loginWithOthers.rejected, (state, action: PayloadAction<any>) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.user = null;
+        state.message = action.payload.response?.data?.message || constants.sthWentWrong;
       })
       .addCase(logout.pending, (state) => {
         state.isLoading = true;
