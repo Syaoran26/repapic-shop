@@ -2,22 +2,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import { useState } from 'react';
 import { Image } from '@common/components';
-
-const slideVariants = [
-  'https://swiperjs.com/demos/images/nature-1.jpg',
-  'https://swiperjs.com/demos/images/nature-2.jpg',
-  'https://swiperjs.com/demos/images/nature-3.jpg',
-  'https://swiperjs.com/demos/images/nature-4.jpg',
-  'https://swiperjs.com/demos/images/nature-5.jpg',
-  'https://swiperjs.com/demos/images/nature-6.jpg',
-  'https://swiperjs.com/demos/images/nature-7.jpg',
-  'https://swiperjs.com/demos/images/nature-8.jpg',
-  'https://swiperjs.com/demos/images/nature-9.jpg',
-  'https://swiperjs.com/demos/images/nature-10.jpg',
-];
+import { useAppSelector } from '~/app/hooks';
 
 const ProductSlide = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>();
+  const { product } = useAppSelector((state) => state.product);
+  const slides = product ? [product.thumbnail, ...product.images] : [];
 
   return (
     <>
@@ -26,10 +16,11 @@ const ProductSlide = () => {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mb-6 rounded-xl"
+        loop
       >
-        {slideVariants.map((slide, index) => (
+        {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <Image src={slide} alt="slide" effect="blur" />
+            <Image src={slide} alt={`${product?.title}-${index}`} effect="blur" />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -43,9 +34,9 @@ const ProductSlide = () => {
         modules={[Navigation, Thumbs]}
         className="product-thumbs-slide"
       >
-        {slideVariants.map((slide, index) => (
+        {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <Image src={slide} alt="slide" effect="blur" rounded="xl" />
+            <Image src={slide} alt={`${product?.title}-${index}`} effect="blur" rounded="xl" />
           </SwiperSlide>
         ))}
       </Swiper>

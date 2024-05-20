@@ -7,43 +7,46 @@ import ProductCart from './component/ProductCart';
 
 const ProductList: CartItem[] = [
   {
-    product:{
-      _id:'1',
-      price:200000,
-      stock:100,
-      thumbnail:'/images/m_product/product_1.jpg',
-      title:'Nike Air Force 1 NDESTRUKT',
-      description:'abc',
-      discount:10000,
-      slug:'abc'
+    product: {
+      _id: '1',
+      price: 200000,
+      stock: 100,
+      thumbnail: '/images/m_product/product_1.jpg',
+      title: 'Nike Air Force 1 NDESTRUKT',
+      images: [],
+      description: 'abc',
+      discount: 10000,
+      slug: 'abc',
     },
-    quantity:1
+    quantity: 1,
   },
   {
-    product:{
-      _id:'1',
-      price:200000,
-      stock:100,
-      thumbnail:'/images/m_product/product_1.jpg',
-      title:'Nike Air Force 1 NDESTRUKT',
-      description:'abc',
-      discount:10000,
-      slug:'abc'
+    product: {
+      _id: '1',
+      price: 200000,
+      stock: 100,
+      thumbnail: '/images/m_product/product_1.jpg',
+      title: 'Nike Air Force 1 NDESTRUKT',
+      images: [],
+      description: 'abc',
+      discount: 10000,
+      slug: 'abc',
     },
-    quantity:1
+    quantity: 1,
   },
   {
-    product:{
-      _id:'1',
-      price:200000,
-      stock:100,
-      thumbnail:'/images/m_product/product_1.jpg',
-      title:'Nike Air Force 1 NDESTRUKT',
-      description:'abc',
-      discount:10000,
-      slug:'abc'
+    product: {
+      _id: '1',
+      price: 200000,
+      stock: 100,
+      thumbnail: '/images/m_product/product_1.jpg',
+      title: 'Nike Air Force 1 NDESTRUKT',
+      images: [],
+      description: 'abc',
+      discount: 10000,
+      slug: 'abc',
     },
-    quantity:1
+    quantity: 1,
   },
 ];
 
@@ -59,16 +62,16 @@ const Userdata: User[] = [
 const Adderssdata: AddressShipping[] = [
   {
     name: 'Lucian Obrien',
-    _id:'1',
-    address:{
-      city:'Da Nang',
-      district:'123',
-      street:'19034 Verna Unions Apt',
-      detail:'. 164 - Honolulu, RI / 87535',
-      ward:'ab'
+    _id: '1',
+    address: {
+      city: 'Da Nang',
+      district: '123',
+      street: '19034 Verna Unions Apt',
+      detail: '. 164 - Honolulu, RI / 87535',
+      ward: 'ab',
     },
-    phone:'365-374-4961',
-    isHome:true
+    phone: '365-374-4961',
+    isHome: true,
   },
 ];
 

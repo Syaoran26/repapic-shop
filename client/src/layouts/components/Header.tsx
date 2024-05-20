@@ -114,21 +114,28 @@ const Header = () => {
               </div>
               <Divider style={{ borderStyle: 'dashed' }} />
               <Stack padding={1}>
-                <MenuItem component={Link} to={config.routes.home}>
+                <MenuItem component={Link} to={config.routes.home} onClick={handleClose}>
                   Trang chủ
                 </MenuItem>
-                <MenuItem component={Link} to={config.routes.account}>
+                <MenuItem component={Link} to={config.routes.account} onClick={handleClose}>
                   Tài khoản
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(logout())}>Đăng xuất</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    dispatch(logout());
+                    handleClose();
+                  }}
+                >
+                  Đăng xuất
+                </MenuItem>
               </Stack>
             </>
           ) : (
             <Stack padding={1}>
-              <MenuItem component={Link} to={config.routes.login}>
+              <MenuItem component={Link} to={config.routes.login} onClick={handleClose}>
                 Đăng nhập
               </MenuItem>
-              <MenuItem component={Link} to={config.routes.register}>
+              <MenuItem component={Link} to={config.routes.register} onClick={handleClose}>
                 Đăng ký
               </MenuItem>
             </Stack>

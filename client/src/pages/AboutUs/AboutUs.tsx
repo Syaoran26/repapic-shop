@@ -151,7 +151,7 @@ const AboutUs = () => {
               </div>
             </div>
             <Button size="large" variant="outlined" endIcon={<FaAngleRight />}>
-              Our Work
+              Công việc của chúng tôi
             </Button>
           </div>
         </div>
@@ -167,9 +167,9 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="mx-auto text-center text-2xl md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold max-w-[1100px]">
-            Chúng tôi hướng tới một thế giới nơi nghệ thuật và trách nhiệm với môi trường song hành cùng nhau. <br />Một thế
-            giới mà mọi người được truyền cảm hứng để tạo ra những điều đẹp đẽ đồng thời chú trọng đến dấu chân sinh
-            thái của mình.
+            Chúng tôi hướng tới một thế giới nơi nghệ thuật và trách nhiệm với môi trường song hành cùng nhau. <br />
+            Một thế giới mà mọi người được truyền cảm hứng để tạo ra những điều đẹp đẽ đồng thời chú trọng đến dấu chân
+            sinh thái của mình.
           </div>
         </Container>
       </div>
@@ -184,7 +184,7 @@ const AboutUs = () => {
             ngày và chúng tôi cũng có tài liệu chi tiết.
           </p>
         </div>
-        <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
           {memberList.map((member, index) => (
             <MemberCard key={index} data={member} />
           ))}
