@@ -13,11 +13,11 @@ interface MemberProps {
 
 const MemberCard: FC<MemberProps> = ({ data }) => {
   return (
-    <div className="px-3 py-20 text-center">
+    <div className="text-center">
       <Paper>
-        <h6 className="pt-5 mb-1 font-semibold">{data.author}</h6>
+        <h6 className="pt-5 mb-1 text-lg font-semibold">{data.author}</h6>
         <p className="mb-5 font-normal text-fade">{data.role}</p>
-        <img className="w-full px-2 rounded-2xl" src={data.image} alt="portrait1" />
+        <img className="w-full aspect-[3/4] px-2 rounded-2xl" src={data.image} alt={data.author} />
         <div className="flex items-center justify-center p-4">
           <Tooltip title="Follow trên Facebook" arrow>
             <IconButton sx={{ color: '#1877f2' }}>
