@@ -1,3 +1,4 @@
+import { useLayoutEffect } from 'react';
 import { FaFacebookF } from 'react-icons/fa6';
 import config from '~/config';
 import { GoogleIcon } from '@icons';
@@ -6,13 +7,27 @@ import { auth, facebookProvider, googleProvider } from '~/config/firebase';
 import { AuthProvider, signInWithPopup } from 'firebase/auth';
 import { Fab, Link, Tooltip } from '@mui/material';
 import LoginForm from './LoginForm';
+import { useAppDispatch, useAppSelector } from '~/app/hooks';
+import { loginWithOthers } from '~/features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const { user, isLoading, isError } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   const signInWithOthers = (provider: AuthProvider) => {
     signInWithPopup(auth, provider)
-      .then((result) => console.log(result))
+      .then((res) => dispatch(loginWithOthers(res)))
       .catch((err) => console.log(err));
   };
+
+  useLayoutEffect(() => {
+    if (user && !isLoading && !isError) {
+      navigate('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isLoading, isError]);
 
   return (
     <div className="w-full max-lg:bg-white max-lg:rounded-2xl max-lg:py-10 max-lg:px-6 max-lg:shadow-sm">

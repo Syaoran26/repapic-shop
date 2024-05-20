@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
   Button,
@@ -31,7 +31,7 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { user, message, isLoading, isError } = useAppSelector((state) => state.auth);
+  const { message, isLoading, isError } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
 
@@ -64,13 +64,6 @@ const LoginForm = () => {
         });
     }
   };
-
-  useLayoutEffect(() => {
-    if (user && !isLoading && !isError) {
-      navigate('/');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isLoading, isError]);
 
   return (
     <form className="flex flex-col gap-5 none" onSubmit={handleSubmit(onSubmit)}>
