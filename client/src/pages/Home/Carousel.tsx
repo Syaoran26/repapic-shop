@@ -1,4 +1,4 @@
-import { Button, Container } from '@mui/material';
+import { Button } from '@mui/material';
 import { ThunderIcon } from '@icons';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -54,7 +54,7 @@ const Carousel = () => {
         }
       >
         <SwiperSlide>
-          <Container className="h-screen pt-20">
+          <div className="h-screen pt-20 lg:ml-32">
             <div className="grid items-center justify-center h-full lg:grid-cols-2">
               <motion.div
                 className="flex flex-col gap-3 md:gap-4 lg:gap-5 text-sm md:text-lg lg:text-xl *:leading-[1] max-lg:text-center p-2"
@@ -63,10 +63,12 @@ const Carousel = () => {
                 whileInView="animate"
               >
                 <motion.span className="uppercase" variants={textVariants}>
-                  BẢO VỆ MÔI TRƯỜNG
+                  Khám phá
                 </motion.span>
                 <motion.h3 className="text-[2.5em] font-bold" variants={textVariants}>
-                  Cute Puppy
+                  Bộ Làm Tranh Bằng
+                  <br />
+                  Giấy Tái Chế
                 </motion.h3>
                 <motion.p variants={textVariants}>Góp phần tái sử dụng giấy và rác thải</motion.p>
                 <motion.div variants={textVariants}>
@@ -75,19 +77,21 @@ const Carousel = () => {
                   </Button>
                 </motion.div>
               </motion.div>
-              <motion.img
-                src="/images/banners/banner-1.png"
-                alt="Banner1"
-                className="object-contain h-full"
-                variants={imageVariants}
-                initial="initial"
-                whileInView="animate"
-              />
+              <motion.div className="flex items-center h-full overflow-hidden">
+                <motion.img
+                  src="https://i.imgur.com/1bItQNE.png"
+                  alt="Banner1"
+                  className="object-contain w-full h-full"
+                  variants={imageVariants}
+                  initial="initial"
+                  whileInView="animate"
+                />
+              </motion.div>
             </div>
-          </Container>
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <Container className="h-screen pt-20">
+          <div className="h-screen pt-20 lg:ml-32">
             <div className="grid items-center justify-center h-full lg:grid-cols-2">
               <motion.div
                 className="flex flex-col gap-3 md:gap-4 lg:gap-5 text-sm md:text-lg lg:text-xl *:leading-[1] max-lg:text-center p-2"
@@ -96,31 +100,33 @@ const Carousel = () => {
                 whileInView="animate"
               >
                 <motion.span className="uppercase" variants={textVariants}>
-                  BẢO VỆ MÔI TRƯỜNG
+                  Chung tay
                 </motion.span>
                 <motion.h3 className="text-[2.5em] font-bold" variants={textVariants}>
-                  Cute Puppy
+                  Vì một màu xanh
                 </motion.h3>
-                <motion.p variants={textVariants}>Góp phần tái sử dụng giấy và rác thải</motion.p>
+                <motion.p variants={textVariants}>Giấy tái chế 100%</motion.p>
                 <motion.div variants={textVariants}>
                   <Button startIcon={<ThunderIcon />} size="large">
                     Mua ngay
                   </Button>
                 </motion.div>
               </motion.div>
-              <motion.img
-                src="/images/banners/banner-1.png"
-                alt="Banner1"
-                className="object-contain h-full"
-                variants={imageVariants}
-                initial="initial"
-                whileInView="animate"
-              />
+              <motion.div className="flex items-center h-full overflow-hidden">
+                <motion.img
+                  src="https://i.imgur.com/s7WcGa7.png"
+                  alt="Banner2"
+                  className="object-contain w-full h-full"
+                  variants={imageVariants}
+                  initial="initial"
+                  whileInView="animate"
+                />
+              </motion.div>
             </div>
-          </Container>
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <Container className="h-screen pt-20">
+          <div className="h-screen pt-20 lg:ml-32">
             <div className="grid items-center justify-center h-full lg:grid-cols-2">
               <motion.div
                 className="flex flex-col gap-3 md:gap-4 lg:gap-5 text-sm md:text-lg lg:text-xl *:leading-[1] max-lg:text-center p-2"
@@ -129,31 +135,33 @@ const Carousel = () => {
                 whileInView="animate"
               >
                 <motion.span className="uppercase" variants={textVariants}>
-                  BẢO VỆ MÔI TRƯỜNG
+                  Workshop
                 </motion.span>
                 <motion.h3 className="text-[2.5em] font-bold" variants={textVariants}>
-                  Cute Puppy
+                  PAPER REVIVAL
                 </motion.h3>
-                <motion.p variants={textVariants}>Góp phần tái sử dụng giấy và rác thải</motion.p>
+                <motion.p variants={textVariants}>Sự hồi sinh của giấy</motion.p>
                 <motion.div variants={textVariants}>
                   <Button startIcon={<ThunderIcon />} size="large">
                     Mua ngay
                   </Button>
                 </motion.div>
               </motion.div>
-              <motion.img
-                src="/images/banners/banner-1.png"
-                alt="Banner1"
-                className="object-contain h-full"
-                variants={imageVariants}
-                initial="initial"
-                whileInView="animate"
-              />
+              <motion.div className="flex items-center h-full overflow-hidden">
+                <motion.img
+                  src="https://i.imgur.com/5B9kH6f.png"
+                  alt="Banner3"
+                  className="object-contain w-full"
+                  variants={imageVariants}
+                  initial="initial"
+                  whileInView="animate"
+                />
+              </motion.div>
             </div>
-          </Container>
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <Container className="h-screen pt-20">
+          <div className="h-screen pt-20 lg:ml-32">
             <div className="grid items-center justify-center h-full lg:grid-cols-2">
               <motion.div
                 className="flex flex-col gap-3 md:gap-4 lg:gap-5 text-sm md:text-lg lg:text-xl *:leading-[1] max-lg:text-center p-2"
@@ -162,28 +170,30 @@ const Carousel = () => {
                 whileInView="animate"
               >
                 <motion.span className="uppercase" variants={textVariants}>
-                  BẢO VỆ MÔI TRƯỜNG
+                  Nhận Ngay
                 </motion.span>
                 <motion.h3 className="text-[2.5em] font-bold" variants={textVariants}>
-                  Cute Puppy
+                  Voucher
                 </motion.h3>
-                <motion.p variants={textVariants}>Góp phần tái sử dụng giấy và rác thải</motion.p>
+                <motion.p variants={textVariants}>Giảm ngay 10% cho mỗi hóa đơn trên 200.000đ!</motion.p>
                 <motion.div variants={textVariants}>
                   <Button startIcon={<ThunderIcon />} size="large">
                     Mua ngay
                   </Button>
                 </motion.div>
               </motion.div>
-              <motion.img
-                src="/images/banners/banner-1.png"
-                alt="Banner1"
-                className="object-contain h-full"
-                variants={imageVariants}
-                initial="initial"
-                whileInView="animate"
-              />
+              <motion.div className="flex items-center h-full overflow-hidden">
+                <motion.img
+                  src="/images/banners/banner-1.png"
+                  alt="Banner1"
+                  className="object-contain w-full h-full"
+                  variants={imageVariants}
+                  initial="initial"
+                  whileInView="animate"
+                />
+              </motion.div>
             </div>
-          </Container>
+          </div>
         </SwiperSlide>
       </Swiper>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Button, Checkbox, Chip, Divider, Link, Rating, Stack } from '@mui/material';
 import { FiPlus } from 'react-icons/fi';
 import { IoShareSocial } from 'react-icons/io5';
@@ -8,15 +8,20 @@ import { format } from '@common/utils';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { addToCart } from '~/features/cart/cartSlice';
 import config from '~/config';
+import { useNavigate } from 'react-router-dom';
 
 const ProductMain = () => {
   const { product, isLoading } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (buyNow: boolean) => (event: MouseEvent<HTMLButtonElement>) => {
     if (product) {
       dispatch(addToCart({ product: product, quantity: quantity }));
+      if (buyNow) {
+        navigate(config.routes.cart);
+      }
     }
   };
 
@@ -41,10 +46,16 @@ const ProductMain = () => {
           </Stack>
           <Divider style={{ borderStyle: 'dashed' }} />
           <Stack direction={{ xs: 'column', sm: 'row' }} gap={2}>
-            <Button size="large" fullWidth color="warning" startIcon={<CartPlusIcon />} onClick={handleAddToCart}>
+            <Button
+              size="large"
+              fullWidth
+              color="warning"
+              startIcon={<CartPlusIcon />}
+              onClick={handleAddToCart(false)}
+            >
               Thêm vào giỏ hàng
             </Button>
-            <Button size="large" fullWidth component={Link} href={config.routes.cart}>
+            <Button size="large" fullWidth onClick={handleAddToCart(true)}>
               Mua ngay
             </Button>
           </Stack>

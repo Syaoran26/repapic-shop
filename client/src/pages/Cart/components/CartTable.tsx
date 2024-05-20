@@ -4,7 +4,7 @@ import { useDebounce, useUpdateEffect } from '@common/hooks';
 import { CartItem } from '@common/types';
 import { format, functions } from '@common/utils';
 import { IconButton, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { changeQuantity, removeFromCart } from '~/features/cart/cartSlice';
@@ -65,6 +65,10 @@ const CartRow: FC<CartRowProps> = ({ data }) => {
   const handleChangeQuantity = (value: number) => {
     setRowQuantity(value);
   };
+
+  useEffect(() => {
+    setRowQuantity(data.quantity);
+  }, [data]);
 
   useUpdateEffect(() => {
     dispatch(changeQuantity({ product, quantity: debounceQuantity }));

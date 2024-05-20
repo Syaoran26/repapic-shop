@@ -17,7 +17,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center mt-6 max-lg:justify-center">
               <Tooltip title="Follow trên Facebook" arrow>
-                <IconButton sx={{ color: '#1877f2' }}>
+                <IconButton sx={{ color: '#1877f2' }} component={Link} href="https://www.facebook.com/repapic">
                   <BiLogoFacebook />
                 </IconButton>
               </Tooltip>
@@ -36,8 +36,12 @@ const Footer = () => {
           <div className="grid grid-cols-3 gap-10 text-sm max-md:grid-cols-1 max-md:text-center color-default">
             <div className="flex flex-col gap-4">
               <h6 className="font-bold uppercase">REPAPIC</h6>
-              <Link color="inherit">Về chúng tôi</Link>
-              <Link color="inherit">Liên hệ</Link>
+              <Link color="inherit" href={config.routes.aboutUs}>
+                Về chúng tôi
+              </Link>
+              <Link color="inherit" href={config.routes.contactUs}>
+                Liên hệ
+              </Link>
               <Link color="inherit">FAQs</Link>
             </div>
             <div className="flex flex-col gap-4">

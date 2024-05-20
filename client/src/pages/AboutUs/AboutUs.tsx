@@ -58,31 +58,37 @@ const memberList: Member[] = [
     author: 'Nguyễn Thị Phương Thảo',
     role: 'Giám Đốc Điều Hành',
     image: '/images/portrait/portrait_11.jpg',
+    facebookLink: 'https://www.facebook.com/profile.php?id=100009149128364',
   },
   {
     author: 'Phan Ngọc Hoài Phương',
     role: 'Quản lý tài chính',
     image: '/images/portrait/portrait_22.jpg',
+    facebookLink: 'https://www.facebook.com/profile.php?id=100011785902099',
   },
   {
     author: 'Nguyễn Hồng Đức',
     role: 'Quản lý kỹ thuật',
     image: '/images/portrait/portrait_33.jpg',
+    facebookLink: 'https://www.facebook.com/syaoran26',
   },
   {
     author: 'Nguyễn Đắc Tâm Minh',
     role: 'Quản lý Sáng tạo',
     image: '/images/portrait/portrait_44.jpg',
+    facebookLink: 'https://www.facebook.com/toppdevil11',
   },
   {
     author: 'Đặng Ngọc Tuấn',
     role: 'Quản lý nhân sự',
     image: '/images/portrait/portrait_55.jpg',
+    facebookLink: 'https://www.facebook.com/profile.php?id=100028194063412',
   },
   {
     author: 'Ngô Tuấn Kiệt',
     role: 'Quản lý vận hành',
     image: '/images/portrait/portrait_66.jpg',
+    facebookLink: 'https://www.facebook.com/profile.php?id=61558499845252',
   },
 ];
 
@@ -167,9 +173,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="mx-auto text-center text-2xl md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold max-w-[1100px]">
-            Chúng tôi hướng tới một thế giới nơi nghệ thuật và trách nhiệm với môi trường song hành cùng nhau. <br />
-            Một thế giới mà mọi người được truyền cảm hứng để tạo ra những điều đẹp đẽ đồng thời chú trọng đến dấu chân
-            sinh thái của mình.
+            Chúng tôi hướng tới một thế giới nơi nghệ thuật và trách nhiệm với môi trường song hành cùng nhau.
           </div>
         </Container>
       </div>
@@ -184,7 +188,7 @@ const AboutUs = () => {
             ngày và chúng tôi cũng có tài liệu chi tiết.
           </p>
         </div>
-        <div className="grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8">
+        <div className="grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {memberList.map((member, index) => (
             <MemberCard key={index} data={member} />
           ))}
