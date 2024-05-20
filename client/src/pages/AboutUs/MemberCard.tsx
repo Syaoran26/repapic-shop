@@ -17,7 +17,7 @@ const MemberCard: FC<MemberProps> = ({ data }) => {
       <Paper>
         <h6 className="pt-5 mb-1 font-semibold">{data.author}</h6>
         <p className="mb-5 font-normal text-fade">{data.role}</p>
-        <img className="w-full px-2 rounded-2xl" src={data.image} alt="portrait1" />
+        <img className="w-full lg:h-[520px] xl:h-[400px] px-2 rounded-2xl" src={data.image} alt="portrait" />
         <div className="flex items-center justify-center p-4">
           <Tooltip title="Follow trên Facebook" arrow>
             <IconButton sx={{ color: '#1877f2' }}>

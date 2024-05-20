@@ -55,24 +55,34 @@ const commentList: Comment[] = [
 
 const memberList: Member[] = [
   {
-    author: 'Jayvion Simon',
-    role: 'HR Manager',
-    image: '/images/portrait/portrait_1.jpg',
+    author: 'Nguyễn Thị Phương Thảo',
+    role: 'Giám Đốc Điều Hành',
+    image: '/images/portrait/portrait_11.jpg',
   },
   {
-    author: 'Lucian Obrien',
-    role: 'Data Analyst',
-    image: '/images/portrait/portrait_2.jpg',
+    author: 'Phan Ngọc Hoài Phương',
+    role: 'Quản lý tài chính',
+    image: '/images/portrait/portrait_22.jpg',
   },
   {
-    author: 'Deja Brady',
-    role: 'Legal Counsel',
-    image: '/images/portrait/portrait_3.jpg',
+    author: 'Nguyễn Hồng Đức',
+    role: 'Quản lý kỹ thuật',
+    image: '/images/portrait/portrait_33.jpg',
   },
   {
-    author: 'Harrison Stein',
-    role: 'UX/UI Designer',
-    image: '/images/portrait/portrait_4.jpg',
+    author: 'Nguyễn Đắc Tâm Minh',
+    role: 'Quản lý Sáng tạo',
+    image: '/images/portrait/portrait_44.jpg',
+  },
+  {
+    author: 'Đặng Ngọc Tuấn',
+    role: 'Quản lý nhân sự',
+    image: '/images/portrait/portrait_55.jpg',
+  },
+  {
+    author: 'Ngô Tuấn Kiệt',
+    role: 'Quản lý vận hành',
+    image: '/images/portrait/portrait_66.jpg',
   },
 ];
 
@@ -112,10 +122,10 @@ const AboutUs = () => {
           <div className="max-lg:text-center xl:col-span-5">
             <div className="mb-6 text-[44px] font-extrabold leading-tight">Repapic là gì?</div>
             <p className="text-fade">
-              Chủ đề của chúng tôi là chủ đề tiên tiến và thân thiện với người dùng nhất mà bạn có thể tìm thấy trên thị
-              trường, chúng tôi có tài liệu và video để giúp thiết lập trang web của bạn thực sự dễ dàng, các bản demo
-              được cài đặt sẵn mà bạn có thể nhập chỉ bằng một cú nhấp chuột và mọi thứ từ tùy chọn chủ đề đến nội dung
-              trang có thể được chỉnh sửa từ front-end. Đây là chủ đề bạn đang tìm kiếm.
+              REPAPIC, được thành lập với sứ mệnh truyền cảm hứng nghệ thuật và bảo vệ môi trường nhờ vào việc sử dụng
+              giấy tái chế. REPAPIC chuyên cung cấp các set làm tranh chất lượng cao từ giấy tái chế. Sản phẩm của chúng
+              tôi giúp mọi người ở mọi lứa tuổi phát huy tối đa khả năng sáng tạo, tạo ra những tác phẩm nghệ thuật
+              tuyệt đẹp và góp phần vào một thế giới bền vững hơn.
             </p>
             <div className="flex flex-col gap-6 my-10">
               <div>
@@ -156,8 +166,10 @@ const AboutUs = () => {
               </Fab>
             </div>
           </div>
-          <div className="mx-auto max-w-[800px] text-center text-2xl md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold">
-            Tầm nhìn của chúng tôi cung cấp sản phẩm tốt nhất dự kiến không có phương tiện nào bị hư hỏng.
+          <div className="mx-auto text-center text-2xl md:text-[26px] lg:text-[30px] xl:text-[32px] font-bold max-w-[1100px]">
+            Chúng tôi hướng tới một thế giới nơi nghệ thuật và trách nhiệm với môi trường song hành cùng nhau. <br />Một thế
+            giới mà mọi người được truyền cảm hứng để tạo ra những điều đẹp đẽ đồng thời chú trọng đến dấu chân sinh
+            thái của mình.
           </div>
         </Container>
       </div>
@@ -172,7 +184,7 @@ const AboutUs = () => {
             ngày và chúng tôi cũng có tài liệu chi tiết.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {memberList.map((member, index) => (
             <MemberCard key={index} data={member} />
           ))}
@@ -190,12 +202,12 @@ const AboutUs = () => {
               <div className="text-white max-lg:col-span-10 max-lg:text-center max-lg:col-start-2">
                 <p className="text-xs font-bold uppercase opacity-[0.48]">Testimonials</p>
                 <h2 className="my-6 font-extrabold xl:text-5xl lg:text-[44px] md:text-[40px] text-[32px]">
-                  Who love <br /> my work
+                  Hãy <br /> cùng nhau
                 </h2>
                 <p>
-                  Mục tiêu của chúng tôi là tạo ra sản phẩm và dịch vụ mà bạn hài lòng và sử dụng hàng ngày. Đây là lý
-                  do tại sao chúng tôi không ngừng nỗ lực cải tiến dịch vụ của mình để cải thiện dịch vụ mỗi ngày và
-                  thực sự lắng nghe những gì người dùng nói.
+                  Chúng tôi mời bạn tham gia cùng chúng tôi trên hành trình tạo ra một thế giới sáng tạo và bền vững
+                  hơn. Dù bạn là một nghệ sĩ dày dạn kinh nghiệm hay chỉ mới bắt đầu, REPAPIC luôn có điều gì đó dành
+                  cho bạn. Hãy cùng nhau làm nghệ thuật và tạo nên sự khác biệt.
                 </p>
                 <div className="mt-6 lg:hidden">
                   <Button color="success" variant="text" endIcon={<FaAngleRight />}>
