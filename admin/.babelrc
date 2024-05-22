@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "~": "./src",
+          "@common": "./src/common",
+          "@icons": "./src/common/components/Icons"
+        }
+      }
+    ]
+  ]
+}

@@ -16,20 +16,8 @@ const ContactUs = () => {
             </div>
             <div className="flex flex-col items-center gap-10 mt-10 text-white lg:flex-row">
               <div className="max-w-[180px]">
-                <h6 className="mb-2 text-lg">Bali</h6>
-                <p className="text-sm opacity-80">508 Bridle Avenue Newnan, GA 30263</p>
-              </div>
-              <div className="max-w-[180px]">
-                <h6 className="mb-2 text-lg">London</h6>
-                <p className="text-sm opacity-80">508 Bridle Avenue Newnan, GA 30263</p>
-              </div>
-              <div className="max-w-[180px]">
-                <h6 className="mb-2 text-lg">Prague</h6>
-                <p className="text-sm opacity-80">508 Bridle Avenue Newnan, GA 30263</p>
-              </div>
-              <div className="max-w-[180px]">
-                <h6 className="mb-2 text-lg">Moscow</h6>
-                <p className="text-sm opacity-80">508 Bridle</p>
+                <h6 className="mb-2 text-lg">Đại Học FPT</h6>
+                <p className="text-sm opacity-80">Nam Kỳ Khởi Nghĩa, Đà Nẵng</p>
               </div>
             </div>
           </div>

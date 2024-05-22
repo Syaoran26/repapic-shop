@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --default-color: #212b36;
+  --primary-color: #00a76f;
+  --secondary-color: #8e33ff;
+  --fade-color: #637381;
+  --fader-color: #919eab;
+  --info-color: #00b8d9;
+  --success-color: #22c55e;
+  --warning-color: #ffab00;
+  --error-color: #ff5630;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Public Sans', sans-serif;
+  font-optical-sizing: auto;
+  color: var(--default-color);
+  line-height: 1.5;
+}
+
+input[type='number'] {
+  text-align: right;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.custom-toast {
+  --toastify-icon-color-info: var(--info-color);
+  --toastify-icon-color-success: var(--success-color);
+  --toastify-icon-color-warning: var(--warning-color);
+  --toastify-icon-color-error: var(--error-color);
+
+  --toastify-color-progress-info: var(--info-color);
+  --toastify-color-progress-success: var(--success-color);
+  --toastify-color-progress-warning: var(--warning-color);
+  --toastify-color-progress-error: var(--error-color);
+}
+
+.background-3::before {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  content: '';
+  opacity: 0.24;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url('../public/images/backgrounds/overlay_4.jpg');
+}
+
+.lazy-load-image-background {
+  background-image: url('../public/images/backgrounds/placeholder.svg');
+  background-size: cover;
+
+  &.lazy-load-image-loaded.blur {
+    filter: blur(0);
+    transition: filter 0.3s;
+  }
+}

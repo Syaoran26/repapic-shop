@@ -59,9 +59,9 @@ const Header = () => {
           <Link to={config.routes.shop} className="nav-link">
             Sản phẩm
           </Link>
-          <Link to="#" className="nav-link">
+          {/* <Link to="#" className="nav-link">
             Workshop
-          </Link>
+          </Link> */}
           <Link to={config.routes.aboutUs} className="nav-link">
             Về chúng tôi
           </Link>
