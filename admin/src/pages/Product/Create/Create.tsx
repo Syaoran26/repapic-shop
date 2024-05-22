@@ -1,7 +1,8 @@
-import { Breadcrumbs, Container, Link } from '@mui/material';
+import { Autocomplete, Breadcrumbs, Button, Container, Link, Paper, TextField } from '@mui/material';
 import React from 'react';
 import config from '~/config';
 
+const category = [{ label: 'Tranh anime' }, { label: 'Tranh phong cảnh' }, { label: 'Tranh chân dung' }];
 const Create = () => {
   return (
     <Container>
@@ -14,6 +15,31 @@ const Create = () => {
           <Link color="inherit">Sản phẩm</Link>
           <span>Sản phẩm mới</span>
         </Breadcrumbs>
+      </div>
+      <Paper className="m-3">
+        <div className="flex flex-col gap-6 p-6">
+          <TextField id="name" required label="Tên sản phẩm"></TextField>
+          <TextField id="description" required label="Mô tả sản phẩm" multiline rows={4}></TextField>
+          <div className="flex flex-col gap-3">
+            <h6 className="m-0 text-sm font-semibold">Hình ảnh sản phẩm</h6>
+            <input required type="file" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <TextField id="stock" label="Số lượng sản phẩm" type="number"></TextField>
+            <Autocomplete
+              id="category"
+              options={category}
+              renderInput={(params) => <TextField {...params} label="Danh mục" />}
+            />
+            <TextField id="price" required label="Giá tiền" type="number"></TextField>
+            <TextField id="discount" label="Giảm giá" type="number"></TextField>
+          </div>
+        </div>
+      </Paper>
+      <div className="flex justify-end p-3">
+        <Button size="large" variant="contained">
+          Tạo sản phẩm
+        </Button>
       </div>
     </Container>
   );
