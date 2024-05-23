@@ -1,8 +1,15 @@
-import { Autocomplete, Breadcrumbs, Button, Container, Link, Paper, TextField } from '@mui/material';
-import React from 'react';
+import { Breadcrumbs, Button, Container, Link, Paper, TextField } from '@mui/material';
 import config from '~/config';
+import * as yup from 'yup';
 
-const category = [{ label: 'Tranh anime' }, { label: 'Tranh phong cảnh' }, { label: 'Tranh chân dung' }];
+const schema = yup.object({
+  title: yup.string().required('Vui lòng nhập tên sản phẩm'),
+  description: yup.string().required('Vui lòng nhập tên sản phẩm'),
+  stock: yup.number().integer('Vui lòng nhập giá trị nguyên').min(0, 'Số lượng phải lớn hơn hoặc bằng 0'),
+  price: yup.number().required('Vui lòng nhập giá tiền sản phẩm').min(0, 'Giá tiền phải lớn hơn không'),
+  discount: yup.number().min(0, 'Giảm giá phải lớn hơn hoặc bằng 0%').max(100, 'Giảm giá phải nhỏ hơn hoặc bằng 0%'),
+});
+
 const Create = () => {
   return (
     <Container>
@@ -18,21 +25,16 @@ const Create = () => {
       </div>
       <Paper className="m-3">
         <div className="flex flex-col gap-6 p-6">
-          <TextField id="name" required label="Tên sản phẩm"></TextField>
-          <TextField id="description" required label="Mô tả sản phẩm" multiline rows={4}></TextField>
+          <TextField id="name" required label="Tên sản phẩm" />
+          <TextField id="description" required label="Mô tả sản phẩm" multiline rows={4} />
           <div className="flex flex-col gap-3">
             <h6 className="m-0 text-sm font-semibold">Hình ảnh sản phẩm</h6>
-            <input required type="file" />
+            <input required type="file" multiple accept="image/*" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <TextField id="stock" label="Số lượng sản phẩm" type="number"></TextField>
-            <Autocomplete
-              id="category"
-              options={category}
-              renderInput={(params) => <TextField {...params} label="Danh mục" />}
-            />
-            <TextField id="price" required label="Giá tiền" type="number"></TextField>
-            <TextField id="discount" label="Giảm giá" type="number"></TextField>
+          <div className="grid grid-cols-3 gap-4">
+            <TextField id="stock" label="Số lượng sản phẩm" type="number" />
+            <TextField id="price" required label="Giá tiền" type="number" />
+            <TextField id="discount" label="Giảm giá" type="number" />
           </div>
         </div>
       </Paper>

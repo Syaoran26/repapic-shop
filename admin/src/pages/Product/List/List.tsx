@@ -158,9 +158,11 @@ const List = () => {
               {products.length > 0 ? (
                 products.map((product) => <ProductRow key={product._id} data={product} />)
               ) : (
-                <TableCell colSpan={6}>
-                  <NoData />
-                </TableCell>
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <NoData />
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
