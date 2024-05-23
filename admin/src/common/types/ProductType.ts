@@ -6,6 +6,7 @@ interface Product {
   stock: number;
   price: number;
   slug: string;
+  createdAt: Date;
   rating?: number;
   description?: string;
   discount?: number;
