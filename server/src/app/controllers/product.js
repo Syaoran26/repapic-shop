@@ -2,11 +2,16 @@ import Product from '../models/Product.js';
 import asyncHandler from 'express-async-handler';
 import { ErrorWithStatus } from '../../utils/error.js';
 import APIFeatures from '../../utils/APIFeatures.js';
+import cloudinary from '../../config/cloudinary.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const newProduct = new Product(req.body);
-  const product = await newProduct.save();
-  res.status(201).json(product);
+  const thumbnail = req.file;
+  const images = req.files;
+  res.json({ thumbnail, images });
+
+  // const newProduct = new Product(req.body);
+  // const product = await newProduct.save();
+  // res.status(201).json(product);
 });
 
 export const updateProduct = asyncHandler(async (req, res) => {
