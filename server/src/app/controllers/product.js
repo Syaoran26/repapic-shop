@@ -4,7 +4,10 @@ import { ErrorWithStatus } from '../../utils/error.js';
 import APIFeatures from '../../utils/APIFeatures.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const newProduct = new Product(req.body);
+  const thumbnail = req.files.thumbnail[0].path;
+  const images = req.files.images.map((image) => image.path);
+
+  const newProduct = new Product({ ...req.body, thumbnail, images });
   const product = await newProduct.save();
   res.status(201).json(product);
 });

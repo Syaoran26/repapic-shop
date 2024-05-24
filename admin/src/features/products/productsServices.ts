@@ -8,5 +8,14 @@ const getProducts = async (options: Options<ProductFilter>) => {
   return response.data;
 };
 
-const productsServices = { getProducts };
+const createProduct = async (data: FormData) => {
+  const response = await api.post('/products', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
+const productsServices = { getProducts, createProduct };
 export default productsServices;

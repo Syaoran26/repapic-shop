@@ -1,7 +1,17 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["hookform", "payos", "reduxjs", "Repapic", "simplebar", "swiper", "Tiktok", "toastify"],
+  "cSpell.words": [
+    "cloudinary",
+    "hookform",
+    "payos",
+    "reduxjs",
+    "Repapic",
+    "simplebar",
+    "swiper",
+    "Tiktok",
+    "toastify"
+  ],
   "eslint.workingDirectories": ["./server"],
   "cSpell.language": "en,vi"
 }
