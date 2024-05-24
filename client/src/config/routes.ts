@@ -8,6 +8,7 @@ const routes = {
   faqs: '/faqs',
   shop: '/san-pham',
   detail: '/san-pham/:slug',
+  workshop: '/workshop',
   aboutUs: '/ve-chung-toi',
   contactUs: '/lien-he',
   cart: '/gio-hang',

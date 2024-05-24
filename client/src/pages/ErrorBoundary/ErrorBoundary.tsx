@@ -26,7 +26,7 @@ const errorPage: ErrorPage = {
       'Trang bạn đang cố truy cập có quyền truy cập bị hạn chế. Vui lòng liên hệ quản trị viên hệ thống của bạn',
     icon: <Character403Icon />,
   },
-  404: {
+  comingSoon: {
     text: 'Trang không tìm thấy!',
     description:
       'Xin lỗi, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm. Có lẽ bạn đã gõ nhầm URL? Hãy chắc chắn để kiểm tra chính tả.',
@@ -42,7 +42,7 @@ const errorPage: ErrorPage = {
     description: 'Chúng tôi hiện đang làm việc chăm chỉ trên trang này!',
     icon: <CharacterMaintenanceIcon />,
   },
-  comingSoon: {
+  404: {
     text: 'Sắp ra mắt!',
     description: 'Chúng tôi hiện đang làm việc chăm chỉ trên trang này!',
     icon: <CharacterComingSoonIcon />,
