@@ -1,9 +1,13 @@
-import { Breadcrumbs, Button, Container, Link, Paper, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Breadcrumbs, Container, Link, Paper, Stack, TextField } from '@mui/material';
 import config from '~/config';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import api from '~/config/api';
+import { LoadingButton } from '@mui/lab';
+import { useAppDispatch, useAppSelector } from '@common/hooks';
+import { createProduct } from '~/features/products/productsSlice';
+import { Image } from '@common/components';
 
 const schema = yup.object().shape({
   title: yup.string().required('Vui lòng nhập tên sản phẩm'),
@@ -14,7 +18,12 @@ const schema = yup.object().shape({
       if (!value || !value.length) return false;
       return true;
     }),
-  images: yup.mixed((input): input is FileList => input instanceof FileList),
+  images: yup
+    .mixed((input): input is FileList => input instanceof FileList)
+    .test('hasThumbnail', 'Vui lòng chọn hình ảnh', (value) => {
+      if (!value || !value.length) return false;
+      return true;
+    }),
   stock: yup
     .number()
     .typeError('Vui lòng nhập số lượng')
@@ -32,10 +41,39 @@ const Create = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const { isLoading } = useAppSelector((state) => state.products);
+  const dispatch = useAppDispatch();
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+  const thumbnail = watch('thumbnail');
+  const images = watch('images');
+
+  useEffect(() => {
+    if (thumbnail && thumbnail.length > 0) {
+      const url = URL.createObjectURL(thumbnail[0]);
+      setThumbnailPreview(url);
+
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [thumbnail]);
+
+  useEffect(() => {
+    if (images && images.length > 0) {
+      const urls = Array.from(images).map((file) => {
+        const url = URL.createObjectURL(file as File); // Type casting to File
+        return url;
+      });
+      setImagesPreview(urls);
+
+      return () => urls.forEach((url) => URL.revokeObjectURL(url));
+    }
+  }, [images]);
 
   const onSubmit = (data: yup.InferType<typeof schema>) => {
     const formData = new FormData();
@@ -48,15 +86,7 @@ const Create = () => {
         formData.append(key, value.toString());
       }
     });
-    //TODO: Call API to done
-    api
-      .post('/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+    dispatch(createProduct(formData));
   };
 
   return (
@@ -105,6 +135,13 @@ const Create = () => {
               error={!!errors.thumbnail}
               helperText={errors.thumbnail?.message}
             />
+            {thumbnailPreview && (
+              <Stack direction="row" gap={2} marginBlock={3}>
+                <div className="border size-20 rounded-xl">
+                  <Image src={thumbnailPreview} rounded="xl" />
+                </div>
+              </Stack>
+            )}
             <TextField
               required
               id="images"
@@ -119,6 +156,15 @@ const Create = () => {
               error={!!errors.images}
               helperText={errors.images?.message}
             />
+            {imagesPreview && (
+              <Stack direction="row" gap={2} marginBlock={3}>
+                {imagesPreview.map((image, index) => (
+                  <div key={index} className="border size-20 rounded-xl">
+                    <Image src={image} rounded="xl" />
+                  </div>
+                ))}
+              </Stack>
+            )}
             <div className="grid grid-cols-3 gap-4">
               <TextField
                 id="stock"
@@ -152,9 +198,9 @@ const Create = () => {
           </div>
         </Paper>
         <div className="flex justify-end p-3">
-          <Button size="large" variant="contained" type="submit">
+          <LoadingButton size="large" variant="contained" type="submit" loading={isLoading}>
             Tạo sản phẩm
-          </Button>
+          </LoadingButton>
         </div>
       </form>
     </Container>
