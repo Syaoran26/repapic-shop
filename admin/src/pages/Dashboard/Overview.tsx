@@ -6,9 +6,9 @@ import Chart from 'react-apexcharts';
 const Overview = () => {
   return (
     <>
-      <OverviewItem title="Sản phẩm đã bán" value={765} color="primary" />
-      <OverviewItem title="Tổng doanh thu" value={18765} color="secondary" />
-      <OverviewItem title="Lợi nhuận" value={4876} color="warning" />
+      <OverviewItem title="Sản phẩm đã bán" value={5} color="primary" data={[1, 1, 1, 2]} />
+      <OverviewItem title="Tổng doanh thu" value={400000} color="secondary" data={[80, 100, 95, 125]} />
+      <OverviewItem title="Đơn hàng" value={4} color="warning" data={[2, 1, 1]} />
     </>
   );
 };
@@ -17,9 +17,10 @@ interface OverviewItemProps {
   title: string;
   value: number;
   color: 'primary' | 'secondary' | 'warning';
+  data?: number[];
 }
 
-const OverviewItem: FC<OverviewItemProps> = ({ title, value, color }) => {
+const OverviewItem: FC<OverviewItemProps> = ({ title, value, color, data }) => {
   const options: ApexOptions = {
     chart: {
       id: 'money-chart',
@@ -80,7 +81,7 @@ const OverviewItem: FC<OverviewItemProps> = ({ title, value, color }) => {
   };
   const [series] = useState([
     {
-      data: Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 5),
+      data: data || Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 5),
     },
   ]);
 

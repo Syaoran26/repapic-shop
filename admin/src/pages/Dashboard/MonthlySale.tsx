@@ -18,11 +18,15 @@ const MonthlySale = () => {
   const series = [
     {
       name: 'Doanh Thu',
-      data: Array.from({ length: daysInMonth }, (_, i) => (i < currentDate ? Math.floor(Math.random() * 120) + 25 : 0)),
+      data:
+        [160000, 240000, 0, 0, 0] ||
+        Array.from({ length: daysInMonth }, (_, i) => (i < currentDate ? Math.floor(Math.random() * 120) + 25 : 0)),
     },
     {
       name: 'Chi phí',
-      data: Array.from({ length: daysInMonth }, (_, i) => (i < currentDate ? Math.floor(Math.random() * 100) + 10 : 0)),
+      data:
+        [100000, 150000, 0, 0, 0] ||
+        Array.from({ length: daysInMonth }, (_, i) => (i < currentDate ? Math.floor(Math.random() * 100) + 10 : 0)),
     },
   ];
 
@@ -37,9 +41,9 @@ const MonthlySale = () => {
       width: 3,
     },
     xaxis: {
-      categories: Array.from({ length: daysInMonth }, (_, i) => i + 1),
+      categories: [1, 2, 3, 4, 5] || Array.from({ length: daysInMonth }, (_, i) => i + 1),
       title: {
-        text: 'Ngày',
+        text: 'Tuần',
       },
     },
     yaxis: {
@@ -69,7 +73,7 @@ const MonthlySale = () => {
 
   return (
     <Paper className="p-6 col-span-full">
-      <h4 className="mb-6 text-lg font-bold">Doanh thu hàng tháng</h4>
+      <h4 className="mb-6 text-lg font-bold">Doanh thu hàng tuần</h4>
       <Chart options={options} series={series} type="area" />
     </Paper>
   );

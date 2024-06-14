@@ -94,8 +94,10 @@ export const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(removeFromCart.fulfilled, (state, action: PayloadAction<{ data: CartItem[]; message: string }>) => {
+        // 2 + 1
         state.isError = false;
         state.isLoading = false;
+
         state.items = action.payload.data;
         toast.success(action.payload.message);
       })
