@@ -5,6 +5,7 @@ import userRouter from './user.js';
 import orderRouter from './order.js';
 import meRouter from './me.js';
 import addressRouter from './address.js';
+import statisticalRouter from './statistical.js';
 import { verifyToken } from '../app/middlewares/auth.js';
 
 const routes = (app) => {
@@ -15,6 +16,7 @@ const routes = (app) => {
   app.use('/api/users', userRouter);
   app.use('/api/orders', orderRouter);
   app.use('/api/address', addressRouter);
+  app.use('/api/statistical', statisticalRouter);
 };
 
 export default routes;
